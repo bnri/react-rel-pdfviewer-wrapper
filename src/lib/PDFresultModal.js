@@ -36,9 +36,9 @@ const PDFresultModal = ({ onClose, ...props }) => {
     const [isPlaying, set_isPlaying] = React.useState(false);
     const [playSpeed, set_playSpeed] = React.useState(1);
     const [followEvent] = React.useState(true);
-    const [rawSize, set_rawSize] = React.useState(50);
+    const [rawSize, set_rawSize] = React.useState(0);
 
-    const [fixationSize, set_fixationSize] = React.useState(50);
+    const [fixationSize, set_fixationSize] = React.useState(40);
     const [pastTimeRange, set_pastTimeRange] = React.useState(0);
     const [nowPDFviewInform, set_nowPDFviewInform] = React.useState(null);
     const [minFixationCount, set_minFixationCount] = React.useState(3);
@@ -560,7 +560,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                                         시선 크기
                                                     </div>
                                                     <div className="c_data">
-                                                        <input type="range" style={{ width: '70%' }} value={rawSize} min={0} max={400}
+                                                        <input type="range" style={{ width: '70%' }} value={rawSize} min={0} max={200}
                                                             onChange={(e) => {
                                                                 set_rawSize(e.target.value)
 
@@ -574,7 +574,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                                         응시크기
                                                     </div>
                                                     <div className="c_data">
-                                                        <input type="range" style={{ width: '70%' }} value={fixationSize} min={0} max={400}
+                                                        <input type="range" style={{ width: '70%' }} value={fixationSize} min={0} max={100}
                                                             onChange={(e) => {
                                                                 set_fixationSize(e.target.value)
 

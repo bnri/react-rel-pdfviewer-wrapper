@@ -106,12 +106,12 @@ var PDFresultModal = function PDFresultModal(_ref) {
       _React$useState20 = _slicedToArray(_React$useState19, 1),
       followEvent = _React$useState20[0];
 
-  var _React$useState21 = _react.default.useState(50),
+  var _React$useState21 = _react.default.useState(0),
       _React$useState22 = _slicedToArray(_React$useState21, 2),
       rawSize = _React$useState22[0],
       set_rawSize = _React$useState22[1];
 
-  var _React$useState23 = _react.default.useState(50),
+  var _React$useState23 = _react.default.useState(40),
       _React$useState24 = _slicedToArray(_React$useState23, 2),
       fixationSize = _React$useState24[0],
       set_fixationSize = _React$useState24[1];
@@ -587,7 +587,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
     },
     value: rawSize,
     min: 0,
-    max: 400,
+    max: 200,
     onChange: function onChange(e) {
       set_rawSize(e.target.value);
     }
@@ -604,7 +604,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
     },
     value: fixationSize,
     min: 0,
-    max: 400,
+    max: 100,
     onChange: function onChange(e) {
       set_fixationSize(e.target.value);
     }
