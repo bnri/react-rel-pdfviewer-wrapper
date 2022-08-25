@@ -486,7 +486,8 @@ const PDFresultModal = ({ onClose, ...props }) => {
     return (<div className="PDFresultModal">
         <div className="ResultWrap" style={{
             width: specialWidth,
-            height: specialHeight
+            height: specialHeight,
+            minWidth:specialWidth,
         }}>
             <div className="marginWrap">
 
@@ -496,7 +497,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                             <Draggable
 
                                 handle=".OVM-drag-handle"
-                                defaultPosition={{ x: 0, y: 0 }}
+                                defaultPosition={{ x: 50, y: 50 }}
                                 bounds=".marginWrap"
                                 grid={[1, 1]} >
 

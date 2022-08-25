@@ -16,7 +16,7 @@ function App() {
      
             
                specialWidth={'1200px'}
-               specialHeight={'700px'}
+               specialHeight={'800px'}
                
                data={{
                  gazeData: data1,
