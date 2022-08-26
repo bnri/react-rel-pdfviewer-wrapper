@@ -17,8 +17,6 @@ var _excluded = ["onClose"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -35,9 +33,114 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-var PDFresultModal = function PDFresultModal(_ref) {
-  var onClose = _ref.onClose,
-      props = _objectWithoutProperties(_ref, _excluded);
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+var FullScreenBtn = function FullScreenBtn(_ref) {
+  var props = _extends({}, _ref);
+
+  var isfullscreen = props.isfullscreen;
+
+  var buttonRef = _react.default.useRef();
+
+  var fullscreenModalRef = _react.default.useRef();
+
+  var animationFromRef = _react.default.useRef();
+
+  var animationToRef = _react.default.useRef();
+
+  _react.default.useEffect(function () {
+    var openFullScreen = function openFullScreen() {
+      // 호출할때 javscript로 한것 f11말고
+      var elem = document.documentElement;
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        // Chrome, Safari & Opera 
+        elem.webkitRequestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        // Firefox 
+        elem.mozRequestFullScreen();
+      } else if (elem.msRequestFullscreen) {
+        // IE/Edge 
+        elem.msRequestFullscreen();
+      }
+    };
+
+    var closeFullscreen = function closeFullscreen() {
+      // document.exitFullscreen 
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    };
+
+    var animationTo = animationToRef.current,
+        animationFrom = animationFromRef.current;
+    var button = buttonRef.current;
+
+    if (isfullscreen) {
+      button.classList.remove("animated");
+      animationTo.beginElement(); // console.log("bbbbbbb fullscreenMode 진입");
+
+      var max = (window.screen.height / window.devicePixelRatio).toFixed(0) * 1;
+
+      if (max !== window.innerHeight) {
+        openFullScreen();
+      }
+    } else {
+      // console.log("풀스크린해제");
+      button.classList.add("animated");
+      animationFrom.beginElement(); // console.log("aaaaaaa fullscreen해제");
+
+      var _max = (window.screen.height / window.devicePixelRatio).toFixed(0) * 1;
+
+      if (_max === window.innerHeight) {
+        // 자바스크립트로 홀출했을때만 closeFUllscrenn 호출
+        closeFullscreen(); // f11눌러서 전체화면인지 openFullScreen을 눌룬 전체화면인지 알 수가없다. 크롬보안상 f11누룬건 자바스크립트로풀수없다
+      }
+    }
+  }, [isfullscreen, fullscreenModalRef]);
+
+  return /*#__PURE__*/_react.default.createElement("div", {
+    ref: buttonRef,
+    style: {
+      width: '20px',
+      height: '20px',
+      color: isfullscreen ? 'yellow' : 'white',
+      cursor: 'pointer'
+    },
+    "data-tip": isfullscreen ? "전체화면취소" : "전체화면"
+  }, /*#__PURE__*/_react.default.createElement("svg", {
+    viewBox: "0 0 24 24",
+    fill: "currentColor"
+  }, /*#__PURE__*/_react.default.createElement("path", {
+    d: "m 3.4285714,15.428571 -3.42857145,0 0,8.571429 8.57142905,0 0,-3.428571 -5.1428577,0 0,-5.142858 z M -5e-8,8.5714287 l 3.42857145,0 0,-5.1428573 5.1428577,0 L 8.5714291,0 -4.9999999e-8,0 l 0,8.5714287 z M 20.571428,20.571429 l -5.142857,0 0,3.428571 L 24,24 l 0,-8.571429 -3.428572,0 0,5.142858 z M 15.428571,2e-7 l 0,3.4285714 5.142857,0 0,5.1428571 3.428572,0 L 24,2e-7 l -8.571429,0 z"
+  }, /*#__PURE__*/_react.default.createElement("animate", {
+    ref: animationToRef,
+    begin: "indefinite",
+    fill: "freeze",
+    attributeName: "d",
+    dur: "0.15s",
+    to: "m 5.0000001e-8,18.857143 5.14285695,0 0,5.142857 3.428572,0 0,-8.571429 -8.571428950000001,0 0,3.428572 z M 5.142857,5.1428572 l -5.14285695,0 0,3.4285714 8.571428949999999,0 0,-8.571428500000001 -3.428572,0 0,5.142857100000001 z M 15.428571,24 l 3.428572,0 0,-5.142857 5.142857,0 0,-3.428572 -8.571429,0 0,8.571429 z m 3.428572,-18.8571428 0,-5.1428571 -3.428572,0 0,8.5714285 8.571429,0 0,-3.4285714 -5.142857,0 z"
+  }), /*#__PURE__*/_react.default.createElement("animate", {
+    ref: animationFromRef,
+    begin: "indefinite",
+    fill: "freeze",
+    attributeName: "d",
+    dur: "0.15s",
+    to: "m 3.4285714,15.428571 -3.42857145,0 0,8.571429 8.57142905,0 0,-3.428571 -5.1428577,0 0,-5.142858 z M -5e-8,8.5714287 l 3.42857145,0 0,-5.1428573 5.1428577,0 L 8.5714291,0 -4.9999999e-8,0 l 0,8.5714287 z M 20.571428,20.571429 l -5.142857,0 0,3.428571 L 24,24 l 0,-8.571429 -3.428572,0 0,5.142858 z M 15.428571,2e-7 l 0,3.4285714 5.142857,0 0,5.1428571 3.428572,0 L 24,2e-7 l -8.571429,0 z"
+  }))));
+};
+
+var PDFresultModal = function PDFresultModal(_ref2) {
+  var onClose = _ref2.onClose,
+      props = _objectWithoutProperties(_ref2, _excluded);
 
   var path = props.path,
       viewpercent = props.viewpercent,
@@ -129,7 +232,27 @@ var PDFresultModal = function PDFresultModal(_ref) {
   var _React$useState29 = _react.default.useState(3),
       _React$useState30 = _slicedToArray(_React$useState29, 2),
       minFixationCount = _React$useState30[0],
-      set_minFixationCount = _React$useState30[1];
+      set_minFixationCount = _React$useState30[1]; //콘트롤러
+
+
+  var _React$useState31 = _react.default.useState(false),
+      _React$useState32 = _slicedToArray(_React$useState31, 2),
+      isFocus = _React$useState32[0],
+      set_isFocus = _React$useState32[1];
+
+  var _React$useState33 = _react.default.useState(200),
+      _React$useState34 = _slicedToArray(_React$useState33, 1),
+      mw = _React$useState34[0];
+
+  var _React$useState35 = _react.default.useState(503),
+      _React$useState36 = _slicedToArray(_React$useState35, 1),
+      mh = _React$useState36[0]; //전체화면
+
+
+  var _React$useState37 = _react.default.useState(false),
+      _React$useState38 = _slicedToArray(_React$useState37, 2),
+      isfullscreen = _React$useState38[0],
+      set_isfullscreen = _React$useState38[1];
 
   var fixationData = _react.default.useMemo(function () {
     var fa = [];
@@ -224,9 +347,9 @@ var PDFresultModal = function PDFresultModal(_ref) {
         prevy = d.pdfy;
       }
     } //마지막 fixation 찾아볼까?
+    // console.log("fa", fa);
 
 
-    console.log("fa", fa);
     return fa;
   }, [data, fminx, fminy]);
 
@@ -253,6 +376,16 @@ var PDFresultModal = function PDFresultModal(_ref) {
 
 
   var resizeInnerFrame = _react.default.useCallback(function () {
+    setTimeout(function () {
+      var max = (window.screen.height / window.devicePixelRatio).toFixed(0) * 1; // console.log("max:" + max);
+      // console.log("window.innerHeight:" + window.innerHeight);
+
+      if (isfullscreen) {
+        if (max !== window.innerHeight) {
+          set_isfullscreen(false);
+        }
+      }
+    }, 150);
     var pastScreenW = data.screenSize.width;
     var pastScreenH = data.screenSize.height;
     var pastRatio = pastScreenH / pastScreenW;
@@ -273,7 +406,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
       set_innerFrameTop(0);
       set_innerFrameLeft((width - newwidth) / 2);
     }
-  }, [data]);
+  }, [data, isfullscreen]);
 
   _react.default.useEffect(function () {
     resizeInnerFrame();
@@ -485,23 +618,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
     handleDraw();
   }, [handleDraw]);
 
-  var _React$useState31 = _react.default.useState(false),
-      _React$useState32 = _slicedToArray(_React$useState31, 2),
-      isFocus = _React$useState32[0],
-      set_isFocus = _React$useState32[1];
-
-  var _React$useState33 = _react.default.useState(200),
-      _React$useState34 = _slicedToArray(_React$useState33, 1),
-      mw = _React$useState34[0];
-
-  var _React$useState35 = _react.default.useState(503),
-      _React$useState36 = _slicedToArray(_React$useState35, 1),
-      mh = _React$useState36[0];
-
-  var _React$useState37 = _react.default.useState(false),
-      _React$useState38 = _slicedToArray(_React$useState37, 2),
-      isMinimizedController = _React$useState38[0],
-      set_isMinimizedController = _React$useState38[1];
+  var _React$useState39 = _react.default.useState(false),
+      _React$useState40 = _slicedToArray(_React$useState39, 2),
+      isMinimizedController = _React$useState40[0],
+      set_isMinimizedController = _React$useState40[1];
 
   var handleCloseController = function handleCloseController() {
     set_isMinimizedController(true);
@@ -512,16 +632,17 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "ResultWrap",
     style: {
-      width: specialWidth,
-      height: specialHeight
+      width: isfullscreen ? '100%' : specialWidth,
+      height: isfullscreen ? '100%' : specialHeight,
+      minWidth: isfullscreen ? '100%' : specialWidth
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "marginWrap"
   }, isMinimizedController === false ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactDraggable.default, {
     handle: ".OVM-drag-handle",
     defaultPosition: {
-      x: 0,
-      y: 0
+      x: 50,
+      y: 50
     },
     bounds: ".marginWrap",
     grid: [1, 1]
@@ -643,7 +764,20 @@ var PDFresultModal = function PDFresultModal(_ref) {
     className: "c_label"
   }, "\uC751\uC2DC\uBE44\uC728"), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data"
-  }, fd_inform.fixationRatio.toFixed(0), "%"))), /*#__PURE__*/_react.default.createElement("div", {
+  }, fd_inform.fixationRatio.toFixed(0), "%")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      return set_isfullscreen(function (f) {
+        return !f;
+      });
+    }
+  }, /*#__PURE__*/_react.default.createElement(FullScreenBtn, {
+    isfullscreen: isfullscreen
+  }), "\xA0 ", isfullscreen ? /*#__PURE__*/_react.default.createElement("span", {
+    style: {
+      color: 'yellow'
+    }
+  }, "\uC804\uCCB4\uD654\uBA74\uCDE8\uC18C") : /*#__PURE__*/_react.default.createElement("span", null, "\uC804\uCCB4\uD654\uBA74\uC73C\uB85C"))), /*#__PURE__*/_react.default.createElement("div", {
     className: "GC-playzone"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "GC-playWrapper"

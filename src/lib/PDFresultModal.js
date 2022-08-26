@@ -4,8 +4,91 @@ import './PDFresultModal.scss';
 import PDFviewModal from 'react-rel-pdfviewer';
 import Draggable from 'react-draggable';
 
+
+
+const FullScreenBtn = ({ ...props }) => {
+    const { isfullscreen } = props;
+
+    const buttonRef = React.useRef();
+    const fullscreenModalRef = React.useRef();
+    const animationFromRef = React.useRef();
+    const animationToRef = React.useRef();
+
+    React.useEffect(() => {
+        const openFullScreen = () => {
+            // 호출할때 javscript로 한것 f11말고
+            var elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { // Chrome, Safari & Opera 
+                elem.webkitRequestFullscreen();
+            } else if (elem.mozRequestFullScreen) { // Firefox 
+                elem.mozRequestFullScreen();
+            } else if (elem.msRequestFullscreen) { // IE/Edge 
+                elem.msRequestFullscreen();
+            }
+        }
+        const closeFullscreen = () => {
+            // document.exitFullscreen 
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+
+        var animationTo = animationToRef.current,
+            animationFrom = animationFromRef.current;
+        let button = buttonRef.current;
+        if (isfullscreen) {
+
+            button.classList.remove("animated");
+            animationTo.beginElement();
+            // console.log("bbbbbbb fullscreenMode 진입");
+            let max = (window.screen.height / (window.devicePixelRatio)).toFixed(0) * 1;
+            if (max !== window.innerHeight) {
+                openFullScreen();
+            }
+
+        }
+        else {
+            // console.log("풀스크린해제");
+            button.classList.add("animated");
+            animationFrom.beginElement();
+            // console.log("aaaaaaa fullscreen해제");
+            let max = (window.screen.height / (window.devicePixelRatio)).toFixed(0) * 1;
+            if (max === window.innerHeight) {
+                // 자바스크립트로 홀출했을때만 closeFUllscrenn 호출
+                closeFullscreen() // f11눌러서 전체화면인지 openFullScreen을 눌룬 전체화면인지 알 수가없다. 크롬보안상 f11누룬건 자바스크립트로풀수없다
+            }
+
+        }
+
+    }, [isfullscreen, fullscreenModalRef])
+
+
+    return (<div ref={buttonRef}
+        style={{ width: '20px', height: '20px', color: isfullscreen ? 'yellow' : 'white', cursor: 'pointer' }} data-tip={isfullscreen ? "전체화면취소" : "전체화면"}>
+
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="m 3.4285714,15.428571 -3.42857145,0 0,8.571429 8.57142905,0 0,-3.428571 -5.1428577,0 0,-5.142858 z M -5e-8,8.5714287 l 3.42857145,0 0,-5.1428573 5.1428577,0 L 8.5714291,0 -4.9999999e-8,0 l 0,8.5714287 z M 20.571428,20.571429 l -5.142857,0 0,3.428571 L 24,24 l 0,-8.571429 -3.428572,0 0,5.142858 z M 15.428571,2e-7 l 0,3.4285714 5.142857,0 0,5.1428571 3.428572,0 L 24,2e-7 l -8.571429,0 z">
+                <animate ref={animationToRef} begin="indefinite"
+                    fill="freeze" attributeName="d" dur="0.15s"
+                    to="m 5.0000001e-8,18.857143 5.14285695,0 0,5.142857 3.428572,0 0,-8.571429 -8.571428950000001,0 0,3.428572 z M 5.142857,5.1428572 l -5.14285695,0 0,3.4285714 8.571428949999999,0 0,-8.571428500000001 -3.428572,0 0,5.142857100000001 z M 15.428571,24 l 3.428572,0 0,-5.142857 5.142857,0 0,-3.428572 -8.571429,0 0,8.571429 z m 3.428572,-18.8571428 0,-5.1428571 -3.428572,0 0,8.5714285 8.571429,0 0,-3.4285714 -5.142857,0 z" />
+                <animate ref={animationFromRef} begin="indefinite"
+                    fill="freeze" attributeName="d" dur="0.15s"
+                    to="m 3.4285714,15.428571 -3.42857145,0 0,8.571429 8.57142905,0 0,-3.428571 -5.1428577,0 0,-5.142858 z M -5e-8,8.5714287 l 3.42857145,0 0,-5.1428573 5.1428577,0 L 8.5714291,0 -4.9999999e-8,0 l 0,8.5714287 z M 20.571428,20.571429 l -5.142857,0 0,3.428571 L 24,24 l 0,-8.571429 -3.428572,0 0,5.142858 z M 15.428571,2e-7 l 0,3.4285714 5.142857,0 0,5.1428571 3.428572,0 L 24,2e-7 l -8.571429,0 z" />
+            </path>
+        </svg>
+    </div>)
+}
+
 const PDFresultModal = ({ onClose, ...props }) => {
-    const { path, viewpercent, data ,specialWidth,specialHeight} = props;
+    const { path, viewpercent, data, specialWidth, specialHeight } = props;
 
 
     const pdfviewref = React.useRef();
@@ -42,6 +125,16 @@ const PDFresultModal = ({ onClose, ...props }) => {
     const [pastTimeRange, set_pastTimeRange] = React.useState(0);
     const [nowPDFviewInform, set_nowPDFviewInform] = React.useState(null);
     const [minFixationCount, set_minFixationCount] = React.useState(3);
+
+
+    //콘트롤러
+    const [isFocus, set_isFocus] = React.useState(false);
+    const [mw] = React.useState(200);
+    const [mh] = React.useState(503);
+
+    //전체화면
+    const [isfullscreen, set_isfullscreen] = React.useState(false);
+
 
 
     const fixationData = React.useMemo(() => {
@@ -151,7 +244,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
         }
 
         //마지막 fixation 찾아볼까?
-        console.log("fa", fa);
+        // console.log("fa", fa);
 
         return fa;
     }, [data, fminx, fminy])
@@ -188,6 +281,23 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
     //viewWrap ratio를 어떻게 구할까    
     const resizeInnerFrame = React.useCallback(() => {
+
+        setTimeout(function () {
+            let max = (window.screen.height / (window.devicePixelRatio)).toFixed(0) * 1;
+
+            // console.log("max:" + max);
+            // console.log("window.innerHeight:" + window.innerHeight);
+
+            if (isfullscreen) {
+                if (max !== window.innerHeight) {
+                    set_isfullscreen(false);
+
+                }
+            }
+
+        }, 150);
+
+
         const pastScreenW = data.screenSize.width;
         const pastScreenH = data.screenSize.height;
         let pastRatio = pastScreenH / pastScreenW;
@@ -215,7 +325,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
             set_innerFrameLeft((width - newwidth) / 2);
 
         }
-    }, [data]);
+    }, [data, isfullscreen]);
 
     React.useEffect(() => {
         resizeInnerFrame();
@@ -475,19 +585,19 @@ const PDFresultModal = ({ onClose, ...props }) => {
     }, [handleDraw]);
 
 
-    const [isFocus, set_isFocus] = React.useState(false);
-    const [mw] = React.useState(200);
-    const [mh] = React.useState(503);
 
     const [isMinimizedController, set_isMinimizedController] = React.useState(false);
     const handleCloseController = () => {
         set_isMinimizedController(true);
     }
+
+
+
     return (<div className="PDFresultModal">
         <div className="ResultWrap" style={{
-            width: specialWidth,
-            height: specialHeight,
-            minWidth:specialWidth,
+            width: isfullscreen ? '100%' : specialWidth,
+            height: isfullscreen ? '100%' : specialHeight,
+            minWidth: isfullscreen ? '100%' : specialWidth,
         }}>
             <div className="marginWrap">
 
@@ -514,7 +624,8 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                     <div className="header OVM-drag-handle" style={{ backgroundColor: isFocus ? 'rgb(40,40,40)' : 'rgb(20,20,20)' }}>
 
                                         Controller
-                                        <button className="icon-btn" style={{ position: 'absolute', right: 0 }} onClick={handleCloseController}><i className="fa fa-times" aria-hidden="true"></i></button>
+                                        <button className="icon-btn" style={{ position: 'absolute', right: 0 }} onClick={handleCloseController}>
+                                            <i className="fa fa-times" aria-hidden="true"></i></button>
 
                                     </div>
                                     <div className="middle">
@@ -616,7 +727,11 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                                         {fd_inform.fixationRatio.toFixed(0)}%
                                                     </div>
                                                 </div>
-
+                                                <div className="oneConfig" onClick={() => set_isfullscreen(f => !f)}>
+                                                    <FullScreenBtn
+                                                        isfullscreen={isfullscreen}
+                                                    />&nbsp; {isfullscreen ? <span style={{color:'yellow'}}>전체화면취소</span> : <span>전체화면으로</span>}
+                                                </div>
 
                                                 {/* <div className="oneConfig">
 
