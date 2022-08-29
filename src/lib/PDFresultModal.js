@@ -4,6 +4,8 @@ import './PDFresultModal.scss';
 import PDFviewModal from 'react-rel-pdfviewer';
 import Draggable from 'react-draggable';
 
+import { PDFDocument, rgb } from 'pdf-lib';
+
 
 
 const FullScreenBtn = ({ ...props }) => {
@@ -121,7 +123,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
     const [followEvent] = React.useState(true);
     const [rawSize, set_rawSize] = React.useState(0);
 
-    const [fixationSize, set_fixationSize] = React.useState(40);
+    const [fixationSize, set_fixationSize] = React.useState(32);
     const [pastTimeRange, set_pastTimeRange] = React.useState(0);
     const [nowPDFviewInform, set_nowPDFviewInform] = React.useState(null);
     const [minFixationCount, set_minFixationCount] = React.useState(3);
@@ -591,7 +593,84 @@ const PDFresultModal = ({ onClose, ...props }) => {
         set_isMinimizedController(true);
     }
 
+    const handleTryPrint = () => {
 
+
+
+        fetch(path).then(res => {
+            console.log("res",);
+            return res.arrayBuffer()
+        }).then(async (buffer) => {
+            const existingPdfBytes = buffer;
+            const pdfDoc = await PDFDocument.load(existingPdfBytes);
+            // Embed the Helvetica font
+            // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+            // Get the first page of the document
+            const pages = pdfDoc.getPages()
+            const firstPage = pages[0]
+
+            // Get the width and height of the first page
+            const { width, height } = firstPage.getSize();
+
+            firstPage.drawLine({
+                start: {
+                    x: 15,
+                    y: height - 15,
+                },
+                end: {
+                    x: 55,
+                    y: height - 55,
+                },
+                color: rgb(0, 1, 0),
+                opacity: 0.2,
+                borderOpacity: 1,
+                thickness: 3,
+
+            });
+
+
+            firstPage.drawCircle({
+                x: 15,
+                y: height - 15,
+                size: 15,
+                borderWidth: 1,
+                // borderDashArray: [1],
+                // borderDashPhase: 25,
+                borderColor: rgb(0, 1, 0),
+                borderOpacity: 0.3,
+                // fill:rgb(1,0,0)
+                color: rgb(0, 1, 0),
+                opacity: 0.3
+                // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                // borderLineCap: LineCapStyle.Round,
+            });
+
+
+
+            firstPage.drawCircle({
+                x: 55,
+                y: height - 55,
+                size: 15,
+                borderWidth: 1,
+                // borderDashArray: [1],
+                // borderDashPhase: 25,
+                borderColor: rgb(0, 1, 0),
+                borderOpacity: 0.3,
+                // fill:rgb(1,0,0)
+                color: rgb(0, 1, 0),
+                opacity: 0.3
+                // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                // borderLineCap: LineCapStyle.Round,
+            });
+
+
+            const pdfBytes = await pdfDoc.save()
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+            const blobURL = URL.createObjectURL(blob);
+            window.open(blobURL)
+        });
+    }
 
     return (<div className="PDFresultModal">
         <div className="ResultWrap" style={{
@@ -730,9 +809,11 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                                 <div className="oneConfig" onClick={() => set_isfullscreen(f => !f)}>
                                                     <FullScreenBtn
                                                         isfullscreen={isfullscreen}
-                                                    />&nbsp; {isfullscreen ? <span style={{color:'yellow'}}>전체화면취소</span> : <span>전체화면으로</span>}
+                                                    />&nbsp; {isfullscreen ? <span style={{ color: 'yellow' }}>전체화면취소</span> : <span>전체화면으로</span>}
                                                 </div>
-
+                                                <div className="oneConfig" onClick={handleTryPrint}>
+                                                    인쇄 시도
+                                                </div>
                                                 {/* <div className="oneConfig">
 
                                                     <div className="c_label">
