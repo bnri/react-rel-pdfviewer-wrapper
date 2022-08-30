@@ -5,7 +5,7 @@ import PDFviewModal from 'react-rel-pdfviewer';
 import Draggable from 'react-draggable';
 
 import { PDFDocument, rgb } from 'pdf-lib';
-
+import pdfsvg from './PDF_file_icon.svg';
 
 
 const FullScreenBtn = ({ ...props }) => {
@@ -589,13 +589,16 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
 
     const [isMinimizedController, set_isMinimizedController] = React.useState(false);
+
     const handleCloseController = () => {
         set_isMinimizedController(true);
     }
 
     const handleTryPrint = () => {
 
-
+        if (!data) {
+            return;
+        }
 
         fetch(path).then(res => {
             console.log("res",);
@@ -611,64 +614,222 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
             // Get the width and height of the first page
             const { width, height } = firstPage.getSize();
+            let cw = width;
+            let ch = height;
+            let prevx = null;
+            let prevy = null;
+            const pT = pastTimeRange;
+      
 
-            firstPage.drawLine({
-                start: {
-                    x: 15,
-                    y: height - 15,
-                },
-                end: {
-                    x: 55,
-                    y: height - 55,
-                },
-                color: rgb(0, 1, 0),
-                opacity: 0.2,
-                borderOpacity: 1,
-                thickness: 3,
-
-            });
+            //#@!
+            console.log("data", data);
+            console.log("fixationData", fixationData);
 
 
-            firstPage.drawCircle({
-                x: 15,
-                y: height - 15,
-                size: 15,
-                borderWidth: 1,
-                // borderDashArray: [1],
-                // borderDashPhase: 25,
-                borderColor: rgb(0, 1, 0),
-                borderOpacity: 0.3,
-                // fill:rgb(1,0,0)
-                color: rgb(0, 1, 0),
-                opacity: 0.3
-                // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                // borderLineCap: LineCapStyle.Round,
-            });
+            //#@!
+            const gazeData = data.gazeData;
+            let size = rawSize * 2 / 100;
+            let r = cw * 0.01 * size;
+            //draw rawData
+            for (let i = 0; i < gazeData.length; i++) {
+                let d = gazeData[i];
+    
+                if (pT) {
+                    if (d.relTime < (nowTime - pT)) {
+                        continue;
+                    }
+                }
+    
+                // console.log("t",t);
+                if (d.relTime * 1 <= nowTime * 1) {
+    
+                    if (d.pdfx && d.pdfy) {
+                        // console.log("그려")
+                        if (r) {
+    
+                            if (prevx && prevy) {
+                                // rctx.beginPath();
+                                // rctx.lineWidth = 0.5;
+                                // rctx.strokeStyle = 'red';
+                                // rctx.fillStyle = 'red';
+                                // rctx.moveTo((prevx) * cw, (prevy) * ch);
+                                // rctx.lineTo((d.pdfx) * cw, (d.pdfy) * ch);
+                                // rctx.stroke();
+
+                                pages[d.pageNum- 1].drawLine({
+                                    start: {
+                                        x: prevx * cw,
+                                        y: height - prevy * ch,
+                                    },
+                                    end: {
+                                        x: d.pdfx * cw,
+                                        y: height - d.pdfy * ch,
+                                    },
+                                    color: rgb(1, 0, 0),
+                                    opacity: 0.3,
+                                    borderOpacity: 0.3,
+                                    thickness:1,
+
+                                });
+
+                            } //선먼저 그린후 그리기
+    
+                            pages[d.pageNum- 1].drawCircle({
+                                x: d.pdfx * cw,
+                                y: height - d.pdfy * ch,
+                                size: r,
+                                borderWidth: 1,
+                                // borderDashArray: [1],
+                                // borderDashPhase: 25,
+                                borderColor: rgb(1, 0, 0),
+                                borderOpacity: 0.3,
+                                // fill:rgb(1,0,0)
+                                color: rgb(1, 0, 0),
+                                opacity: 0.3
+                                // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                                // borderLineCap: LineCapStyle.Round,
+                            });
+
+
+                            // rctx.beginPath();
+                            // rctx.lineWidth = 0.5;
+                            // rctx.strokeStyle = 'rgb(255,0,0,0.3)';
+                            // rctx.fillStyle = 'rgb(255,0,0,0.3)';
+                            // rctx.arc((d.pdfx) * cw, (d.pdfy) * ch, r, 0, Math.PI * 2);
+                            // rctx.fill();
+    
+                        }
+                        // prevp = d.pageNum
+                        prevx = d.pdfx;
+                        prevy = d.pdfy;
+    
+    
+    
+                    }
+    
+    
+    
+    
+                }
+    
+            }
+    
 
 
 
-            firstPage.drawCircle({
-                x: 55,
-                y: height - 55,
-                size: 15,
-                borderWidth: 1,
-                // borderDashArray: [1],
-                // borderDashPhase: 25,
-                borderColor: rgb(0, 1, 0),
-                borderOpacity: 0.3,
-                // fill:rgb(1,0,0)
-                color: rgb(0, 1, 0),
-                opacity: 0.3
-                // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                // borderLineCap: LineCapStyle.Round,
-            });
+
+
+            //draw Fixation
+            let fr = cw * 0.01 * fixationSize * 1.5 / 100;
+            prevx = null;
+            prevy = null;
+
+           
+
+            for (let i = 0; i < fixationData.length; i++) {
+
+                const f = fixationData[i];
+                if (pT) {
+                    if (f.relTime_e < (nowTime - pT)) {
+                        continue;
+                    }
+                }
+
+                if (f.relTime_s * 1 <= nowTime * 1) {
+                    if (fr) {
+                        if (f.count >= minFixationCount) {
+
+                            //선그리기...
+                            if (prevx && prevy) {
+                          
+                                pages[f.pageNum_s - 1].drawLine({
+                                    start: {
+                                        x: prevx * cw,
+                                        y: height - prevy * ch,
+                                    },
+                                    end: {
+                                        x: f.x * cw,
+                                        y: height - f.y * ch,
+                                    },
+                                    color: rgb(0, 1, 0),
+                                    opacity: 0.3,
+                                    borderOpacity: 0.3,
+                                    thickness:1,
+
+                                });
+                            }
+
+                            //원그리기 fixation
+                            let fsize = fr * Math.sqrt(f.count);
+                            if (f.relTime_e <= nowTime) {
+                  
+                                pages[f.pageNum_s - 1].drawCircle({
+                                    x: f.x * cw,
+                                    y: height - f.y * ch,
+                                    size: fsize,
+                                    borderWidth: 1,
+                                    // borderDashArray: [1],
+                                    // borderDashPhase: 25,
+                                    borderColor: rgb(0, 1, 0),
+                                    borderOpacity: 0.3,
+                                    // fill:rgb(1,0,0)
+                                    color: rgb(0, 1, 0),
+                                    opacity: 0.3
+                                    // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                                    // borderLineCap: LineCapStyle.Round,
+                                });
+
+
+                            }
+                            else {
+                                // 작게 그려
+                                let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
+
+                     
+                                pages[f.pageNum_s - 1].drawCircle({
+                                    x: f.x * cw,
+                                    y: height - f.y * ch,
+                                    size: fsize*ratio,
+                                    borderWidth: 1,
+                                    // borderDashArray: [1],
+                                    // borderDashPhase: 25,
+                                    borderColor: rgb(0, 0, 1),
+                                    borderOpacity: 0.3,
+                                    // fill:rgb(1,0,0)
+                                    color: rgb(0, 0, 1),
+                                    opacity: 0.3
+                                    // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                                    // borderLineCap: LineCapStyle.Round,
+                                });
+                            }
+
+                            prevx = f.x;
+                            prevy = f.y;
+                        }
+
+                    }
+
+
+                }
+            }
+
+    
 
 
             const pdfBytes = await pdfDoc.save()
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 
             const blobURL = URL.createObjectURL(blob);
-            window.open(blobURL)
+            const link = document.createElement('a');
+            link.href = blobURL;
+            link.download = "downloadPDF";
+            document.body.append(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(link.href), 7000);
+
+            // window.open(blobURL);
+            // URL.revokeObjectURL(blobURL);
         });
     }
 
@@ -806,14 +967,17 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                                         {fd_inform.fixationRatio.toFixed(0)}%
                                                     </div>
                                                 </div>
-                                                <div className="oneConfig" onClick={() => set_isfullscreen(f => !f)}>
+                                                <div style={{display:'flex'}}>
+                                                <div className="oneConfig" style={{borderRight:'1px solid gray'}} onClick={() => set_isfullscreen(f => !f)}>
                                                     <FullScreenBtn
                                                         isfullscreen={isfullscreen}
-                                                    />&nbsp; {isfullscreen ? <span style={{ color: 'yellow' }}>전체화면취소</span> : <span>전체화면으로</span>}
+                                                    />&nbsp; {isfullscreen ? <span style={{ color: 'yellow' }}>취소</span> : <span>전체</span>}
                                                 </div>
                                                 <div className="oneConfig" onClick={handleTryPrint}>
-                                                    인쇄 시도
+                                                    <img src={pdfsvg} alt="" style={{height:'70%'}}/>&nbsp;다운
                                                 </div>
+                                                </div>
+
                                                 {/* <div className="oneConfig">
 
                                                     <div className="c_label">
