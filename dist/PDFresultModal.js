@@ -158,7 +158,9 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       viewpercent = props.viewpercent,
       data = props.data,
       specialWidth = props.specialWidth,
-      specialHeight = props.specialHeight;
+      specialHeight = props.specialHeight,
+      onConfirm = props.onConfirm,
+      showConfirmBtn = props.showConfirmBtn;
 
   var pdfviewref = _react.default.useRef();
 
@@ -1111,7 +1113,10 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       left: "".concat(innerFrameLeft, "px")
     }
   }, /*#__PURE__*/_react.default.createElement(_reactRelPdfviewer.default, _extends({}, props, {
-    ref: pdfviewref,
+    ref: pdfviewref //#@!#@!
+    ,
+    showConfirmBtn: showConfirmBtn,
+    onConfirm: onConfirm,
     onClose: onClose,
     showViewMode: true,
     set_viewpercent: function set_viewpercent() {},

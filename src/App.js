@@ -32,7 +32,10 @@ function App() {
                path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/1.pdf"}
                viewpercent={100}
                
-           
+               showConfirmBtn={true}
+               onConfirm={()=>{
+                set_selPathway(null);
+               }}
                onClose={() => {
                  set_selPathway(null);
                }}

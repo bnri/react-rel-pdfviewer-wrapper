@@ -90,7 +90,7 @@ const FullScreenBtn = ({ ...props }) => {
 }
 
 const PDFresultModal = ({ onClose, ...props }) => {
-    const { path, viewpercent, data, specialWidth, specialHeight } = props;
+    const { path, viewpercent, data, specialWidth, specialHeight ,onConfirm ,showConfirmBtn } = props;
 
 
     const pdfviewref = React.useRef();
@@ -1072,6 +1072,11 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                 {...props}
 
                                 ref={pdfviewref}
+                                
+                                //#@!#@!
+                                showConfirmBtn={showConfirmBtn}
+                                onConfirm={onConfirm}
+
 
                                 onClose={onClose}
                                 showViewMode={true}
