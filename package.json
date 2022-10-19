@@ -14,7 +14,7 @@
   "dependencies": {
     "pdf-lib": "^1.17.1",
     "react-draggable": "^4.4.3",
-    "react-rel-pdfviewer": "^1.0.12"
+    "react-rel-pdfviewer": "^1.0.13"
   },
   "scripts": {
     "start": "react-scripts start",
