@@ -17,7 +17,15 @@ var _reactDraggable = _interopRequireDefault(require("react-draggable"));
 
 var _pdfLib = require("pdf-lib");
 
+var _fontkit = _interopRequireDefault(require("@pdf-lib/fontkit"));
+
 var _PDF_file_icon = _interopRequireDefault(require("./PDF_file_icon.svg"));
+
+var _reactTooltip = _interopRequireDefault(require("react-tooltip"));
+
+var _readereyelogo = _interopRequireDefault(require("./readereyelogo.png"));
+
+var _JejuMyeongjo = _interopRequireDefault(require("./JejuMyeongjo.ttf"));
 
 var _excluded = ["onClose"];
 
@@ -46,6 +54,24 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+// console.log ("readerseyelogo",typeof readerseyelogo, readerseyelogo);
+// console.log("jeju : ",typeof jeju, jeju);
+function getFileAsArrayBuffer(importedfile) {
+  return new Promise(function (resolve) {
+    var oReq = new XMLHttpRequest();
+    oReq.open('get', importedfile, true);
+    oReq.responseType = 'arraybuffer';
+
+    oReq.onload = function () {
+      var arraybuffer = oReq.response; // console.log("blob",blob); 
+
+      resolve(arraybuffer);
+    };
+
+    oReq.send();
+  });
+}
 
 var FullScreenBtn = function FullScreenBtn(_ref) {
   var props = _extends({}, _ref);
@@ -126,8 +152,7 @@ var FullScreenBtn = function FullScreenBtn(_ref) {
       height: '20px',
       color: isfullscreen ? 'yellow' : 'white',
       cursor: 'pointer'
-    },
-    "data-tip": isfullscreen ? "전체화면취소" : "전체화면"
+    }
   }, /*#__PURE__*/_react.default.createElement("svg", {
     viewBox: "0 0 24 24",
     fill: "currentColor"
@@ -160,7 +185,9 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       specialWidth = props.specialWidth,
       specialHeight = props.specialHeight,
       onConfirm = props.onConfirm,
-      showConfirmBtn = props.showConfirmBtn;
+      showConfirmBtn = props.showConfirmBtn,
+      printPDFData = props.printPDFData,
+      downloadFileName = props.downloadFileName;
 
   var pdfviewref = _react.default.useRef();
 
@@ -183,14 +210,12 @@ var PDFresultModal = function PDFresultModal(_ref2) {
   }, [data]);
 
   var _React$useState5 = _react.default.useState(1),
-      _React$useState6 = _slicedToArray(_React$useState5, 2),
-      fminx = _React$useState6[0],
-      set_fminx = _React$useState6[1];
+      _React$useState6 = _slicedToArray(_React$useState5, 1),
+      fminx = _React$useState6[0];
 
   var _React$useState7 = _react.default.useState(1),
-      _React$useState8 = _slicedToArray(_React$useState7, 2),
-      fminy = _React$useState8[0],
-      set_fminy = _React$useState8[1];
+      _React$useState8 = _slicedToArray(_React$useState7, 1),
+      fminy = _React$useState8[0];
 
   var topRef = _react.default.useRef();
 
@@ -244,9 +269,8 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       set_nowPDFviewInform = _React$useState28[1];
 
   var _React$useState29 = _react.default.useState(3),
-      _React$useState30 = _slicedToArray(_React$useState29, 2),
-      minFixationCount = _React$useState30[0],
-      set_minFixationCount = _React$useState30[1]; //콘트롤러
+      _React$useState30 = _slicedToArray(_React$useState29, 1),
+      minFixationCount = _React$useState30[0]; //콘트롤러
 
 
   var _React$useState31 = _react.default.useState(false),
@@ -470,7 +494,13 @@ var PDFresultModal = function PDFresultModal(_ref2) {
     return function () {
       window.cancelAnimationFrame(myrequest);
     };
-  }, [isPlaying, endTime, playSpeed]);
+  }, [isPlaying, endTime, playSpeed]); //툴팁
+
+
+  _react.default.useEffect(function () {
+    _reactTooltip.default.rebuild();
+  }); //그리기
+
 
   var handleDraw = _react.default.useCallback(function () {
     // console.log("handleDraw!! nowP",nowPage);
@@ -632,264 +662,45 @@ var PDFresultModal = function PDFresultModal(_ref2) {
     handleDraw();
   }, [handleDraw]);
 
-  var _React$useState39 = _react.default.useState(false),
+  var _React$useState39 = _react.default.useState(null),
       _React$useState40 = _slicedToArray(_React$useState39, 2),
-      isMinimizedController = _React$useState40[0],
-      set_isMinimizedController = _React$useState40[1];
+      jejuFontArrayBuffer = _React$useState40[0],
+      set_jejuFontArrayBuffer = _React$useState40[1];
+
+  _react.default.useEffect(function () {
+    getFileAsArrayBuffer(_JejuMyeongjo.default).then(function (res_arrbuffer) {
+      set_jejuFontArrayBuffer(res_arrbuffer);
+    });
+  }, []);
+
+  var _React$useState41 = _react.default.useState(false),
+      _React$useState42 = _slicedToArray(_React$useState41, 2),
+      isMinimizedController = _React$useState42[0],
+      set_isMinimizedController = _React$useState42[1];
 
   var handleCloseController = function handleCloseController() {
     set_isMinimizedController(true);
-  };
+  }; //path값에 따라서 PDFarraybuffer 보관
 
-  var handleTryPrint = function handleTryPrint() {
-    if (!data) {
-      return;
-    }
 
+  var _React$useState43 = _react.default.useState(null),
+      _React$useState44 = _slicedToArray(_React$useState43, 2),
+      pdfArrayBuffer = _React$useState44[0],
+      set_pdfArrayBuffer = _React$useState44[1];
+
+  _react.default.useEffect(function () {
     fetch(path).then(function (res) {
-      console.log("res");
+      // console.log("res",);
       return res.arrayBuffer();
     }).then( /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(buffer) {
-        var existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, prevx, prevy, pT, gazeData, size, r, i, d, fr, _i3, f, fsize, ratio, pdfBytes, blob, blobURL, link;
-
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                existingPdfBytes = buffer;
-                _context.next = 3;
-                return _pdfLib.PDFDocument.load(existingPdfBytes);
+                set_pdfArrayBuffer(buffer);
 
-              case 3:
-                pdfDoc = _context.sent;
-                // Embed the Helvetica font
-                // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
-                // Get the first page of the document
-                pages = pdfDoc.getPages();
-                firstPage = pages[0]; // Get the width and height of the first page
-
-                _firstPage$getSize = firstPage.getSize(), width = _firstPage$getSize.width, height = _firstPage$getSize.height;
-                cw = width;
-                ch = height;
-                prevx = null;
-                prevy = null;
-                pT = pastTimeRange; //#@!
-
-                console.log("data", data);
-                console.log("fixationData", fixationData); //#@!
-
-                gazeData = data.gazeData;
-                size = rawSize * 2 / 100;
-                r = cw * 0.01 * size; //draw rawData
-
-                i = 0;
-
-              case 18:
-                if (!(i < gazeData.length)) {
-                  _context.next = 27;
-                  break;
-                }
-
-                d = gazeData[i];
-
-                if (!pT) {
-                  _context.next = 23;
-                  break;
-                }
-
-                if (!(d.relTime < nowTime - pT)) {
-                  _context.next = 23;
-                  break;
-                }
-
-                return _context.abrupt("continue", 24);
-
-              case 23:
-                // console.log("t",t);
-                if (d.relTime * 1 <= nowTime * 1) {
-                  if (d.pdfx && d.pdfy) {
-                    // console.log("그려")
-                    if (r) {
-                      if (prevx && prevy) {
-                        // rctx.beginPath();
-                        // rctx.lineWidth = 0.5;
-                        // rctx.strokeStyle = 'red';
-                        // rctx.fillStyle = 'red';
-                        // rctx.moveTo((prevx) * cw, (prevy) * ch);
-                        // rctx.lineTo((d.pdfx) * cw, (d.pdfy) * ch);
-                        // rctx.stroke();
-                        pages[d.pageNum - 1].drawLine({
-                          start: {
-                            x: prevx * cw,
-                            y: height - prevy * ch
-                          },
-                          end: {
-                            x: d.pdfx * cw,
-                            y: height - d.pdfy * ch
-                          },
-                          color: (0, _pdfLib.rgb)(1, 0, 0),
-                          opacity: 0.3,
-                          borderOpacity: 0.3,
-                          thickness: 1
-                        });
-                      } //선먼저 그린후 그리기
-
-
-                      pages[d.pageNum - 1].drawCircle({
-                        x: d.pdfx * cw,
-                        y: height - d.pdfy * ch,
-                        size: r,
-                        borderWidth: 1,
-                        // borderDashArray: [1],
-                        // borderDashPhase: 25,
-                        borderColor: (0, _pdfLib.rgb)(1, 0, 0),
-                        borderOpacity: 0.3,
-                        // fill:rgb(1,0,0)
-                        color: (0, _pdfLib.rgb)(1, 0, 0),
-                        opacity: 0.3 // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                        // borderLineCap: LineCapStyle.Round,
-
-                      }); // rctx.beginPath();
-                      // rctx.lineWidth = 0.5;
-                      // rctx.strokeStyle = 'rgb(255,0,0,0.3)';
-                      // rctx.fillStyle = 'rgb(255,0,0,0.3)';
-                      // rctx.arc((d.pdfx) * cw, (d.pdfy) * ch, r, 0, Math.PI * 2);
-                      // rctx.fill();
-                    } // prevp = d.pageNum
-
-
-                    prevx = d.pdfx;
-                    prevy = d.pdfy;
-                  }
-                }
-
-              case 24:
-                i++;
-                _context.next = 18;
-                break;
-
-              case 27:
-                //draw Fixation
-                fr = cw * 0.01 * fixationSize * 1.5 / 100;
-                prevx = null;
-                prevy = null;
-                _i3 = 0;
-
-              case 31:
-                if (!(_i3 < fixationData.length)) {
-                  _context.next = 40;
-                  break;
-                }
-
-                f = fixationData[_i3];
-
-                if (!pT) {
-                  _context.next = 36;
-                  break;
-                }
-
-                if (!(f.relTime_e < nowTime - pT)) {
-                  _context.next = 36;
-                  break;
-                }
-
-                return _context.abrupt("continue", 37);
-
-              case 36:
-                if (f.relTime_s * 1 <= nowTime * 1) {
-                  if (fr) {
-                    if (f.count >= minFixationCount) {
-                      //선그리기...
-                      if (prevx && prevy) {
-                        pages[f.pageNum_s - 1].drawLine({
-                          start: {
-                            x: prevx * cw,
-                            y: height - prevy * ch
-                          },
-                          end: {
-                            x: f.x * cw,
-                            y: height - f.y * ch
-                          },
-                          color: (0, _pdfLib.rgb)(0, 1, 0),
-                          opacity: 0.3,
-                          borderOpacity: 0.3,
-                          thickness: 1
-                        });
-                      } //원그리기 fixation
-
-
-                      fsize = fr * Math.sqrt(f.count);
-
-                      if (f.relTime_e <= nowTime) {
-                        pages[f.pageNum_s - 1].drawCircle({
-                          x: f.x * cw,
-                          y: height - f.y * ch,
-                          size: fsize,
-                          borderWidth: 1,
-                          // borderDashArray: [1],
-                          // borderDashPhase: 25,
-                          borderColor: (0, _pdfLib.rgb)(0, 1, 0),
-                          borderOpacity: 0.3,
-                          // fill:rgb(1,0,0)
-                          color: (0, _pdfLib.rgb)(0, 1, 0),
-                          opacity: 0.3 // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                          // borderLineCap: LineCapStyle.Round,
-
-                        });
-                      } else {
-                        // 작게 그려
-                        ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
-                        pages[f.pageNum_s - 1].drawCircle({
-                          x: f.x * cw,
-                          y: height - f.y * ch,
-                          size: fsize * ratio,
-                          borderWidth: 1,
-                          // borderDashArray: [1],
-                          // borderDashPhase: 25,
-                          borderColor: (0, _pdfLib.rgb)(0, 0, 1),
-                          borderOpacity: 0.3,
-                          // fill:rgb(1,0,0)
-                          color: (0, _pdfLib.rgb)(0, 0, 1),
-                          opacity: 0.3 // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                          // borderLineCap: LineCapStyle.Round,
-
-                        });
-                      }
-
-                      prevx = f.x;
-                      prevy = f.y;
-                    }
-                  }
-                }
-
-              case 37:
-                _i3++;
-                _context.next = 31;
-                break;
-
-              case 40:
-                _context.next = 42;
-                return pdfDoc.save();
-
-              case 42:
-                pdfBytes = _context.sent;
-                blob = new Blob([pdfBytes], {
-                  type: 'application/pdf'
-                });
-                blobURL = URL.createObjectURL(blob);
-                link = document.createElement('a');
-                link.href = blobURL;
-                link.download = "downloadPDF";
-                document.body.append(link);
-                link.click();
-                link.remove();
-                setTimeout(function () {
-                  return URL.revokeObjectURL(link.href);
-                }, 7000); // window.open(blobURL);
-                // URL.revokeObjectURL(blobURL);
-
-              case 52:
+              case 1:
               case "end":
                 return _context.stop();
             }
@@ -901,7 +712,300 @@ var PDFresultModal = function PDFresultModal(_ref2) {
         return _ref3.apply(this, arguments);
       };
     }());
-  };
+  }, [path]);
+
+  var _React$useState45 = _react.default.useState(null),
+      _React$useState46 = _slicedToArray(_React$useState45, 2),
+      readersEyeLogoArrayBuffer = _React$useState46[0],
+      set_readersEyeLogoArrayBuffer = _React$useState46[1];
+
+  _react.default.useEffect(function () {
+    fetch(_readereyelogo.default).then(function (r) {
+      return r.arrayBuffer();
+    }).then(function (buf) {
+      set_readersEyeLogoArrayBuffer(buf);
+    });
+  }, []);
+
+  var handleTryPrint = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, prevx, prevy, pngImageBytes, pngImage, pngDims, i, gazeData, size, r, _i3, d, fr, _i4, f, fsize, newPage, fontSize, customFont, topMargin, textMarginTop, textMarginLeft, keycount, key, pdfBytes, blob, blobURL, link;
+
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              if (data) {
+                _context2.next = 2;
+                break;
+              }
+
+              return _context2.abrupt("return");
+
+            case 2:
+              //폰트파일 할당
+              fontBytes = jejuFontArrayBuffer;
+              existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
+
+              _context2.next = 6;
+              return _pdfLib.PDFDocument.load(existingPdfBytes);
+
+            case 6:
+              pdfDoc = _context2.sent;
+              console.log("registerFontkit");
+              pdfDoc.registerFontkit(_fontkit.default);
+              console.log("registerFontkitend"); // Embed the Helvetica font
+              // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+              // Get the first page of the document
+
+              pages = pdfDoc.getPages();
+              firstPage = pages[0]; // Get the width and height of the first page
+
+              _firstPage$getSize = firstPage.getSize(), width = _firstPage$getSize.width, height = _firstPage$getSize.height;
+              cw = width;
+              ch = height;
+              prevx = null;
+              prevy = null; //페이지별로 마크 넣을것
+              // console.log("바이트 가능?")
+              //이미지 준비~~~~~~
+              // const pngImageBytes=Uint8Array.from(atob(base64img['리더스아이로고']), c => c.charCodeAt(0))
+              // const pngImageBytes = _base64ToArrayBuffer(base64img['리더스아이로고']);
+              // const pngImageBytes = await fetch(readerseyelogo).then(r=>r.arrayBuffer());
+
+              pngImageBytes = readersEyeLogoArrayBuffer; //base64를 Bytes 로 변환
+
+              _context2.next = 20;
+              return pdfDoc.embedPng(pngImageBytes);
+
+            case 20:
+              pngImage = _context2.sent;
+              pngDims = pngImage.scale(0.05);
+
+              for (i = 0; i < pages.length; i++) {
+                pages[i].drawImage(pngImage, {
+                  // x: newpage.getWidth() / 2 - pngDims.width / 2,
+                  // y: newpage.getHeight() / 2 - pngDims.height / 2,
+                  // x: newpage.getWidth()- pngDims.width ,
+                  x: 5,
+                  y: -5 + height - pngDims.height,
+                  width: pngDims.width,
+                  height: pngDims.height
+                });
+              }
+
+              gazeData = data.gazeData;
+              size = rawSize * 2 / 100;
+              r = cw * 0.01 * size; //draw rawData
+
+              for (_i3 = 0; _i3 < gazeData.length; _i3++) {
+                d = gazeData[_i3]; // console.log("t",t);
+                // if (d.relTime * 1 <= nowTime * 1) {
+
+                if (d.pdfx && d.pdfy) {
+                  // console.log("그려")
+                  if (r) {
+                    if (prevx && prevy) {
+                      // rctx.beginPath();
+                      // rctx.lineWidth = 0.5;
+                      // rctx.strokeStyle = 'red';
+                      // rctx.fillStyle = 'red';
+                      // rctx.moveTo((prevx) * cw, (prevy) * ch);
+                      // rctx.lineTo((d.pdfx) * cw, (d.pdfy) * ch);
+                      // rctx.stroke();
+                      pages[d.pageNum - 1].drawLine({
+                        start: {
+                          x: prevx * cw,
+                          y: height - prevy * ch
+                        },
+                        end: {
+                          x: d.pdfx * cw,
+                          y: height - d.pdfy * ch
+                        },
+                        color: (0, _pdfLib.rgb)(1, 0, 0),
+                        opacity: 0.3,
+                        borderOpacity: 0.3,
+                        thickness: 1
+                      });
+                    } //선먼저 그린후 그리기
+
+
+                    pages[d.pageNum - 1].drawCircle({
+                      x: d.pdfx * cw,
+                      y: height - d.pdfy * ch,
+                      size: r,
+                      borderWidth: 1,
+                      // borderDashArray: [1],
+                      // borderDashPhase: 25,
+                      borderColor: (0, _pdfLib.rgb)(1, 0, 0),
+                      borderOpacity: 0.3,
+                      // fill:rgb(1,0,0)
+                      color: (0, _pdfLib.rgb)(1, 0, 0),
+                      opacity: 0.3 // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                      // borderLineCap: LineCapStyle.Round,
+
+                    }); // rctx.beginPath();
+                    // rctx.lineWidth = 0.5;
+                    // rctx.strokeStyle = 'rgb(255,0,0,0.3)';
+                    // rctx.fillStyle = 'rgb(255,0,0,0.3)';
+                    // rctx.arc((d.pdfx) * cw, (d.pdfy) * ch, r, 0, Math.PI * 2);
+                    // rctx.fill();
+                  } // prevp = d.pageNum
+
+
+                  prevx = d.pdfx;
+                  prevy = d.pdfy;
+                } // }
+
+              } //draw Fixation
+
+
+              fr = cw * 0.01 * fixationSize * 1.5 / 100;
+              prevx = null;
+              prevy = null;
+
+              for (_i4 = 0; _i4 < fixationData.length; _i4++) {
+                f = fixationData[_i4]; // if (f.relTime_s * 1 <= nowTime * 1) {
+
+                if (fr) {
+                  if (f.count >= minFixationCount) {
+                    //선그리기...
+                    if (prevx && prevy) {
+                      pages[f.pageNum_s - 1].drawLine({
+                        start: {
+                          x: prevx * cw,
+                          y: height - prevy * ch
+                        },
+                        end: {
+                          x: f.x * cw,
+                          y: height - f.y * ch
+                        },
+                        color: (0, _pdfLib.rgb)(0, 1, 0),
+                        opacity: 0.3,
+                        borderOpacity: 0.3,
+                        thickness: 1
+                      });
+                    } //원그리기 fixation
+
+
+                    fsize = fr * Math.sqrt(f.count); // if (f.relTime_e <= nowTime) {
+
+                    pages[f.pageNum_s - 1].drawCircle({
+                      x: f.x * cw,
+                      y: height - f.y * ch,
+                      size: fsize,
+                      borderWidth: 1,
+                      // borderDashArray: [1],
+                      // borderDashPhase: 25,
+                      borderColor: (0, _pdfLib.rgb)(0, 1, 0),
+                      borderOpacity: 0.3,
+                      // fill:rgb(1,0,0)
+                      color: (0, _pdfLib.rgb)(0, 1, 0),
+                      opacity: 0.3 // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                      // borderLineCap: LineCapStyle.Round,
+
+                    }); // }
+                    // else {
+                    //     // 작게 그려
+                    //     let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
+                    //     pages[f.pageNum_s - 1].drawCircle({
+                    //         x: f.x * cw,
+                    //         y: height - f.y * ch,
+                    //         size: fsize*ratio,
+                    //         borderWidth: 1,
+                    //         // borderDashArray: [1],
+                    //         // borderDashPhase: 25,
+                    //         borderColor: rgb(0, 0, 1),
+                    //         borderOpacity: 0.3,
+                    //         // fill:rgb(1,0,0)
+                    //         color: rgb(0, 0, 1),
+                    //         opacity: 0.3
+                    //         // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                    //         // borderLineCap: LineCapStyle.Round,
+                    //     });
+                    // }
+
+                    prevx = f.x;
+                    prevy = f.y;
+                  }
+                } // }
+
+              } //////새로운패이지 생성
+
+
+              newPage = pdfDoc.insertPage(0, [width, height]);
+              fontSize = 15;
+              _context2.next = 35;
+              return pdfDoc.embedFont(fontBytes);
+
+            case 35:
+              customFont = _context2.sent;
+              // const HelveticaFont =await pdfDoc.embedFont(StandardFonts.Helvetica); 
+              //printPDFData
+              newPage.drawText("Pathway 시선추적 측정 결과", {
+                x: width / 4,
+                y: height * 3 / 5 - 1 * fontSize,
+                size: 25,
+                font: customFont,
+                color: (0, _pdfLib.rgb)(0, 0, 0)
+              });
+              topMargin = 15;
+              textMarginTop = 5;
+              textMarginLeft = 15;
+              keycount = 1; // const textWidth = customFont.widthOfTextAtSize(text, textSize)
+              // const textHeight = customFont.heightAtSize(textSize)
+
+              for (key in printPDFData) {
+                newPage.drawText("".concat(key, " : ") + printPDFData[key], {
+                  x: textMarginLeft,
+                  y: -topMargin - textMarginTop * keycount + height - keycount * fontSize,
+                  size: fontSize,
+                  font: customFont,
+                  color: (0, _pdfLib.rgb)(0, 0, 0)
+                });
+                keycount++;
+              }
+
+              newPage.drawImage(pngImage, {
+                // x: newpage.getWidth() / 2 - pngDims.width / 2,
+                // y: newpage.getHeight() / 2 - pngDims.height / 2,
+                // x: newpage.getWidth()- pngDims.width ,
+                x: width / 2 - pngDims.width / 2,
+                y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount + 3) * fontSize,
+                width: pngDims.width,
+                height: pngDims.height
+              }); /////////////저장 다운로드/////////////
+
+              _context2.next = 45;
+              return pdfDoc.save();
+
+            case 45:
+              pdfBytes = _context2.sent;
+              blob = new Blob([pdfBytes], {
+                type: 'application/pdf'
+              });
+              blobURL = URL.createObjectURL(blob);
+              link = document.createElement('a');
+              link.href = blobURL;
+              link.download = downloadFileName;
+              document.body.append(link);
+              link.click();
+              link.remove();
+              setTimeout(function () {
+                return URL.revokeObjectURL(link.href);
+              }, 7000);
+
+            case 55:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function handleTryPrint() {
+      return _ref4.apply(this, arguments);
+    };
+  }();
 
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "PDFresultModal"
@@ -972,7 +1076,8 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       return set_playSpeed(e.target.value);
     }
   }, /*#__PURE__*/_react.default.createElement("option", null, "0.1"), /*#__PURE__*/_react.default.createElement("option", null, "0.5"), /*#__PURE__*/_react.default.createElement("option", null, "1"), /*#__PURE__*/_react.default.createElement("option", null, "2")))), /*#__PURE__*/_react.default.createElement("div", {
-    className: "oneConfig"
+    className: "oneConfig",
+    "data-tip": "\uBAA8\uB4E0 \uC2DC\uC120(gaze)\uC758  \uC6D0 (\uBE68\uAC15\uC0C9)\uC758 \uD06C\uAE30\uB97C \uC870\uC815\uD569\uB2C8\uB2E4."
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
   }, "\uC2DC\uC120 \uD06C\uAE30"), /*#__PURE__*/_react.default.createElement("div", {
@@ -989,10 +1094,11 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       set_rawSize(e.target.value);
     }
   }))), /*#__PURE__*/_react.default.createElement("div", {
-    className: "oneConfig"
+    className: "oneConfig",
+    "data-tip": "\uC751\uC2DC(fixation)\uC758 \uC6D0 (\uCD08\uB85D\uC0C9)\uC758 \uD06C\uAE30\uB97C \uC870\uC815\uD569\uB2C8\uB2E4."
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
-  }, "\uC751\uC2DC\uD06C\uAE30"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "\uC751\uC2DC \uD06C\uAE30"), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data"
   }, /*#__PURE__*/_react.default.createElement("input", {
     type: "range",
@@ -1006,7 +1112,8 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       set_fixationSize(e.target.value);
     }
   }))), /*#__PURE__*/_react.default.createElement("div", {
-    className: "oneConfig"
+    className: "oneConfig",
+    "data-tip": '기록을 재생할 때, 몇 초 전의 시선까지 보여줄지를 설정합니다.'
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
   }, "\uC2DC\uC120\uCC3D \uACFC\uAC70"), /*#__PURE__*/_react.default.createElement("div", {
@@ -1046,6 +1153,7 @@ var PDFresultModal = function PDFresultModal(_ref2) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
+    "data-tip": isfullscreen ? "전체화면취소" : "전체화면",
     style: {
       borderRight: '1px solid gray'
     },
@@ -1062,7 +1170,8 @@ var PDFresultModal = function PDFresultModal(_ref2) {
     }
   }, "\uCDE8\uC18C") : /*#__PURE__*/_react.default.createElement("span", null, "\uC804\uCCB4")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: handleTryPrint
+    onClick: handleTryPrint,
+    "data-tip": "\uC2DC\uC120\uC774\uB3D9\uC774 \uD45C\uD604\uB41C PDF\uB97C \uB2E4\uC6B4\uB85C\uB4DC \uD569\uB2C8\uB2E4."
   }, /*#__PURE__*/_react.default.createElement("img", {
     src: _PDF_file_icon.default,
     alt: "",
@@ -1113,8 +1222,7 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       left: "".concat(innerFrameLeft, "px")
     }
   }, /*#__PURE__*/_react.default.createElement(_reactRelPdfviewer.default, _extends({}, props, {
-    ref: pdfviewref //#@!#@!
-    ,
+    ref: pdfviewref,
     showConfirmBtn: showConfirmBtn,
     onConfirm: onConfirm,
     onClose: onClose,
@@ -1144,7 +1252,15 @@ var PDFresultModal = function PDFresultModal(_ref2) {
     onChange: function onChange(e) {
       return set_nowTime(e.target.value * 1);
     }
-  }))))));
+  }))))), /*#__PURE__*/_react.default.createElement(_reactTooltip.default, {
+    className: "highz",
+    borderClass: "custom-tooltip-design",
+    effect: "solid" // delayShow="100"
+    ,
+    backgroundColor: "rgb(210,210,210)",
+    textColor: "black",
+    border: true
+  }));
 };
 
 var _default = PDFresultModal;

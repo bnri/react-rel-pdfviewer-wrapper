@@ -5,7 +5,35 @@ import PDFviewModal from 'react-rel-pdfviewer';
 import Draggable from 'react-draggable';
 
 import { PDFDocument, rgb } from 'pdf-lib';
+import fontkit from '@pdf-lib/fontkit'
+
 import pdfsvg from './PDF_file_icon.svg';
+import ReactTooltip from 'react-tooltip';
+// import { base64img } from "./base64img";
+
+import readerseyelogo from "./readereyelogo.png";
+import jeju from './JejuMyeongjo.ttf';
+
+
+// console.log ("readerseyelogo",typeof readerseyelogo, readerseyelogo);
+
+// console.log("jeju : ",typeof jeju, jeju);
+
+
+function getFileAsArrayBuffer(importedfile) {
+    return new Promise(function (resolve) {
+        var oReq = new XMLHttpRequest();
+        oReq.open('get', importedfile, true);
+        oReq.responseType = 'arraybuffer';
+        oReq.onload = function () {
+            var arraybuffer = oReq.response;
+            // console.log("blob",blob); 
+            resolve(arraybuffer);
+        };
+        oReq.send();
+    });
+}
+
 
 
 const FullScreenBtn = ({ ...props }) => {
@@ -74,7 +102,7 @@ const FullScreenBtn = ({ ...props }) => {
 
 
     return (<div ref={buttonRef}
-        style={{ width: '20px', height: '20px', color: isfullscreen ? 'yellow' : 'white', cursor: 'pointer' }} data-tip={isfullscreen ? "전체화면취소" : "전체화면"}>
+        style={{ width: '20px', height: '20px', color: isfullscreen ? 'yellow' : 'white', cursor: 'pointer' }} >
 
         <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="m 3.4285714,15.428571 -3.42857145,0 0,8.571429 8.57142905,0 0,-3.428571 -5.1428577,0 0,-5.142858 z M -5e-8,8.5714287 l 3.42857145,0 0,-5.1428573 5.1428577,0 L 8.5714291,0 -4.9999999e-8,0 l 0,8.5714287 z M 20.571428,20.571429 l -5.142857,0 0,3.428571 L 24,24 l 0,-8.571429 -3.428572,0 0,5.142858 z M 15.428571,2e-7 l 0,3.4285714 5.142857,0 0,5.1428571 3.428572,0 L 24,2e-7 l -8.571429,0 z">
@@ -90,7 +118,7 @@ const FullScreenBtn = ({ ...props }) => {
 }
 
 const PDFresultModal = ({ onClose, ...props }) => {
-    const { path, viewpercent, data, specialWidth, specialHeight ,onConfirm ,showConfirmBtn } = props;
+    const { path, viewpercent, data, specialWidth, specialHeight, onConfirm, showConfirmBtn , printPDFData , downloadFileName } = props;
 
 
     const pdfviewref = React.useRef();
@@ -109,8 +137,8 @@ const PDFresultModal = ({ onClose, ...props }) => {
         return lastTime;
     }, [data])
 
-    const [fminx, set_fminx] = React.useState(1);
-    const [fminy, set_fminy] = React.useState(1);
+    const [fminx] = React.useState(1);
+    const [fminy] = React.useState(1);
 
     const topRef = React.useRef();
     const [innerFrameScale, set_innerFrameScale] = React.useState(0.5);
@@ -126,7 +154,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
     const [fixationSize, set_fixationSize] = React.useState(32);
     const [pastTimeRange, set_pastTimeRange] = React.useState(0);
     const [nowPDFviewInform, set_nowPDFviewInform] = React.useState(null);
-    const [minFixationCount, set_minFixationCount] = React.useState(3);
+    const [minFixationCount] = React.useState(3);
 
 
     //콘트롤러
@@ -389,7 +417,12 @@ const PDFresultModal = ({ onClose, ...props }) => {
     }, [isPlaying, endTime, playSpeed]);
 
 
+    //툴팁
+    React.useEffect(() => {
+        ReactTooltip.rebuild();
+    });
 
+    //그리기
     const handleDraw = React.useCallback(() => {
         // console.log("handleDraw!! nowP",nowPage);
         let canvasref = pdfviewref.current.get_canvasRef();
@@ -582,11 +615,18 @@ const PDFresultModal = ({ onClose, ...props }) => {
         }
     }, [handleEvent, followEvent])
 
+
     React.useEffect(() => {
         handleDraw();
     }, [handleDraw]);
 
 
+    const [jejuFontArrayBuffer, set_jejuFontArrayBuffer] = React.useState(null);
+    React.useEffect(() => {
+        getFileAsArrayBuffer(jeju).then(res_arrbuffer => {
+            set_jejuFontArrayBuffer(res_arrbuffer);
+        });
+    }, []);
 
     const [isMinimizedController, set_isMinimizedController] = React.useState(false);
 
@@ -594,22 +634,48 @@ const PDFresultModal = ({ onClose, ...props }) => {
         set_isMinimizedController(true);
     }
 
-    const handleTryPrint = () => {
+    //path값에 따라서 PDFarraybuffer 보관
+    const [pdfArrayBuffer,set_pdfArrayBuffer]= React.useState(null);
+    React.useEffect(()=>{
+        fetch(path).then(res => {
+            // console.log("res",);
+            return res.arrayBuffer()
+        }).then(async (buffer) => {
+            set_pdfArrayBuffer(buffer);
+        });
+    },[path]);
+    const [readersEyeLogoArrayBuffer,set_readersEyeLogoArrayBuffer] = React.useState(null);
+    React.useEffect(()=>{
+        fetch(readerseyelogo).then(r=>r.arrayBuffer()).then(buf=>{
+            set_readersEyeLogoArrayBuffer(buf);
+        });
+    },[])
+
+
+    const handleTryPrint = async () => {
 
         if (!data) {
             return;
         }
 
-        fetch(path).then(res => {
-            console.log("res",);
-            return res.arrayBuffer()
-        }).then(async (buffer) => {
-            const existingPdfBytes = buffer;
+
+
+        //폰트파일 할당
+        const fontBytes = jejuFontArrayBuffer;
+        
+ 
+            const existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
             const pdfDoc = await PDFDocument.load(existingPdfBytes);
+            console.log("registerFontkit");
+            pdfDoc.registerFontkit(fontkit)
+            console.log("registerFontkitend");
+
+
             // Embed the Helvetica font
             // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
             // Get the first page of the document
-            const pages = pdfDoc.getPages()
+            const pages = pdfDoc.getPages();
+
             const firstPage = pages[0]
 
             // Get the width and height of the first page
@@ -618,220 +684,270 @@ const PDFresultModal = ({ onClose, ...props }) => {
             let ch = height;
             let prevx = null;
             let prevy = null;
-            const pT = pastTimeRange;
-      
-
-            //#@!
-            console.log("data", data);
-            console.log("fixationData", fixationData);
 
 
-            //#@!
+            //페이지별로 마크 넣을것
+              // console.log("바이트 가능?")
+
+            //이미지 준비~~~~~~
+            
+            // const pngImageBytes=Uint8Array.from(atob(base64img['리더스아이로고']), c => c.charCodeAt(0))
+            // const pngImageBytes = _base64ToArrayBuffer(base64img['리더스아이로고']);
+            // const pngImageBytes = await fetch(readerseyelogo).then(r=>r.arrayBuffer());
+            const pngImageBytes=readersEyeLogoArrayBuffer;
+
+            //base64를 Bytes 로 변환
+            const pngImage = await pdfDoc.embedPng(pngImageBytes)
+            const pngDims = pngImage.scale(0.05)
+
+            for (let i = 0; i < pages.length; i++) {
+                pages[i].drawImage(pngImage, {
+                    // x: newpage.getWidth() / 2 - pngDims.width / 2,
+                    // y: newpage.getHeight() / 2 - pngDims.height / 2,
+                    // x: newpage.getWidth()- pngDims.width ,
+                    x: 5,
+                    y: -5 + height - pngDims.height,
+                    width: pngDims.width,
+                    height: pngDims.height,
+                })
+            }
+
             const gazeData = data.gazeData;
             let size = rawSize * 2 / 100;
             let r = cw * 0.01 * size;
             //draw rawData
             for (let i = 0; i < gazeData.length; i++) {
                 let d = gazeData[i];
-    
-                if (pT) {
-                    if (d.relTime < (nowTime - pT)) {
-                        continue;
-                    }
-                }
-    
+
+
                 // console.log("t",t);
-                if (d.relTime * 1 <= nowTime * 1) {
-    
-                    if (d.pdfx && d.pdfy) {
-                        // console.log("그려")
-                        if (r) {
-    
-                            if (prevx && prevy) {
-                                // rctx.beginPath();
-                                // rctx.lineWidth = 0.5;
-                                // rctx.strokeStyle = 'red';
-                                // rctx.fillStyle = 'red';
-                                // rctx.moveTo((prevx) * cw, (prevy) * ch);
-                                // rctx.lineTo((d.pdfx) * cw, (d.pdfy) * ch);
-                                // rctx.stroke();
+                // if (d.relTime * 1 <= nowTime * 1) {
 
-                                pages[d.pageNum- 1].drawLine({
-                                    start: {
-                                        x: prevx * cw,
-                                        y: height - prevy * ch,
-                                    },
-                                    end: {
-                                        x: d.pdfx * cw,
-                                        y: height - d.pdfy * ch,
-                                    },
-                                    color: rgb(1, 0, 0),
-                                    opacity: 0.3,
-                                    borderOpacity: 0.3,
-                                    thickness:1,
+                if (d.pdfx && d.pdfy) {
+                    // console.log("그려")
+                    if (r) {
 
-                                });
-
-                            } //선먼저 그린후 그리기
-    
-                            pages[d.pageNum- 1].drawCircle({
-                                x: d.pdfx * cw,
-                                y: height - d.pdfy * ch,
-                                size: r,
-                                borderWidth: 1,
-                                // borderDashArray: [1],
-                                // borderDashPhase: 25,
-                                borderColor: rgb(1, 0, 0),
-                                borderOpacity: 0.3,
-                                // fill:rgb(1,0,0)
-                                color: rgb(1, 0, 0),
-                                opacity: 0.3
-                                // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                                // borderLineCap: LineCapStyle.Round,
-                            });
-
-
+                        if (prevx && prevy) {
                             // rctx.beginPath();
                             // rctx.lineWidth = 0.5;
-                            // rctx.strokeStyle = 'rgb(255,0,0,0.3)';
-                            // rctx.fillStyle = 'rgb(255,0,0,0.3)';
-                            // rctx.arc((d.pdfx) * cw, (d.pdfy) * ch, r, 0, Math.PI * 2);
-                            // rctx.fill();
-    
-                        }
-                        // prevp = d.pageNum
-                        prevx = d.pdfx;
-                        prevy = d.pdfy;
-    
-    
-    
+                            // rctx.strokeStyle = 'red';
+                            // rctx.fillStyle = 'red';
+                            // rctx.moveTo((prevx) * cw, (prevy) * ch);
+                            // rctx.lineTo((d.pdfx) * cw, (d.pdfy) * ch);
+                            // rctx.stroke();
+
+
+                            pages[d.pageNum - 1].drawLine({
+                                start: {
+                                    x: prevx * cw,
+                                    y: height - prevy * ch,
+                                },
+                                end: {
+                                    x: d.pdfx * cw,
+                                    y: height - d.pdfy * ch,
+                                },
+                                color: rgb(1, 0, 0),
+                                opacity: 0.3,
+                                borderOpacity: 0.3,
+                                thickness: 1,
+
+                            });
+
+                        } //선먼저 그린후 그리기
+
+                        pages[d.pageNum - 1].drawCircle({
+                            x: d.pdfx * cw,
+                            y: height - d.pdfy * ch,
+                            size: r,
+                            borderWidth: 1,
+                            // borderDashArray: [1],
+                            // borderDashPhase: 25,
+                            borderColor: rgb(1, 0, 0),
+                            borderOpacity: 0.3,
+                            // fill:rgb(1,0,0)
+                            color: rgb(1, 0, 0),
+                            opacity: 0.3
+                            // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                            // borderLineCap: LineCapStyle.Round,
+                        });
+
+
+                        // rctx.beginPath();
+                        // rctx.lineWidth = 0.5;
+                        // rctx.strokeStyle = 'rgb(255,0,0,0.3)';
+                        // rctx.fillStyle = 'rgb(255,0,0,0.3)';
+                        // rctx.arc((d.pdfx) * cw, (d.pdfy) * ch, r, 0, Math.PI * 2);
+                        // rctx.fill();
+
                     }
-    
-    
-    
-    
+                    // prevp = d.pageNum
+                    prevx = d.pdfx;
+                    prevy = d.pdfy;
+
+
+
                 }
-    
+
+
+
+
+                // }
+
             }
-    
-
-
-
-
 
             //draw Fixation
             let fr = cw * 0.01 * fixationSize * 1.5 / 100;
             prevx = null;
             prevy = null;
 
-           
-
             for (let i = 0; i < fixationData.length; i++) {
 
                 const f = fixationData[i];
-                if (pT) {
-                    if (f.relTime_e < (nowTime - pT)) {
-                        continue;
-                    }
-                }
 
-                if (f.relTime_s * 1 <= nowTime * 1) {
-                    if (fr) {
-                        if (f.count >= minFixationCount) {
 
-                            //선그리기...
-                            if (prevx && prevy) {
-                          
-                                pages[f.pageNum_s - 1].drawLine({
-                                    start: {
-                                        x: prevx * cw,
-                                        y: height - prevy * ch,
-                                    },
-                                    end: {
-                                        x: f.x * cw,
-                                        y: height - f.y * ch,
-                                    },
-                                    color: rgb(0, 1, 0),
-                                    opacity: 0.3,
-                                    borderOpacity: 0.3,
-                                    thickness:1,
+                // if (f.relTime_s * 1 <= nowTime * 1) {
+                if (fr) {
+                    if (f.count >= minFixationCount) {
 
-                                });
-                            }
+                        //선그리기...
+                        if (prevx && prevy) {
 
-                            //원그리기 fixation
-                            let fsize = fr * Math.sqrt(f.count);
-                            if (f.relTime_e <= nowTime) {
-                  
-                                pages[f.pageNum_s - 1].drawCircle({
+                            pages[f.pageNum_s - 1].drawLine({
+                                start: {
+                                    x: prevx * cw,
+                                    y: height - prevy * ch,
+                                },
+                                end: {
                                     x: f.x * cw,
                                     y: height - f.y * ch,
-                                    size: fsize,
-                                    borderWidth: 1,
-                                    // borderDashArray: [1],
-                                    // borderDashPhase: 25,
-                                    borderColor: rgb(0, 1, 0),
-                                    borderOpacity: 0.3,
-                                    // fill:rgb(1,0,0)
-                                    color: rgb(0, 1, 0),
-                                    opacity: 0.3
-                                    // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                                    // borderLineCap: LineCapStyle.Round,
-                                });
+                                },
+                                color: rgb(0, 1, 0),
+                                opacity: 0.3,
+                                borderOpacity: 0.3,
+                                thickness: 1,
 
-
-                            }
-                            else {
-                                // 작게 그려
-                                let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
-
-                     
-                                pages[f.pageNum_s - 1].drawCircle({
-                                    x: f.x * cw,
-                                    y: height - f.y * ch,
-                                    size: fsize*ratio,
-                                    borderWidth: 1,
-                                    // borderDashArray: [1],
-                                    // borderDashPhase: 25,
-                                    borderColor: rgb(0, 0, 1),
-                                    borderOpacity: 0.3,
-                                    // fill:rgb(1,0,0)
-                                    color: rgb(0, 0, 1),
-                                    opacity: 0.3
-                                    // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                                    // borderLineCap: LineCapStyle.Round,
-                                });
-                            }
-
-                            prevx = f.x;
-                            prevy = f.y;
+                            });
                         }
 
+                        //원그리기 fixation
+                        let fsize = fr * Math.sqrt(f.count);
+                        // if (f.relTime_e <= nowTime) {
+
+                        pages[f.pageNum_s - 1].drawCircle({
+                            x: f.x * cw,
+                            y: height - f.y * ch,
+                            size: fsize,
+                            borderWidth: 1,
+                            // borderDashArray: [1],
+                            // borderDashPhase: 25,
+                            borderColor: rgb(0, 1, 0),
+                            borderOpacity: 0.3,
+                            // fill:rgb(1,0,0)
+                            color: rgb(0, 1, 0),
+                            opacity: 0.3
+                            // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                            // borderLineCap: LineCapStyle.Round,
+                        });
+
+
+                        // }
+                        // else {
+                        //     // 작게 그려
+                        //     let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
+
+
+                        //     pages[f.pageNum_s - 1].drawCircle({
+                        //         x: f.x * cw,
+                        //         y: height - f.y * ch,
+                        //         size: fsize*ratio,
+                        //         borderWidth: 1,
+                        //         // borderDashArray: [1],
+                        //         // borderDashPhase: 25,
+                        //         borderColor: rgb(0, 0, 1),
+                        //         borderOpacity: 0.3,
+                        //         // fill:rgb(1,0,0)
+                        //         color: rgb(0, 0, 1),
+                        //         opacity: 0.3
+                        //         // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                        //         // borderLineCap: LineCapStyle.Round,
+                        //     });
+                        // }
+
+                        prevx = f.x;
+                        prevy = f.y;
                     }
 
-
                 }
+
+
+                // }
             }
 
-    
+            //////새로운패이지 생성
+            const newPage = pdfDoc.insertPage(0, [width, height]);
 
+      
+
+            const fontSize = 15;
+        
+            const customFont = await pdfDoc.embedFont(fontBytes);
+            // const HelveticaFont =await pdfDoc.embedFont(StandardFonts.Helvetica); 
+            
+            //printPDFData
+            newPage.drawText("Pathway 시선추적 측정 결과", {
+                x: width/4,
+                y:  height*3/5 - 1 * fontSize,
+                size: 25,
+                font: customFont,
+                color: rgb(0, 0,0),
+            });
+
+            const topMargin=15;
+
+            const textMarginTop=5;
+            const textMarginLeft=15;
+            let keycount=1;
+            // const textWidth = customFont.widthOfTextAtSize(text, textSize)
+            // const textHeight = customFont.heightAtSize(textSize)
+
+            for(let key in printPDFData){
+                newPage.drawText(`${key} : `+printPDFData[key], {
+                    x: textMarginLeft,
+                    y: -topMargin -textMarginTop*keycount + height - keycount * fontSize,
+                    size: fontSize,
+                    font: customFont,
+                    color: rgb(0, 0,0),
+                });
+                keycount++;
+
+            }
+
+            newPage.drawImage(pngImage, {
+                // x: newpage.getWidth() / 2 - pngDims.width / 2,
+                // y: newpage.getHeight() / 2 - pngDims.height / 2,
+                // x: newpage.getWidth()- pngDims.width ,
+                x: width / 2 - pngDims.width / 2,
+                y: -textMarginTop*(keycount+3) + height*3/8 - (keycount+3) * fontSize,
+                width: pngDims.width,
+                height: pngDims.height,
+            })
+
+
+            /////////////저장 다운로드/////////////
 
             const pdfBytes = await pdfDoc.save()
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-
             const blobURL = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = blobURL;
-            link.download = "downloadPDF";
+            link.download = downloadFileName;
             document.body.append(link);
             link.click();
             link.remove();
             setTimeout(() => URL.revokeObjectURL(link.href), 7000);
-
-            // window.open(blobURL);
-            // URL.revokeObjectURL(blobURL);
-        });
     }
+
+
 
     return (<div className="PDFresultModal">
         <div className="ResultWrap" style={{
@@ -906,7 +1022,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div className="oneConfig">
+                                                <div className="oneConfig" data-tip="모든 시선(gaze)의  원 (빨강색)의 크기를 조정합니다.">
 
                                                     <div className="c_label">
                                                         시선 크기
@@ -920,10 +1036,10 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="oneConfig">
+                                                <div className="oneConfig" data-tip="응시(fixation)의 원 (초록색)의 크기를 조정합니다.">
 
                                                     <div className="c_label">
-                                                        응시크기
+                                                        응시 크기
                                                     </div>
                                                     <div className="c_data">
                                                         <input type="range" style={{ width: '70%' }} value={fixationSize} min={0} max={100}
@@ -933,7 +1049,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                                             }} />
                                                     </div>
                                                 </div>
-                                                <div className="oneConfig">
+                                                <div className="oneConfig" data-tip={'기록을 재생할 때, 몇 초 전의 시선까지 보여줄지를 설정합니다.'}>
 
                                                     <div className="c_label">
                                                         시선창 과거
@@ -967,15 +1083,18 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                                         {fd_inform.fixationRatio.toFixed(0)}%
                                                     </div>
                                                 </div>
-                                                <div style={{display:'flex'}}>
-                                                <div className="oneConfig" style={{borderRight:'1px solid gray'}} onClick={() => set_isfullscreen(f => !f)}>
-                                                    <FullScreenBtn
-                                                        isfullscreen={isfullscreen}
-                                                    />&nbsp; {isfullscreen ? <span style={{ color: 'yellow' }}>취소</span> : <span>전체</span>}
-                                                </div>
-                                                <div className="oneConfig" onClick={handleTryPrint}>
-                                                    <img src={pdfsvg} alt="" style={{height:'70%'}}/>&nbsp;다운
-                                                </div>
+                                                <div style={{ display: 'flex' }}>
+                                                    <div
+                                                        className="oneConfig"
+                                                        data-tip={isfullscreen ? "전체화면취소" : "전체화면"}
+                                                        style={{ borderRight: '1px solid gray' }} onClick={() => set_isfullscreen(f => !f)}>
+                                                        <FullScreenBtn
+                                                            isfullscreen={isfullscreen}
+                                                        />&nbsp; {isfullscreen ? <span style={{ color: 'yellow' }}>취소</span> : <span>전체</span>}
+                                                    </div>
+                                                    <div className="oneConfig" onClick={handleTryPrint} data-tip="시선이동이 표현된 PDF를 다운로드 합니다.">
+                                                        <img src={pdfsvg} alt="" style={{ height: '70%' }} />&nbsp;다운
+                                                    </div>
                                                 </div>
 
                                                 {/* <div className="oneConfig">
@@ -1072,8 +1191,8 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                 {...props}
 
                                 ref={pdfviewref}
-                                
-                                //#@!#@!
+
+
                                 showConfirmBtn={showConfirmBtn}
                                 onConfirm={onConfirm}
 
@@ -1113,7 +1232,15 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
         </div>
 
+        <ReactTooltip className="highz"
+            borderClass="custom-tooltip-design"
 
+            effect="solid"
+            // delayShow="100"
+            backgroundColor="rgb(210,210,210)"
+            textColor="black"
+            border={true}
+        />
     </div>)
 }
 
