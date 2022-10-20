@@ -187,7 +187,8 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       onConfirm = props.onConfirm,
       showConfirmBtn = props.showConfirmBtn,
       printPDFData = props.printPDFData,
-      downloadFileName = props.downloadFileName;
+      downloadFileName = props.downloadFileName,
+      PDFonloadCallback = props.PDFonloadCallback;
 
   var pdfviewref = _react.default.useRef();
 
@@ -1223,6 +1224,8 @@ var PDFresultModal = function PDFresultModal(_ref2) {
     }
   }, /*#__PURE__*/_react.default.createElement(_reactRelPdfviewer.default, _extends({}, props, {
     ref: pdfviewref,
+    PDFonloadCallback: PDFonloadCallback ? PDFonloadCallback : function (pageNums) {//페이지수 콜백이 여기로옴
+    },
     showConfirmBtn: showConfirmBtn,
     onConfirm: onConfirm,
     onClose: onClose,

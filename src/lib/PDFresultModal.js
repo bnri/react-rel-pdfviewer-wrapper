@@ -118,7 +118,7 @@ const FullScreenBtn = ({ ...props }) => {
 }
 
 const PDFresultModal = ({ onClose, ...props }) => {
-    const { path, viewpercent, data, specialWidth, specialHeight, onConfirm, showConfirmBtn , printPDFData , downloadFileName } = props;
+    const { path, viewpercent, data, specialWidth, specialHeight, onConfirm, showConfirmBtn , printPDFData , downloadFileName ,PDFonloadCallback} = props;
 
 
     const pdfviewref = React.useRef();
@@ -1192,6 +1192,9 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
                                 ref={pdfviewref}
 
+                                PDFonloadCallback={PDFonloadCallback?PDFonloadCallback:(pageNums)=>{
+                                    //페이지수 콜백이 여기로옴
+                                }}
 
                                 showConfirmBtn={showConfirmBtn}
                                 onConfirm={onConfirm}

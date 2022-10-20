@@ -13,7 +13,9 @@ function App() {
       <button onClick={e => set_selPathway(true)}>열기</button>
       {selPathway &&
         <PDFresultModal
-
+          PDFonloadCallback={(pages)=>{
+            console.log("페이지수?",pages);
+          }}
           printPDFData={{
             agencyName: '테스트학원이름',
             testeeClass: 'xx반',
