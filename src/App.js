@@ -40,7 +40,7 @@ function App() {
               height: 2443
             }
           }}
-          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/1.pdf"}
+          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"}
           viewpercent={100}
 
           showConfirmBtn={true}

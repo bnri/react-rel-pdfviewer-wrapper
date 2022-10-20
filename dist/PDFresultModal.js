@@ -730,7 +730,7 @@ var PDFresultModal = function PDFresultModal(_ref2) {
 
   var handleTryPrint = /*#__PURE__*/function () {
     var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, prevx, prevy, pngImageBytes, pngImage, pngDims, i, gazeData, size, r, _i3, d, fr, _i4, f, fsize, newPage, fontSize, customFont, topMargin, textMarginTop, textMarginLeft, keycount, key, pdfBytes, blob, blobURL, link;
+      var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, prevx, prevy, pngImageBytes, pngImage, pngDims, i, gazeData, size, r, _i3, d, fr, _i4, f, fsize, newPage, fontSize, title, titleFontSize, customFont, textWidth, topMargin, textMarginTop, textMarginLeft, keycount, key, pdfBytes, blob, blobURL, link;
 
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) {
@@ -935,17 +935,21 @@ var PDFresultModal = function PDFresultModal(_ref2) {
 
               newPage = pdfDoc.insertPage(0, [width, height]);
               fontSize = 15;
-              _context2.next = 35;
+              title = "Pathway 시선추적 측정 결과";
+              titleFontSize = 25;
+              _context2.next = 37;
               return pdfDoc.embedFont(fontBytes);
 
-            case 35:
+            case 37:
               customFont = _context2.sent;
               // const HelveticaFont =await pdfDoc.embedFont(StandardFonts.Helvetica); 
+              textWidth = customFont.widthOfTextAtSize(title, titleFontSize); // const textHeight = customFont.heightAtSize(titleFontSize);
               //printPDFData
-              newPage.drawText("Pathway 시선추적 측정 결과", {
-                x: width / 4,
-                y: height * 3 / 5 - 1 * fontSize,
-                size: 25,
+
+              newPage.drawText(title, {
+                x: width / 2 - textWidth / 2,
+                y: height * 3 / 5 - 1 * titleFontSize,
+                size: titleFontSize,
                 font: customFont,
                 color: (0, _pdfLib.rgb)(0, 0, 0)
               });
@@ -976,10 +980,10 @@ var PDFresultModal = function PDFresultModal(_ref2) {
                 height: pngDims.height
               }); /////////////저장 다운로드/////////////
 
-              _context2.next = 45;
+              _context2.next = 48;
               return pdfDoc.save();
 
-            case 45:
+            case 48:
               pdfBytes = _context2.sent;
               blob = new Blob([pdfBytes], {
                 type: 'application/pdf'
@@ -995,7 +999,7 @@ var PDFresultModal = function PDFresultModal(_ref2) {
                 return URL.revokeObjectURL(link.href);
               }, 7000);
 
-            case 55:
+            case 58:
             case "end":
               return _context2.stop();
           }

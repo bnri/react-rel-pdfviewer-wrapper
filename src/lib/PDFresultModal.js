@@ -889,15 +889,20 @@ const PDFresultModal = ({ onClose, ...props }) => {
       
 
             const fontSize = 15;
-        
+            const title="Pathway 시선추적 측정 결과";
+            const titleFontSize=25;
+
             const customFont = await pdfDoc.embedFont(fontBytes);
             // const HelveticaFont =await pdfDoc.embedFont(StandardFonts.Helvetica); 
             
+            const textWidth = customFont.widthOfTextAtSize(title, titleFontSize);
+            // const textHeight = customFont.heightAtSize(titleFontSize);
+
             //printPDFData
-            newPage.drawText("Pathway 시선추적 측정 결과", {
-                x: width/4,
-                y:  height*3/5 - 1 * fontSize,
-                size: 25,
+            newPage.drawText(title, {
+                x: width/2 - textWidth/2,
+                y:  height*3/5 - 1 * titleFontSize,
+                size: titleFontSize,
                 font: customFont,
                 color: rgb(0, 0,0),
             });
