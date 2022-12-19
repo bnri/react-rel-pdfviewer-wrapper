@@ -13,7 +13,7 @@ function App() {
       <button onClick={e => set_selPathway(true)}>열기</button>
       {selPathway &&
         <PDFresultModal
-          WORKERSRC={process.env.REACT_APP_WORKERSRC || "http://localhost:3000"}
+          // WORKERSRC={process.env.REACT_APP_WORKERSRC || "http://localhost:3000"}
           PDFonloadCallback={(pages)=>{
             console.log("페이지수?",pages);
           }}
