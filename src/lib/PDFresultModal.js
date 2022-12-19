@@ -118,8 +118,9 @@ const FullScreenBtn = ({ ...props }) => {
 }
 
 const PDFresultModal = ({ onClose, ...props }) => {
-    const { path, viewpercent, data, specialWidth, specialHeight, onConfirm, showConfirmBtn , printPDFData , downloadFileName ,PDFonloadCallback} = props;
+    const { WORKERSRC,path, viewpercent, data, specialWidth, specialHeight, onConfirm, showConfirmBtn , printPDFData , downloadFileName ,PDFonloadCallback} = props;
 
+    // console.log("WORKERSRC",WORKERSRC);
 
     const pdfviewref = React.useRef();
     const [nowPage, set_nowPage] = React.useState(1);
@@ -1196,7 +1197,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                 {...props}
 
                                 ref={pdfviewref}
-
+                                WORKERSRC={WORKERSRC || "http://localhost:3000"}
                                 PDFonloadCallback={PDFonloadCallback?PDFonloadCallback:(pageNums)=>{
                                     //페이지수 콜백이 여기로옴
                                 }}
@@ -1210,7 +1211,6 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                 set_viewpercent={() => { }}
                                 path={path}
                                 viewpercent={viewpercent}
-                                workerSRC={process.env.WORKERSRC}
                                 pageCallback={(p) => {
                                     // console.log("page콜백", p);
                                     set_nowPage(p);
