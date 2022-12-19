@@ -179,7 +179,8 @@ var PDFresultModal = function PDFresultModal(_ref2) {
   var onClose = _ref2.onClose,
       props = _objectWithoutProperties(_ref2, _excluded);
 
-  var path = props.path,
+  var WORKERSRC = props.WORKERSRC,
+      path = props.path,
       viewpercent = props.viewpercent,
       data = props.data,
       specialWidth = props.specialWidth,
@@ -1227,8 +1228,8 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       left: "".concat(innerFrameLeft, "px")
     }
   }, /*#__PURE__*/_react.default.createElement(_reactRelPdfviewer.default, _extends({}, props, {
-    ref: pdfviewref // WORKERSRC={WORKERSRC || "http://localhost:3000"}
-    ,
+    ref: pdfviewref,
+    WORKERSRC: WORKERSRC || "http://localhost:3000",
     PDFonloadCallback: PDFonloadCallback ? PDFonloadCallback : function (pageNums) {//페이지수 콜백이 여기로옴
     },
     showConfirmBtn: showConfirmBtn,
