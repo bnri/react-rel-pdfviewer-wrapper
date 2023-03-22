@@ -15,7 +15,7 @@
     "@pdf-lib/fontkit": "^1.1.1",
     "pdf-lib": "^1.17.1",
     "react-draggable": "^4.4.3",
-    "react-rel-pdfviewer": "^1.0.21",
+    "react-rel-pdfviewer": "^1.0.22",
     "react-tooltip": "^4.4.2"
   },
   "scripts": {
