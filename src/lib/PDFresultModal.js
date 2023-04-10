@@ -13,6 +13,10 @@ import ReactTooltip from 'react-tooltip';
 
 import readerseyelogo from "./readereyelogo.png";
 import jeju from './JejuMyeongjo.ttf';
+// import * as pdfjsLib from 'pdfjs-dist/webpack';
+
+// console.log("야야야")
+// console.log("pdfjsLib",pdfjsLib)
 
 
 // console.log ("readerseyelogo",typeof readerseyelogo, readerseyelogo);
@@ -118,7 +122,9 @@ const FullScreenBtn = ({ ...props }) => {
 }
 
 const PDFresultModal = ({ onClose, ...props }) => {
-    const { WORKERSRC,path, viewpercent, data, specialWidth, specialHeight, onConfirm, showConfirmBtn , printPDFData , downloadFileName ,PDFonloadCallback} = props;
+    const { WORKERSRC,
+        path,
+         viewpercent, data, specialWidth, specialHeight, onConfirm, showConfirmBtn , printPDFData , downloadFileName ,PDFonloadCallback} = props;
 
     // console.log("WORKERSRC",WORKERSRC);
 
@@ -137,6 +143,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
         set_nowTime(lastTime);
         return lastTime;
     }, [data])
+
 
     const [fminx] = React.useState(1);
     const [fminy] = React.useState(1);
@@ -638,13 +645,28 @@ const PDFresultModal = ({ onClose, ...props }) => {
     //path값에 따라서 PDFarraybuffer 보관
     const [pdfArrayBuffer,set_pdfArrayBuffer]= React.useState(null);
     React.useEffect(()=>{
-        fetch(path).then(res => {
-            // console.log("res",);
+        fetch(path).then(async res => {
+            // console.log("res",res);
+            // console.log("path",path);
+            // console.log("URL.createObjectURL(path)",path);
+            // console.log("pdfjsLib",pdfjsLib);
+
+            // const pdf = await pdfjsLib.getDocument({ url: path, password: '' }).promise;
+
+
+            // const f = await pdf.getData(); //unit8array
+            // var arrayBuffer = f.buffer; 
+            // console.log("arrayBuffer",arrayBuffer)    
+            // let af = await res.arrayBuffer();
+            // console.log("두개비교",arrayBuffer,af);
             return res.arrayBuffer()
+            // return arrayBuffer;
         }).then(async (buffer) => {
             set_pdfArrayBuffer(buffer);
         });
     },[path]);
+
+
     const [readersEyeLogoArrayBuffer,set_readersEyeLogoArrayBuffer] = React.useState(null);
     React.useEffect(()=>{
         fetch(readerseyelogo).then(r=>r.arrayBuffer()).then(buf=>{
@@ -664,9 +686,14 @@ const PDFresultModal = ({ onClose, ...props }) => {
         //폰트파일 할당
         const fontBytes = jejuFontArrayBuffer;
         
- 
+            // let pdfDoc;
             const existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
-            const pdfDoc = await PDFDocument.load(existingPdfBytes, { ignoreEncryption: true });
+
+             const   pdfDoc = await PDFDocument.load(existingPdfBytes
+                ,{ignoreEncryption:true}
+                );
+    
+
             console.log("registerFontkit");
             pdfDoc.registerFontkit(fontkit)
             console.log("registerFontkitend");
@@ -675,6 +702,14 @@ const PDFresultModal = ({ onClose, ...props }) => {
             // Embed the Helvetica font
             // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
             // Get the first page of the document
+            console.log("pdfDoc",pdfDoc);
+
+            // const pageIndices = pdfDoc.getPageIndices();
+            // console.log("pageIndices",pageIndices);
+            if(pdfDoc.isEncrypted){
+                alert("수정금지된 PDF 파일이라 다운로드할 수 없습니다. 수정금지 해제 후 재등록해 주시기 바랍니다. 수정금지 해지하기 (https://smallpdf.com/unlock-pdf).");
+                return;
+            }
             const pages = pdfDoc.getPages();
 
             const firstPage = pages[0]
@@ -941,7 +976,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
             /////////////저장 다운로드/////////////
 
-            const pdfBytes = await pdfDoc.save()
+            const pdfBytes = await pdfDoc.save({updateFieldAppearances: false})
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             const blobURL = URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -1193,7 +1228,43 @@ const PDFresultModal = ({ onClose, ...props }) => {
                             top: `${innerFrameTop}px`,
                             left: `${innerFrameLeft}px`
                         }}>
-                            <PDFviewModal
+                      
+                                              <PDFviewModal
+                                              {...props}
+              
+                                              ref={pdfviewref}
+                                              WORKERSRC={WORKERSRC || "http://localhost:3000"}
+                                              PDFonloadCallback={PDFonloadCallback?PDFonloadCallback:(pageNums)=>{
+                                                  //페이지수 콜백이 여기로옴
+                                              }}
+              
+                                              showConfirmBtn={showConfirmBtn}
+                                              onConfirm={onConfirm}
+              
+              
+                                              onClose={onClose}
+                                              showViewMode={true}
+                                              set_viewpercent={() => { }}
+                                              path={path}
+                                              viewpercent={viewpercent}
+                                              pageCallback={(p) => {
+                                                  // console.log("page콜백", p);
+                                                  set_nowPage(p);
+              
+                                              }}
+                                              pdfSizeCallback={(d) => {
+                                                  // console.log("임시확인", d);
+                                                  set_nowPDFviewInform(d.PDF);
+              
+                                                  handleDraw();
+              
+                                              }}
+              
+              
+              
+                                          />          
+                            
+                            {/* <PDFviewModal
                                 {...props}
 
                                 ref={pdfviewref}
@@ -1226,7 +1297,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
 
 
-                            />
+                            /> */}
                         </div>
 
                     </div>

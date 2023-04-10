@@ -2,11 +2,30 @@ import React from "react";
 import './App.scss';
 import PDFresultModal from './lib/PDFresultModal';
 import data1 from './data/1.json';
+// import * as pdftk from 'node-pdftk';
+// npm uninstall node-pdftk path-browserify crypto
+// import { decrypt } from "node-qpdf2";
+
+// const options = {
+//   input: "./54.pdf",
+//   output: "./54d.pdf",
+//   password: "YOUR_PASSWORD_TO_DECRYPT_PDF",
+// }
+// console.log("시작")
+// decrypt(options).then(res=>{
+//     console.log("res,res",res);
+// }).catch(e=>{
+//     console.log("e",e);
+// });
 
 
 function App() {
   // console.log("data1",data1);
   const [selPathway, set_selPathway] = React.useState(true);
+
+  React.useEffect(()=>{
+
+  },[])
   return (
     <div className="App">
 
@@ -41,7 +60,9 @@ function App() {
               height: 2443
             }
           }}
-          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"}
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"}
+          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/54.pdf"}
+          // path="/54-unlocked.pdf"
           viewpercent={100}
 
           showConfirmBtn={true}

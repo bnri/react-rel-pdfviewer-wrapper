@@ -55,6 +55,9 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
+// import * as pdfjsLib from 'pdfjs-dist/webpack';
+// console.log("야야야")
+// console.log("pdfjsLib",pdfjsLib)
 // console.log ("readerseyelogo",typeof readerseyelogo, readerseyelogo);
 // console.log("jeju : ",typeof jeju, jeju);
 function getFileAsArrayBuffer(importedfile) {
@@ -691,16 +694,13 @@ var PDFresultModal = function PDFresultModal(_ref2) {
       set_pdfArrayBuffer = _React$useState44[1];
 
   _react.default.useEffect(function () {
-    fetch(path).then(function (res) {
-      // console.log("res",);
-      return res.arrayBuffer();
-    }).then( /*#__PURE__*/function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(buffer) {
+    fetch(path).then( /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(res) {
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                set_pdfArrayBuffer(buffer);
+                return _context.abrupt("return", res.arrayBuffer());
 
               case 1:
               case "end":
@@ -712,6 +712,25 @@ var PDFresultModal = function PDFresultModal(_ref2) {
 
       return function (_x) {
         return _ref3.apply(this, arguments);
+      };
+    }()).then( /*#__PURE__*/function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(buffer) {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                set_pdfArrayBuffer(buffer);
+
+              case 1:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      return function (_x2) {
+        return _ref4.apply(this, arguments);
       };
     }());
   }, [path]);
@@ -730,38 +749,51 @@ var PDFresultModal = function PDFresultModal(_ref2) {
   }, []);
 
   var handleTryPrint = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
       var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, prevx, prevy, pngImageBytes, pngImage, pngDims, i, gazeData, size, r, _i3, d, fr, _i4, f, fsize, newPage, fontSize, title, titleFontSize, customFont, textWidth, topMargin, textMarginTop, textMarginLeft, keycount, key, pdfBytes, blob, blobURL, link;
 
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context3.prev = _context3.next) {
             case 0:
               if (data) {
-                _context2.next = 2;
+                _context3.next = 2;
                 break;
               }
 
-              return _context2.abrupt("return");
+              return _context3.abrupt("return");
 
             case 2:
               //폰트파일 할당
-              fontBytes = jejuFontArrayBuffer;
+              fontBytes = jejuFontArrayBuffer; // let pdfDoc;
+
               existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
 
-              _context2.next = 6;
+              _context3.next = 6;
               return _pdfLib.PDFDocument.load(existingPdfBytes, {
                 ignoreEncryption: true
               });
 
             case 6:
-              pdfDoc = _context2.sent;
+              pdfDoc = _context3.sent;
               console.log("registerFontkit");
               pdfDoc.registerFontkit(_fontkit.default);
               console.log("registerFontkitend"); // Embed the Helvetica font
               // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
               // Get the first page of the document
 
+              console.log("pdfDoc", pdfDoc); // const pageIndices = pdfDoc.getPageIndices();
+              // console.log("pageIndices",pageIndices);
+
+              if (!pdfDoc.isEncrypted) {
+                _context3.next = 14;
+                break;
+              }
+
+              alert("수정금지된 PDF 파일이라 다운로드할 수 없습니다. 수정금지 해제 후 재등록해 주시기 바랍니다. 수정금지 해지하기 (https://smallpdf.com/unlock-pdf).");
+              return _context3.abrupt("return");
+
+            case 14:
               pages = pdfDoc.getPages();
               firstPage = pages[0]; // Get the width and height of the first page
 
@@ -778,11 +810,11 @@ var PDFresultModal = function PDFresultModal(_ref2) {
 
               pngImageBytes = readersEyeLogoArrayBuffer; //base64를 Bytes 로 변환
 
-              _context2.next = 20;
+              _context3.next = 24;
               return pdfDoc.embedPng(pngImageBytes);
 
-            case 20:
-              pngImage = _context2.sent;
+            case 24:
+              pngImage = _context3.sent;
               pngDims = pngImage.scale(0.05);
 
               for (i = 0; i < pages.length; i++) {
@@ -940,11 +972,11 @@ var PDFresultModal = function PDFresultModal(_ref2) {
               fontSize = 15;
               title = "Pathway 시선추적 측정 결과";
               titleFontSize = 25;
-              _context2.next = 37;
+              _context3.next = 41;
               return pdfDoc.embedFont(fontBytes);
 
-            case 37:
-              customFont = _context2.sent;
+            case 41:
+              customFont = _context3.sent;
               // const HelveticaFont =await pdfDoc.embedFont(StandardFonts.Helvetica); 
               textWidth = customFont.widthOfTextAtSize(title, titleFontSize); // const textHeight = customFont.heightAtSize(titleFontSize);
               //printPDFData
@@ -983,11 +1015,13 @@ var PDFresultModal = function PDFresultModal(_ref2) {
                 height: pngDims.height
               }); /////////////저장 다운로드/////////////
 
-              _context2.next = 48;
-              return pdfDoc.save();
+              _context3.next = 52;
+              return pdfDoc.save({
+                updateFieldAppearances: false
+              });
 
-            case 48:
-              pdfBytes = _context2.sent;
+            case 52:
+              pdfBytes = _context3.sent;
               blob = new Blob([pdfBytes], {
                 type: 'application/pdf'
               });
@@ -1002,16 +1036,16 @@ var PDFresultModal = function PDFresultModal(_ref2) {
                 return URL.revokeObjectURL(link.href);
               }, 7000);
 
-            case 58:
+            case 62:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
         }
-      }, _callee2);
+      }, _callee3);
     }));
 
     return function handleTryPrint() {
-      return _ref4.apply(this, arguments);
+      return _ref5.apply(this, arguments);
     };
   }();
 
