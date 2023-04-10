@@ -666,7 +666,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
         
  
             const existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
-            const pdfDoc = await PDFDocument.load(existingPdfBytes);
+            const pdfDoc = await PDFDocument.load(existingPdfBytes, { ignoreEncryption: true });
             console.log("registerFontkit");
             pdfDoc.registerFontkit(fontkit)
             console.log("registerFontkitend");

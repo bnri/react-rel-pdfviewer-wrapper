@@ -750,7 +750,9 @@ var PDFresultModal = function PDFresultModal(_ref2) {
               existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
 
               _context2.next = 6;
-              return _pdfLib.PDFDocument.load(existingPdfBytes);
+              return _pdfLib.PDFDocument.load(existingPdfBytes, {
+                ignoreEncryption: true
+              });
 
             case 6:
               pdfDoc = _context2.sent;
