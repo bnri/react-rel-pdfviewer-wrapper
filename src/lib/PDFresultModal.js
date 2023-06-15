@@ -450,6 +450,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
         let cw = nowPDFviewInform.width;
         let ch = nowPDFviewInform.height;
 
+
         let size = rawSize * 2 / 100;
 
         let r = cw * 0.01 * size;
@@ -460,11 +461,17 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
         const pT = pastTimeRange;
 
+        // console.log("gazeData",gazeData)
+        // //비율계산필요
+        // //cw,ch는 지금의 사이즈고
+        // //기록된 
 
         let prevx = null;
         let prevy = null;
         // let prevp = null;
-
+        
+       
+        //draw rawdata
         for (let i = 0; i < gazeData.length; i++) {
             let d = gazeData[i];
 
@@ -514,6 +521,49 @@ const PDFresultModal = ({ onClose, ...props }) => {
             }
 
         }
+
+        //draw pencil
+        /*
+        for(let i = 0 ; i<gazeData.length; i++){
+  
+            let d = gazeData[i];
+            const {pageNum} = d;
+            const draw=gazeData[i].draw;
+
+            if (pT) {
+                if (d.relTime < (nowTime - pT)) {
+                    continue;
+                }
+            }
+            if(!draw){
+                continue;
+            }
+            // console.log("t",t);
+            if (d.relTime * 1 <= nowTime * 1) {
+                    // console.log("그려")
+                if (nowPage === pageNum) {
+            
+                    if(draw.type==='startDrawing'){
+                        rctx.lineWidth = 0.5;
+                        rctx.strokeStyle = 'red';
+                        rctx.fillStyle = 'red';
+                        rctx.beginPath();
+                        rctx.moveTo(draw.x, draw.y);
+                    }
+                    else if(draw.type==='draw'){
+                        rctx.lineTo(draw.x, draw.y);
+                        rctx.stroke();
+                    }
+                    else if(draw.type==='stopDrawing'){
+                        rctx.closePath();
+                    }
+                }
+
+                
+
+            }
+        }
+        */
 
 
 

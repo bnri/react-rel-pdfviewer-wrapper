@@ -1,7 +1,7 @@
 import React from "react";
 import './App.scss';
 import PDFresultModal from './lib/PDFresultModal';
-import data1 from './data/1.json';
+import data1 from './data/295.json';
 // import * as pdftk from 'node-pdftk';
 // npm uninstall node-pdftk path-browserify crypto
 // import { decrypt } from "node-qpdf2";
@@ -61,7 +61,8 @@ function App() {
             }
           }}
           // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"}
-          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/54.pdf"}
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/54.pdf"}
+          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/1.pdf"}
           // path="/54-unlocked.pdf"
           viewpercent={100}
 
