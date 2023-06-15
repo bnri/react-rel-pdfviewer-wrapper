@@ -124,7 +124,7 @@ const FullScreenBtn = ({ ...props }) => {
 const PDFresultModal = ({ onClose, ...props }) => {
     const { WORKERSRC,
         path,
-         viewpercent, data, specialWidth, specialHeight, onConfirm, showConfirmBtn , printPDFData , downloadFileName ,PDFonloadCallback} = props;
+        viewpercent, data, specialWidth, specialHeight, onConfirm, showConfirmBtn, printPDFData, downloadFileName, PDFonloadCallback } = props;
 
     // console.log("WORKERSRC",WORKERSRC);
 
@@ -469,8 +469,8 @@ const PDFresultModal = ({ onClose, ...props }) => {
         let prevx = null;
         let prevy = null;
         // let prevp = null;
-        
-       
+
+
         //draw rawdata
         for (let i = 0; i < gazeData.length; i++) {
             let d = gazeData[i];
@@ -522,48 +522,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
         }
 
-        //draw pencil
-        /*
-        for(let i = 0 ; i<gazeData.length; i++){
-  
-            let d = gazeData[i];
-            const {pageNum} = d;
-            const draw=gazeData[i].draw;
 
-            if (pT) {
-                if (d.relTime < (nowTime - pT)) {
-                    continue;
-                }
-            }
-            if(!draw){
-                continue;
-            }
-            // console.log("t",t);
-            if (d.relTime * 1 <= nowTime * 1) {
-                    // console.log("그려")
-                if (nowPage === pageNum) {
-            
-                    if(draw.type==='startDrawing'){
-                        rctx.lineWidth = 0.5;
-                        rctx.strokeStyle = 'red';
-                        rctx.fillStyle = 'red';
-                        rctx.beginPath();
-                        rctx.moveTo(draw.x, draw.y);
-                    }
-                    else if(draw.type==='draw'){
-                        rctx.lineTo(draw.x, draw.y);
-                        rctx.stroke();
-                    }
-                    else if(draw.type==='stopDrawing'){
-                        rctx.closePath();
-                    }
-                }
-
-                
-
-            }
-        }
-        */
 
 
 
@@ -593,6 +552,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                             rctx.moveTo((prevx) * cw, (prevy) * ch);
                             rctx.lineTo((f.x) * cw, (f.y) * ch);
                             rctx.stroke();
+                            rctx.closePath();
                         }
 
                         //원그리기 fixation
@@ -605,6 +565,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                             rctx.fillStyle = 'rgb(0,255,0,0.3)';
                             rctx.arc((f.x) * cw, (f.y) * ch, fsize, 0, Math.PI * 2);
                             rctx.fill();
+                            rctx.closePath();
                         }
                         else {
                             // 작게 그려
@@ -616,6 +577,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                             rctx.fillStyle = 'rgb(0,0,255,0.3)';
                             rctx.arc((f.x) * cw, (f.y) * ch, fsize * ratio, 0, Math.PI * 2);
                             rctx.fill();
+                            rctx.closePath();
                         }
 
                         prevx = f.x;
@@ -627,6 +589,66 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
             }
         }
+        
+
+     
+        //draw pencil
+        let startdrawX,startdrawY;
+
+        for (let i = 0; i < gazeData.length; i++) {
+
+            let d = gazeData[i];
+            const { pageNum } = d;
+            const draw = gazeData[i].draw;
+
+            if (pT) {
+                if (d.relTime < (nowTime - pT)) {
+                    continue;
+                }
+            }
+            if (!draw) {
+                continue;
+            }
+            // console.log("t",t);
+     
+
+            if (d.relTime * 1 <= nowTime * 1) {
+                // console.log("그려")
+                if (nowPage === pageNum) {
+                    rctx.lineWidth = 0.5;
+                    rctx.strokeStyle = 'red';
+                    rctx.fillStyle = 'red';
+                    if (draw.type === 'startDrawing') {
+                        // console.log("draw", draw);
+                        // console.log("그리기시작");
+                        startdrawX=draw.x * cw;
+                        startdrawY=draw.y * ch;
+                        rctx.beginPath();
+                        rctx.moveTo(draw.x * cw, draw.y * ch);
+                        // testdata.push(draw);
+                    }
+                    else if (draw.type === 'draw') {
+                        if(startdrawX&&startdrawY){
+                            rctx.lineTo(draw.x * cw, draw.y * ch);
+                            rctx.stroke();
+                            // testdata.push(draw);
+                        }
+                        else{
+                            startdrawX=draw.x * cw;
+                            startdrawY=draw.y * ch;
+                            rctx.beginPath();
+                            rctx.moveTo(draw.x * cw, draw.y * ch);
+                        }
+
+                    }
+                    else if (draw.type === 'stopDrawing') {
+                        rctx.closePath();
+                    }
+               
+                }
+            }
+        }
+   
 
         // console.log("fixationSize", fixationSize);
 
@@ -693,8 +715,8 @@ const PDFresultModal = ({ onClose, ...props }) => {
     }
 
     //path값에 따라서 PDFarraybuffer 보관
-    const [pdfArrayBuffer,set_pdfArrayBuffer]= React.useState(null);
-    React.useEffect(()=>{
+    const [pdfArrayBuffer, set_pdfArrayBuffer] = React.useState(null);
+    React.useEffect(() => {
         fetch(path).then(async res => {
             // console.log("res",res);
             // console.log("path",path);
@@ -714,15 +736,15 @@ const PDFresultModal = ({ onClose, ...props }) => {
         }).then(async (buffer) => {
             set_pdfArrayBuffer(buffer);
         });
-    },[path]);
+    }, [path]);
 
 
-    const [readersEyeLogoArrayBuffer,set_readersEyeLogoArrayBuffer] = React.useState(null);
-    React.useEffect(()=>{
-        fetch(readerseyelogo).then(r=>r.arrayBuffer()).then(buf=>{
+    const [readersEyeLogoArrayBuffer, set_readersEyeLogoArrayBuffer] = React.useState(null);
+    React.useEffect(() => {
+        fetch(readerseyelogo).then(r => r.arrayBuffer()).then(buf => {
             set_readersEyeLogoArrayBuffer(buf);
         });
-    },[])
+    }, [])
 
 
     const handleTryPrint = async () => {
@@ -735,307 +757,310 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
         //폰트파일 할당
         const fontBytes = jejuFontArrayBuffer;
-        
-            // let pdfDoc;
-            const existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
 
-             const   pdfDoc = await PDFDocument.load(existingPdfBytes
-                ,{ignoreEncryption:true}
-                );
-    
+        // let pdfDoc;
+        const existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
 
-            console.log("registerFontkit");
-            pdfDoc.registerFontkit(fontkit)
-            console.log("registerFontkitend");
+        const pdfDoc = await PDFDocument.load(existingPdfBytes
+            , { ignoreEncryption: true }
+        );
 
 
-            // Embed the Helvetica font
-            // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
-            // Get the first page of the document
-            console.log("pdfDoc",pdfDoc);
-
-            // const pageIndices = pdfDoc.getPageIndices();
-            // console.log("pageIndices",pageIndices);
-            if(pdfDoc.isEncrypted){
-                alert("수정금지된 PDF 파일이라 다운로드할 수 없습니다. 수정금지 해제 후 재등록해 주시기 바랍니다. 수정금지 해지하기 (https://smallpdf.com/unlock-pdf).");
-                return;
-            }
-            const pages = pdfDoc.getPages();
-
-            const firstPage = pages[0]
-
-            // Get the width and height of the first page
-            const { width, height } = firstPage.getSize();
-            let cw = width;
-            let ch = height;
-            let prevx = null;
-            let prevy = null;
+        console.log("registerFontkit");
+        pdfDoc.registerFontkit(fontkit)
+        console.log("registerFontkitend");
 
 
-            //페이지별로 마크 넣을것
-              // console.log("바이트 가능?")
+        // Embed the Helvetica font
+        // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+        // Get the first page of the document
+        console.log("pdfDoc", pdfDoc);
 
-            //이미지 준비~~~~~~
-            
-            // const pngImageBytes=Uint8Array.from(atob(base64img['리더스아이로고']), c => c.charCodeAt(0))
-            // const pngImageBytes = _base64ToArrayBuffer(base64img['리더스아이로고']);
-            // const pngImageBytes = await fetch(readerseyelogo).then(r=>r.arrayBuffer());
-            const pngImageBytes=readersEyeLogoArrayBuffer;
+        // const pageIndices = pdfDoc.getPageIndices();
+        // console.log("pageIndices",pageIndices);
+        if (pdfDoc.isEncrypted) {
+            alert("수정금지된 PDF 파일이라 다운로드할 수 없습니다. 수정금지 해제 후 재등록해 주시기 바랍니다. 수정금지 해지하기 (https://smallpdf.com/unlock-pdf).");
+            return;
+        }
+        const pages = pdfDoc.getPages();
 
-            //base64를 Bytes 로 변환
-            const pngImage = await pdfDoc.embedPng(pngImageBytes)
-            const pngDims = pngImage.scale(0.05)
+        const firstPage = pages[0]
 
-            for (let i = 0; i < pages.length; i++) {
-                pages[i].drawImage(pngImage, {
-                    // x: newpage.getWidth() / 2 - pngDims.width / 2,
-                    // y: newpage.getHeight() / 2 - pngDims.height / 2,
-                    // x: newpage.getWidth()- pngDims.width ,
-                    x: 5,
-                    y: -5 + height - pngDims.height,
-                    width: pngDims.width,
-                    height: pngDims.height,
-                })
-            }
-
-            const gazeData = data.gazeData;
-            let size = rawSize * 2 / 100;
-            let r = cw * 0.01 * size;
-            //draw rawData
-            for (let i = 0; i < gazeData.length; i++) {
-                let d = gazeData[i];
+        // Get the width and height of the first page
+        const { width, height } = firstPage.getSize();
+        let cw = width;
+        let ch = height;
+        let prevx = null;
+        let prevy = null;
 
 
-                // console.log("t",t);
-                // if (d.relTime * 1 <= nowTime * 1) {
+        //페이지별로 마크 넣을것
+        // console.log("바이트 가능?")
 
-                if (d.pdfx && d.pdfy) {
-                    // console.log("그려")
-                    if (r) {
+        //이미지 준비~~~~~~
 
-                        if (prevx && prevy) {
-                            // rctx.beginPath();
-                            // rctx.lineWidth = 0.5;
-                            // rctx.strokeStyle = 'red';
-                            // rctx.fillStyle = 'red';
-                            // rctx.moveTo((prevx) * cw, (prevy) * ch);
-                            // rctx.lineTo((d.pdfx) * cw, (d.pdfy) * ch);
-                            // rctx.stroke();
+        // const pngImageBytes=Uint8Array.from(atob(base64img['리더스아이로고']), c => c.charCodeAt(0))
+        // const pngImageBytes = _base64ToArrayBuffer(base64img['리더스아이로고']);
+        // const pngImageBytes = await fetch(readerseyelogo).then(r=>r.arrayBuffer());
+        const pngImageBytes = readersEyeLogoArrayBuffer;
 
+        //base64를 Bytes 로 변환
+        const pngImage = await pdfDoc.embedPng(pngImageBytes)
+        const pngDims = pngImage.scale(0.05)
 
-                            pages[d.pageNum - 1].drawLine({
-                                start: {
-                                    x: prevx * cw,
-                                    y: height - prevy * ch,
-                                },
-                                end: {
-                                    x: d.pdfx * cw,
-                                    y: height - d.pdfy * ch,
-                                },
-                                color: rgb(1, 0, 0),
-                                opacity: 0.3,
-                                borderOpacity: 0.3,
-                                thickness: 1,
-
-                            });
-
-                        } //선먼저 그린후 그리기
-
-                        pages[d.pageNum - 1].drawCircle({
-                            x: d.pdfx * cw,
-                            y: height - d.pdfy * ch,
-                            size: r,
-                            borderWidth: 1,
-                            // borderDashArray: [1],
-                            // borderDashPhase: 25,
-                            borderColor: rgb(1, 0, 0),
-                            borderOpacity: 0.3,
-                            // fill:rgb(1,0,0)
-                            color: rgb(1, 0, 0),
-                            opacity: 0.3
-                            // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                            // borderLineCap: LineCapStyle.Round,
-                        });
-
-
-                        // rctx.beginPath();
-                        // rctx.lineWidth = 0.5;
-                        // rctx.strokeStyle = 'rgb(255,0,0,0.3)';
-                        // rctx.fillStyle = 'rgb(255,0,0,0.3)';
-                        // rctx.arc((d.pdfx) * cw, (d.pdfy) * ch, r, 0, Math.PI * 2);
-                        // rctx.fill();
-
-                    }
-                    // prevp = d.pageNum
-                    prevx = d.pdfx;
-                    prevy = d.pdfy;
-
-
-
-                }
-
-
-
-
-                // }
-
-            }
-
-            //draw Fixation
-            let fr = cw * 0.01 * fixationSize * 1.5 / 100;
-            prevx = null;
-            prevy = null;
-
-            for (let i = 0; i < fixationData.length; i++) {
-
-                const f = fixationData[i];
-
-
-                // if (f.relTime_s * 1 <= nowTime * 1) {
-                if (fr) {
-                    if (f.count >= minFixationCount) {
-
-                        //선그리기...
-                        if (prevx && prevy) {
-
-                            pages[f.pageNum_s - 1].drawLine({
-                                start: {
-                                    x: prevx * cw,
-                                    y: height - prevy * ch,
-                                },
-                                end: {
-                                    x: f.x * cw,
-                                    y: height - f.y * ch,
-                                },
-                                color: rgb(0, 1, 0),
-                                opacity: 0.3,
-                                borderOpacity: 0.3,
-                                thickness: 1,
-
-                            });
-                        }
-
-                        //원그리기 fixation
-                        let fsize = fr * Math.sqrt(f.count);
-                        // if (f.relTime_e <= nowTime) {
-
-                        pages[f.pageNum_s - 1].drawCircle({
-                            x: f.x * cw,
-                            y: height - f.y * ch,
-                            size: fsize,
-                            borderWidth: 1,
-                            // borderDashArray: [1],
-                            // borderDashPhase: 25,
-                            borderColor: rgb(0, 1, 0),
-                            borderOpacity: 0.3,
-                            // fill:rgb(1,0,0)
-                            color: rgb(0, 1, 0),
-                            opacity: 0.3
-                            // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                            // borderLineCap: LineCapStyle.Round,
-                        });
-
-
-                        // }
-                        // else {
-                        //     // 작게 그려
-                        //     let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
-
-
-                        //     pages[f.pageNum_s - 1].drawCircle({
-                        //         x: f.x * cw,
-                        //         y: height - f.y * ch,
-                        //         size: fsize*ratio,
-                        //         borderWidth: 1,
-                        //         // borderDashArray: [1],
-                        //         // borderDashPhase: 25,
-                        //         borderColor: rgb(0, 0, 1),
-                        //         borderOpacity: 0.3,
-                        //         // fill:rgb(1,0,0)
-                        //         color: rgb(0, 0, 1),
-                        //         opacity: 0.3
-                        //         // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                        //         // borderLineCap: LineCapStyle.Round,
-                        //     });
-                        // }
-
-                        prevx = f.x;
-                        prevy = f.y;
-                    }
-
-                }
-
-
-                // }
-            }
-
-            //////새로운패이지 생성
-            const newPage = pdfDoc.insertPage(0, [width, height]);
-
-      
-
-            const fontSize = 15;
-            const title="Pathway 시선추적 측정 결과";
-            const titleFontSize=25;
-
-            const customFont = await pdfDoc.embedFont(fontBytes);
-            // const HelveticaFont =await pdfDoc.embedFont(StandardFonts.Helvetica); 
-            
-            const textWidth = customFont.widthOfTextAtSize(title, titleFontSize);
-            // const textHeight = customFont.heightAtSize(titleFontSize);
-
-            //printPDFData
-            newPage.drawText(title, {
-                x: width/2 - textWidth/2,
-                y:  height*3/5 - 1 * titleFontSize,
-                size: titleFontSize,
-                font: customFont,
-                color: rgb(0, 0,0),
-            });
-
-            const topMargin=15;
-
-            const textMarginTop=5;
-            const textMarginLeft=15;
-            let keycount=1;
-            // const textWidth = customFont.widthOfTextAtSize(text, textSize)
-            // const textHeight = customFont.heightAtSize(textSize)
-
-            for(let key in printPDFData){
-                newPage.drawText(`${key} : `+printPDFData[key], {
-                    x: textMarginLeft,
-                    y: -topMargin -textMarginTop*keycount + height - keycount * fontSize,
-                    size: fontSize,
-                    font: customFont,
-                    color: rgb(0, 0,0),
-                });
-                keycount++;
-
-            }
-
-            newPage.drawImage(pngImage, {
+        for (let i = 0; i < pages.length; i++) {
+            pages[i].drawImage(pngImage, {
                 // x: newpage.getWidth() / 2 - pngDims.width / 2,
                 // y: newpage.getHeight() / 2 - pngDims.height / 2,
                 // x: newpage.getWidth()- pngDims.width ,
-                x: width / 2 - pngDims.width / 2,
-                y: -textMarginTop*(keycount+3) + height*3/8 - (keycount+3) * fontSize,
+                x: 5,
+                y: -5 + height - pngDims.height,
                 width: pngDims.width,
                 height: pngDims.height,
             })
+        }
+
+        const gazeData = data.gazeData;
+        let size = rawSize * 2 / 100;
+        let r = cw * 0.01 * size;
+        //draw rawData
+        for (let i = 0; i < gazeData.length; i++) {
+            let d = gazeData[i];
 
 
-            /////////////저장 다운로드/////////////
+            // console.log("t",t);
+            // if (d.relTime * 1 <= nowTime * 1) {
 
-            const pdfBytes = await pdfDoc.save({updateFieldAppearances: false})
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const blobURL = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = blobURL;
-            link.download = downloadFileName;
-            document.body.append(link);
-            link.click();
-            link.remove();
-            setTimeout(() => URL.revokeObjectURL(link.href), 7000);
+            if (d.pdfx && d.pdfy) {
+                // console.log("그려")
+                if (r) {
+
+                    if (prevx && prevy) {
+                        // rctx.beginPath();
+                        // rctx.lineWidth = 0.5;
+                        // rctx.strokeStyle = 'red';
+                        // rctx.fillStyle = 'red';
+                        // rctx.moveTo((prevx) * cw, (prevy) * ch);
+                        // rctx.lineTo((d.pdfx) * cw, (d.pdfy) * ch);
+                        // rctx.stroke();
+
+
+                        pages[d.pageNum - 1].drawLine({
+                            start: {
+                                x: prevx * cw,
+                                y: height - prevy * ch,
+                            },
+                            end: {
+                                x: d.pdfx * cw,
+                                y: height - d.pdfy * ch,
+                            },
+                            color: rgb(1, 0, 0),
+                            opacity: 0.3,
+                            borderOpacity: 0.3,
+                            thickness: 1,
+
+                        });
+
+                    } //선먼저 그린후 그리기
+
+                    pages[d.pageNum - 1].drawCircle({
+                        x: d.pdfx * cw,
+                        y: height - d.pdfy * ch,
+                        size: r,
+                        borderWidth: 1,
+                        // borderDashArray: [1],
+                        // borderDashPhase: 25,
+                        borderColor: rgb(1, 0, 0),
+                        borderOpacity: 0.3,
+                        // fill:rgb(1,0,0)
+                        color: rgb(1, 0, 0),
+                        opacity: 0.3
+                        // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                        // borderLineCap: LineCapStyle.Round,
+                    });
+
+
+                    // rctx.beginPath();
+                    // rctx.lineWidth = 0.5;
+                    // rctx.strokeStyle = 'rgb(255,0,0,0.3)';
+                    // rctx.fillStyle = 'rgb(255,0,0,0.3)';
+                    // rctx.arc((d.pdfx) * cw, (d.pdfy) * ch, r, 0, Math.PI * 2);
+                    // rctx.fill();
+
+                }
+                // prevp = d.pageNum
+                prevx = d.pdfx;
+                prevy = d.pdfy;
+
+
+
+            }
+
+
+
+
+            // }
+
+        }
+
+
+
+
+        //draw Fixation
+        let fr = cw * 0.01 * fixationSize * 1.5 / 100;
+        prevx = null;
+        prevy = null;
+
+        for (let i = 0; i < fixationData.length; i++) {
+
+            const f = fixationData[i];
+
+
+            // if (f.relTime_s * 1 <= nowTime * 1) {
+            if (fr) {
+                if (f.count >= minFixationCount) {
+
+                    //선그리기...
+                    if (prevx && prevy) {
+
+                        pages[f.pageNum_s - 1].drawLine({
+                            start: {
+                                x: prevx * cw,
+                                y: height - prevy * ch,
+                            },
+                            end: {
+                                x: f.x * cw,
+                                y: height - f.y * ch,
+                            },
+                            color: rgb(0, 1, 0),
+                            opacity: 0.3,
+                            borderOpacity: 0.3,
+                            thickness: 1,
+
+                        });
+                    }
+
+                    //원그리기 fixation
+                    let fsize = fr * Math.sqrt(f.count);
+                    // if (f.relTime_e <= nowTime) {
+
+                    pages[f.pageNum_s - 1].drawCircle({
+                        x: f.x * cw,
+                        y: height - f.y * ch,
+                        size: fsize,
+                        borderWidth: 1,
+                        // borderDashArray: [1],
+                        // borderDashPhase: 25,
+                        borderColor: rgb(0, 1, 0),
+                        borderOpacity: 0.3,
+                        // fill:rgb(1,0,0)
+                        color: rgb(0, 1, 0),
+                        opacity: 0.3
+                        // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                        // borderLineCap: LineCapStyle.Round,
+                    });
+
+
+                    // }
+                    // else {
+                    //     // 작게 그려
+                    //     let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
+
+
+                    //     pages[f.pageNum_s - 1].drawCircle({
+                    //         x: f.x * cw,
+                    //         y: height - f.y * ch,
+                    //         size: fsize*ratio,
+                    //         borderWidth: 1,
+                    //         // borderDashArray: [1],
+                    //         // borderDashPhase: 25,
+                    //         borderColor: rgb(0, 0, 1),
+                    //         borderOpacity: 0.3,
+                    //         // fill:rgb(1,0,0)
+                    //         color: rgb(0, 0, 1),
+                    //         opacity: 0.3
+                    //         // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+                    //         // borderLineCap: LineCapStyle.Round,
+                    //     });
+                    // }
+
+                    prevx = f.x;
+                    prevy = f.y;
+                }
+
+            }
+
+
+            // }
+        }
+
+        //////새로운패이지 생성
+        const newPage = pdfDoc.insertPage(0, [width, height]);
+
+
+
+        const fontSize = 15;
+        const title = "Pathway 시선추적 측정 결과";
+        const titleFontSize = 25;
+
+        const customFont = await pdfDoc.embedFont(fontBytes);
+        // const HelveticaFont =await pdfDoc.embedFont(StandardFonts.Helvetica); 
+
+        const textWidth = customFont.widthOfTextAtSize(title, titleFontSize);
+        // const textHeight = customFont.heightAtSize(titleFontSize);
+
+        //printPDFData
+        newPage.drawText(title, {
+            x: width / 2 - textWidth / 2,
+            y: height * 3 / 5 - 1 * titleFontSize,
+            size: titleFontSize,
+            font: customFont,
+            color: rgb(0, 0, 0),
+        });
+
+        const topMargin = 15;
+
+        const textMarginTop = 5;
+        const textMarginLeft = 15;
+        let keycount = 1;
+        // const textWidth = customFont.widthOfTextAtSize(text, textSize)
+        // const textHeight = customFont.heightAtSize(textSize)
+
+        for (let key in printPDFData) {
+            newPage.drawText(`${key} : ` + printPDFData[key], {
+                x: textMarginLeft,
+                y: -topMargin - textMarginTop * keycount + height - keycount * fontSize,
+                size: fontSize,
+                font: customFont,
+                color: rgb(0, 0, 0),
+            });
+            keycount++;
+
+        }
+
+        newPage.drawImage(pngImage, {
+            // x: newpage.getWidth() / 2 - pngDims.width / 2,
+            // y: newpage.getHeight() / 2 - pngDims.height / 2,
+            // x: newpage.getWidth()- pngDims.width ,
+            x: width / 2 - pngDims.width / 2,
+            y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount + 3) * fontSize,
+            width: pngDims.width,
+            height: pngDims.height,
+        })
+
+
+        /////////////저장 다운로드/////////////
+
+        const pdfBytes = await pdfDoc.save({ updateFieldAppearances: false })
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const blobURL = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobURL;
+        link.download = downloadFileName;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(link.href), 7000);
     }
 
 
@@ -1278,48 +1303,13 @@ const PDFresultModal = ({ onClose, ...props }) => {
                             top: `${innerFrameTop}px`,
                             left: `${innerFrameLeft}px`
                         }}>
-                      
-                                              <PDFviewModal
-                                              {...props}
-              
-                                              ref={pdfviewref}
-                                              WORKERSRC={WORKERSRC || "http://localhost:3000"}
-                                              PDFonloadCallback={PDFonloadCallback?PDFonloadCallback:(pageNums)=>{
-                                                  //페이지수 콜백이 여기로옴
-                                              }}
-              
-                                              showConfirmBtn={showConfirmBtn}
-                                              onConfirm={onConfirm}
-              
-              
-                                              onClose={onClose}
-                                              showViewMode={true}
-                                              set_viewpercent={() => { }}
-                                              path={path}
-                                              viewpercent={viewpercent}
-                                              pageCallback={(p) => {
-                                                  // console.log("page콜백", p);
-                                                  set_nowPage(p);
-              
-                                              }}
-                                              pdfSizeCallback={(d) => {
-                                                  // console.log("임시확인", d);
-                                                  set_nowPDFviewInform(d.PDF);
-              
-                                                  handleDraw();
-              
-                                              }}
-              
-              
-              
-                                          />          
-                            
-                            {/* <PDFviewModal
+
+                            <PDFviewModal
                                 {...props}
 
                                 ref={pdfviewref}
                                 WORKERSRC={WORKERSRC || "http://localhost:3000"}
-                                PDFonloadCallback={PDFonloadCallback?PDFonloadCallback:(pageNums)=>{
+                                PDFonloadCallback={PDFonloadCallback ? PDFonloadCallback : (pageNums) => {
                                     //페이지수 콜백이 여기로옴
                                 }}
 
@@ -1347,7 +1337,9 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
 
 
-                            /> */}
+                            />
+
+                        
                         </div>
 
                     </div>
