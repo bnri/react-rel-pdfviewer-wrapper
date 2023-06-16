@@ -1,6 +1,7 @@
 import React from "react";
 import './App.scss';
 import PDFresultModal from './lib/PDFresultModal';
+// import data1 from './data/1.json';
 import data1 from './data/300.json';
 // import * as pdftk from 'node-pdftk';
 // npm uninstall node-pdftk path-browserify crypto
@@ -32,9 +33,9 @@ function App() {
       <button onClick={e => set_selPathway(true)}>열기</button>
       {selPathway &&
         <PDFresultModal
-          WORKERSRC={process.env.REACT_APP_WORKERSRC || "http://localhost:3000"}
+          // WORKERSRC={process.env.REACT_APP_WORKERSRC || "http://localhost:3000"}
           PDFonloadCallback={(pages)=>{
-            console.log("페이지수?",pages);
+            // console.log("페이지수?",pages);
           }}
           printPDFData={{
             agencyName: '테스트학원이름',
@@ -46,22 +47,22 @@ function App() {
           }}
           downloadFileName = "테스트파일이름"
 
-          specialWidth={'1200px'}
+          //모달사이즈를 변경가능
+          specialWidth={'1400px'}
           specialHeight={'800px'}
 
           data={{
             gazeData: data1,
-            screenSize: {
+            screenSize: {   //측정할때 스크린사이즈
               width: 1920,
               height: 1080
             },
-            pdfSize: {
+            pdfSize: { //측정할때의 pdf 사이즈
               width: 1728,
               height: 2443
             }
           }}
           // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"}
-          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/54.pdf"}
           path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/18.pdf"}
           // path="/54-unlocked.pdf"
           viewpercent={100}
