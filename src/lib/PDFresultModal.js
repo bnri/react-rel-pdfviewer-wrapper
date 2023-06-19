@@ -1,24 +1,24 @@
 
-import React , {useState} from "react";
+import React, { useState } from "react";
 import './PDFresultModal.scss';
 import PDFviewModal from 'react-rel-pdfviewer';
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
 
 import { PDFDocument, rgb } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit'
 
-import pdfsvg from './PDF_file_icon.svg';
+// import pdfsvg from './PDF_file_icon.svg';
 import ReactTooltip from 'react-tooltip';
 // import { base64img } from "./base64img";
 
 import readerseyelogo from "./readereyelogo.png";
 import jeju from './JejuMyeongjo.ttf';
 
-import { ReactComponent as MinimizeSVG } from './minimize-2.svg';
-import { ReactComponent as MaximizeSVG } from './maximize-2.svg';
+// import { ReactComponent as MinimizeSVG } from './minimize-2.svg';
+// import { ReactComponent as MaximizeSVG } from './maximize-2.svg';
 import { closeFullscreen, openFullScreen } from "./util";
-import GazeChartConfigController from "./GazeChartConfigController";
-
+import ConfigController from "./ConfigController";
+import { ReactComponent as RemoconSVG } from "./remotecontroller.svg";
 
 // import * as pdfjsLib from 'pdfjs-dist/webpack';
 
@@ -46,98 +46,16 @@ function getFileAsArrayBuffer(importedfile) {
 }
 
 
-
-const FullScreenBtn = ({ ...props }) => {
-    const { isfullscreen } = props;
-
-    const buttonRef = React.useRef();
-    const fullscreenModalRef = React.useRef();
-    const animationFromRef = React.useRef();
-    const animationToRef = React.useRef();
-
-    React.useEffect(() => {
-        const openFullScreen = () => {
-            // 호출할때 javscript로 한것 f11말고
-            var elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { // Chrome, Safari & Opera 
-                elem.webkitRequestFullscreen();
-            } else if (elem.mozRequestFullScreen) { // Firefox 
-                elem.mozRequestFullScreen();
-            } else if (elem.msRequestFullscreen) { // IE/Edge 
-                elem.msRequestFullscreen();
-            }
-        }
-        const closeFullscreen = () => {
-            // document.exitFullscreen 
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
-        }
-
-        var animationTo = animationToRef.current,
-            animationFrom = animationFromRef.current;
-        let button = buttonRef.current;
-        if (isfullscreen) {
-
-            button.classList.remove("animated");
-            animationTo.beginElement();
-            // console.log("bbbbbbb fullscreenMode 진입");
-            let max = (window.screen.height / (window.devicePixelRatio)).toFixed(0) * 1;
-            if (max !== window.innerHeight) {
-                openFullScreen();
-            }
-
-        }
-        else {
-            // console.log("풀스크린해제");
-            button.classList.add("animated");
-            animationFrom.beginElement();
-            // console.log("aaaaaaa fullscreen해제");
-            let max = (window.screen.height / (window.devicePixelRatio)).toFixed(0) * 1;
-            if (max === window.innerHeight) {
-                // 자바스크립트로 홀출했을때만 closeFUllscrenn 호출
-                closeFullscreen() // f11눌러서 전체화면인지 openFullScreen을 눌룬 전체화면인지 알 수가없다. 크롬보안상 f11누룬건 자바스크립트로풀수없다
-            }
-
-        }
-
-    }, [isfullscreen, fullscreenModalRef])
-
-
-    return (<div ref={buttonRef}
-        style={{ width: '20px', height: '20px', color: isfullscreen ? 'yellow' : 'white', cursor: 'pointer' }} >
-
-        <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="m 3.4285714,15.428571 -3.42857145,0 0,8.571429 8.57142905,0 0,-3.428571 -5.1428577,0 0,-5.142858 z M -5e-8,8.5714287 l 3.42857145,0 0,-5.1428573 5.1428577,0 L 8.5714291,0 -4.9999999e-8,0 l 0,8.5714287 z M 20.571428,20.571429 l -5.142857,0 0,3.428571 L 24,24 l 0,-8.571429 -3.428572,0 0,5.142858 z M 15.428571,2e-7 l 0,3.4285714 5.142857,0 0,5.1428571 3.428572,0 L 24,2e-7 l -8.571429,0 z">
-                <animate ref={animationToRef} begin="indefinite"
-                    fill="freeze" attributeName="d" dur="0.15s"
-                    to="m 5.0000001e-8,18.857143 5.14285695,0 0,5.142857 3.428572,0 0,-8.571429 -8.571428950000001,0 0,3.428572 z M 5.142857,5.1428572 l -5.14285695,0 0,3.4285714 8.571428949999999,0 0,-8.571428500000001 -3.428572,0 0,5.142857100000001 z M 15.428571,24 l 3.428572,0 0,-5.142857 5.142857,0 0,-3.428572 -8.571429,0 0,8.571429 z m 3.428572,-18.8571428 0,-5.1428571 -3.428572,0 0,8.5714285 8.571429,0 0,-3.4285714 -5.142857,0 z" />
-                <animate ref={animationFromRef} begin="indefinite"
-                    fill="freeze" attributeName="d" dur="0.15s"
-                    to="m 3.4285714,15.428571 -3.42857145,0 0,8.571429 8.57142905,0 0,-3.428571 -5.1428577,0 0,-5.142858 z M -5e-8,8.5714287 l 3.42857145,0 0,-5.1428573 5.1428577,0 L 8.5714291,0 -4.9999999e-8,0 l 0,8.5714287 z M 20.571428,20.571429 l -5.142857,0 0,3.428571 L 24,24 l 0,-8.571429 -3.428572,0 0,5.142858 z M 15.428571,2e-7 l 0,3.4285714 5.142857,0 0,5.1428571 3.428572,0 L 24,2e-7 l -8.571429,0 z" />
-            </path>
-        </svg>
-    </div>)
-}
-
 const PDFresultModal = ({ onClose, ...props }) => {
     const { WORKERSRC,
         path,
-        viewpercent, data, specialWidth, specialHeight, onConfirm, showConfirmBtn, printPDFData, downloadFileName, PDFonloadCallback } = props;
+        viewpercent, data, specialWidth, specialHeight,
+        onConfirm, showConfirmBtn, printPDFData, downloadFileName, PDFonloadCallback } = props;
 
     // console.log("WORKERSRC",WORKERSRC);
-
+    const topRef = React.useRef();
     const pdfviewref = React.useRef();
     const [nowPage, set_nowPage] = React.useState(1);
-
     const [nowTime, set_nowTime] = React.useState(0);
     const endTime = React.useMemo(() => {
         // console.log(data.gazeInform.maxTime);
@@ -151,39 +69,45 @@ const PDFresultModal = ({ onClose, ...props }) => {
         return lastTime;
     }, [data])
 
+    //리모콘
+    const [hideController,set_hideController] = useState(false);
 
+
+    //차트 옵션. 톱니바퀴
+    const [showConfig, set_showConfig] = useState(false);
+    const resaveConfig = () => {
+        set_chartOption(JSON.parse(JSON.stringify(chartOption)));
+    }
+    const [chartOption, set_chartOption] = useState({
+        heatMap: true,
+        heatMapMax: 40,
+        heatMapRadius: 40,
+        heatMapMaxOpacity: 0.7,
+
+        RPOG: false,
+        RPOG_size: 10,
+        RPOG_line: false,
+
+        FPOG: true,
+        FPOG_size: 20,
+        FPOG_line: true,
+        FPOG_number: false,
+        FPOG_number_size: 1.7,
+
+
+        GazePastRange: 0, //0인경우 전체
+        ChartPastRange: 20, //0인경우 전체
+
+        playSpeed: 1,
+        drawFPS: 30,
+
+        penWeight: 1, //유저가 PDF에 펜으로 글씨 쓴것.
+    })
+
+
+    //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
     const [fminx] = React.useState(1);
     const [fminy] = React.useState(1);
-
-    const topRef = React.useRef();
-    const [innerFrameScale, set_innerFrameScale] = React.useState(0.5);
-    const [innerFrameTop, set_innerFrameTop] = React.useState(0);
-    const [innerFrameLeft, set_innerFrameLeft] = React.useState(0);
-
-
-    const [isPlaying, set_isPlaying] = React.useState(false);
-    const [playSpeed, set_playSpeed] = React.useState(1);
-    const [followEvent] = React.useState(true);
-    const [rawSize, set_rawSize] = React.useState(0);
-    const [penWeight,set_penWeight] = React.useState(1);
-
-
-    const [fixationSize, set_fixationSize] = React.useState(32);
-    const [pastTimeRange, set_pastTimeRange] = React.useState(0);
-    const [nowPDFviewInform, set_nowPDFviewInform] = React.useState(null);
-    const [minFixationCount] = React.useState(3);
-
-
-    //콘트롤러
-    const [isFocus, set_isFocus] = React.useState(false);
-    const [mw] = React.useState(200);
-    const [mh] = React.useState(503);
-
-    //전체화면
-    const [isfullscreen, set_isfullscreen] = React.useState(false);
-
-
-
     const fixationData = React.useMemo(() => {
         let fa = [];
         let sumPDF_x = 0;
@@ -203,7 +127,6 @@ const PDFresultModal = ({ onClose, ...props }) => {
         const ydiff_f = fminy / 100 * heightmul;
 
         //거리기준 
-
         for (let i = 0; i < rawGaze.length; i++) {
             //거리가 가까운 PDF 를 찾아야하는데..
             let d = rawGaze[i];
@@ -229,8 +152,6 @@ const PDFresultModal = ({ onClose, ...props }) => {
                 };
             }
             else {
-
-
                 let xdiff = Math.abs(d.pdfx - prevx);
                 let ydiff = Math.abs(d.pdfy - prevy);
 
@@ -289,13 +210,30 @@ const PDFresultModal = ({ onClose, ...props }) => {
                 prevy = d.pdfy;
             }
         }
-
-        //마지막 fixation 찾아볼까?
         // console.log("fa", fa);
-
         return fa;
     }, [data, fminx, fminy])
 
+
+    const [innerFrameScale, set_innerFrameScale] = React.useState(0.5);
+    const [innerFrameTop, set_innerFrameTop] = React.useState(0);
+    const [innerFrameLeft, set_innerFrameLeft] = React.useState(0);
+
+
+    //재생과 멈춤.
+    const [isPlaying, set_isPlaying] = React.useState(false);
+
+    //재생배속.
+    const [followEvent] = React.useState(true);
+
+
+    const [nowPDFviewInform, set_nowPDFviewInform] = React.useState(null);
+    const [minFixationCount] = React.useState(3);
+
+    //전체화면
+    const [isfullscreen, set_isfullscreen] = React.useState(false);
+
+    //fixation Duration정보..옮기자, 콘트롤러로
     const fd_inform = React.useMemo(() => {
         if (!fixationData) return;
 
@@ -318,15 +256,11 @@ const PDFresultModal = ({ onClose, ...props }) => {
             avgDuration: ad,
             fixationRatio: sumfd / endTime * 100
         };
-
-
         return obj;
-
     }, [fixationData, minFixationCount, endTime]);
 
 
-
-    //viewWrap ratio를 어떻게 구할까    
+    //리사이즈이벤트
     const resizeInnerFrame = React.useCallback(() => {
 
         setTimeout(function () {
@@ -384,40 +318,43 @@ const PDFresultModal = ({ onClose, ...props }) => {
     }, [resizeInnerFrame]);
 
 
-
     const handleTogglePlay = () => {
         set_isPlaying((p) => !p);
     }
 
-
-
-
     React.useEffect(() => {
+        const { playSpeed, drawFPS } = chartOption;
+        const fpsInterval = 1000 / drawFPS;
+
         let myrequest;
         let startTime = Date.now();
+        let then = startTime;
         function timeUpdate() {
             myrequest = window.requestAnimationFrame(timeUpdate);
             let now = Date.now();
-            let elapsed = now - startTime;
+            let elapsed = now - then;
             // console.log("fps", 1000 / elapsed);
-            startTime = now;
-            set_nowTime((nt) => {
+            if (elapsed > fpsInterval) {
+                then = now - (elapsed % fpsInterval);
+                set_nowTime((nt) => {
 
-                if (nt * 1 > endTime) {
+                    if (nt * 1 > endTime) {
 
-                    set_isPlaying(false);
-                    nt = endTime;
+                        set_isPlaying(false);
+                        nt = endTime;
 
-                    return nt;
-                }
-                else if (nt * 1 === endTime) {
-                    return 0;
-                }
-                else {
-                    nt = nt * 1 + (elapsed / 1000) * playSpeed
-                    return nt;
-                }
-            });
+                        return nt;
+                    }
+                    else if (nt * 1 === endTime) {
+                        return 0;
+                    }
+                    else {
+                        nt = nt * 1 + (elapsed / 1000) * playSpeed
+                        return nt;
+                    }
+                });
+            }
+
         }
 
         if (isPlaying === true) {
@@ -431,7 +368,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
             window.cancelAnimationFrame(myrequest);
         }
 
-    }, [isPlaying, endTime, playSpeed]);
+    }, [isPlaying, endTime, chartOption]);
 
 
     //툴팁
@@ -460,7 +397,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
         let ch = nowPDFviewInform.height;
 
 
-        let size = rawSize * 2 / 100;
+        let size = chartOption.RPOG_size * 2 / 100;
 
         let r = cw * 0.01 * size;
         // console.log("지워");
@@ -468,7 +405,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
         const gazeData = data.gazeData;
 
-        const pT = pastTimeRange;
+        const pT = chartOption.GazePastRange;
 
         // console.log("gazeData",gazeData)
         // //비율계산필요
@@ -481,7 +418,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
 
         //draw rawdata
-        for (let i = 0; i < gazeData.length; i++) {
+        for (let i = 0; chartOption.RPOG && (i < gazeData.length); i++) {
             let d = gazeData[i];
 
             if (pT) {
@@ -497,7 +434,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                     // console.log("그려")
                     if (nowPage === d.pageNum && r) {
 
-                        if (prevx && prevy) {
+                        if (chartOption.RPOG_line && prevx && prevy) {
                             rctx.beginPath();
                             rctx.lineWidth = 0.5;
                             rctx.strokeStyle = 'red';
@@ -534,14 +471,13 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
 
 
-
         //draw Fixation
-        let fr = cw * 0.01 * fixationSize * 1.5 / 100;
+        let fr = cw * 0.01 * chartOption.FPOG_size * 1.5 / 100;
         prevx = null;
         prevy = null;
-        for (let i = 0; i < fixationData.length; i++) {
+        for (let i = 0; (chartOption.FPOG && (i < fixationData.length)); i++) {
 
-            let f = fixationData[i];
+            const f = fixationData[i];
             if (pT) {
                 if (f.relTime_e < (nowTime - pT)) {
                     continue;
@@ -553,7 +489,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                     if (f.count >= minFixationCount) {
 
                         //선그리기...
-                        if (prevx && prevy) {
+                        if (chartOption.FPOG_line && prevx && prevy) {
                             rctx.beginPath();
                             rctx.lineWidth = 0.5;
                             rctx.strokeStyle = 'green';
@@ -589,6 +525,17 @@ const PDFresultModal = ({ onClose, ...props }) => {
                             rctx.closePath();
                         }
 
+                        if (chartOption.FPOG_number === true) {
+                            rctx.beginPath();
+                            rctx.strokeStyle = "black";
+                            rctx.fillStyle = "black";
+                            rctx.lineWidth = 1;
+                            rctx.font = (cw / 100) * chartOption.FPOG_number_size + "px Arial";
+                            rctx.textAlign = "center";
+                            rctx.textBaseline = "middle";
+                            rctx.fillText(f.fixationNumber, (f.x) * cw, (f.y) * ch);
+                            rctx.stroke();
+                        }
                         prevx = f.x;
                         prevy = f.y;
                     }
@@ -600,7 +547,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
         }
 
 
-    
+
         //draw pencil
         let startdrawX, startdrawY;
 
@@ -624,7 +571,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
             if (d.relTime * 1 <= nowTime * 1) {
                 // console.log("그려")
                 if (nowPage === pageNum) {
-                    rctx.lineWidth = (penWeight*1).toFixed(0)*1;
+                    rctx.lineWidth = (chartOption.penWeight * 1).toFixed(0) * 1;
                     rctx.strokeStyle = 'red';
                     rctx.fillStyle = 'red';
                     if (draw.type === 'startDrawing') {
@@ -657,15 +604,12 @@ const PDFresultModal = ({ onClose, ...props }) => {
                 }
             }
         }
+    }, [data, nowTime, nowPage, chartOption, nowPDFviewInform, fixationData, minFixationCount]);
 
 
-        // console.log("fixationSize", fixationSize);
 
-
-    }, [data, nowTime, nowPage, rawSize, nowPDFviewInform, fixationSize, fixationData, minFixationCount, pastTimeRange,penWeight]);
-
-
-    const handleEvent = React.useCallback(() => {
+    //PDF 스크롤과 page 이동기록을 따라가는 함수
+    const handlePDFmoveEvent = React.useCallback(() => {
         // console.log("handleDraw!!");
 
         let gazeData = data.gazeData;
@@ -695,14 +639,11 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
 
     }, [data, nowTime]);
-
-
-
     React.useEffect(() => {
         if (followEvent) {
-            handleEvent();
+            handlePDFmoveEvent();
         }
-    }, [handleEvent, followEvent])
+    }, [handlePDFmoveEvent, followEvent])
 
 
     React.useEffect(() => {
@@ -710,6 +651,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
     }, [handleDraw]);
 
 
+    //PDF writing 할때 쓰는것들임. 분리 필요
     const [jejuFontArrayBuffer, set_jejuFontArrayBuffer] = React.useState(null);
     React.useEffect(() => {
         getFileAsArrayBuffer(jeju).then(res_arrbuffer => {
@@ -717,35 +659,20 @@ const PDFresultModal = ({ onClose, ...props }) => {
         });
     }, []);
 
-    const [isMinimizedController, set_isMinimizedController] = React.useState(false);
 
-    const handleCloseController = () => {
-        set_isMinimizedController(true);
-    }
 
     //path값에 따라서 PDFarraybuffer 보관
     const [pdfArrayBuffer, set_pdfArrayBuffer] = React.useState(null);
+
     React.useEffect(() => {
+        if (!path) return;
         fetch(path).then(async res => {
-            // console.log("res",res);
-            // console.log("path",path);
-            // console.log("URL.createObjectURL(path)",path);
-            // console.log("pdfjsLib",pdfjsLib);
-
-            // const pdf = await pdfjsLib.getDocument({ url: path, password: '' }).promise;
-
-
-            // const f = await pdf.getData(); //unit8array
-            // var arrayBuffer = f.buffer; 
-            // console.log("arrayBuffer",arrayBuffer)    
-            // let af = await res.arrayBuffer();
-            // console.log("두개비교",arrayBuffer,af);
             return res.arrayBuffer()
-            // return arrayBuffer;
         }).then(async (buffer) => {
             set_pdfArrayBuffer(buffer);
         });
     }, [path]);
+
 
 
     const [readersEyeLogoArrayBuffer, set_readersEyeLogoArrayBuffer] = React.useState(null);
@@ -845,7 +772,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
         }
 
         const gazeData = data.gazeData;
-        let size = rawSize * 2 / 100;
+        let size = chartOption.RPOG_size * 2 / 100;
         let r = cw * 0.01 * size;
         //draw rawData
         for (let i = 0; i < gazeData.length; i++) {
@@ -931,7 +858,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
 
         //draw Fixation
-        let fr = cw * 0.01 * fixationSize * 1.5 / 100;
+        let fr = cw * 0.01 * chartOption.FPOG_size * 1.5 / 100;
         prevx = null;
         prevy = null;
 
@@ -1043,7 +970,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                             color: rgb(1, 0, 0),
                             opacity: 1,
                             borderOpacity: 0.3,
-                            thickness: (penWeight/2).toFixed(0)*1||1,
+                            thickness: (chartOption.penWeight / 2).toFixed(0) * 1 || 1,
 
                         });
                         startdrawX = draw.x;
@@ -1141,9 +1068,11 @@ const PDFresultModal = ({ onClose, ...props }) => {
     }
 
 
-    const [showConfig,set_showConfig] = useState(false);
 
-    return (<div className="PDFresultModal">
+
+    return (<div className="PDFresultModal" onClick={() => {
+        set_showConfig(false);
+    }}>
         <div className="ResultWrap" style={{
             width: isfullscreen ? '100%' : specialWidth,
             height: isfullscreen ? '100%' : specialHeight,
@@ -1151,229 +1080,67 @@ const PDFresultModal = ({ onClose, ...props }) => {
         }}>
             <div className="marginWrap">
 
-                {
-                    isMinimizedController === false ?
-                        <>
-                            <Draggable
+                {/* {!hideController&&
+                    <>
+                        <Draggable
 
-                                handle=".OVM-drag-handle"
-                                defaultPosition={{ x: 50, y: 50 }}
-                                bounds=".marginWrap"
-                                grid={[1, 1]} >
+                            handle=".OVM-drag-handle"
+                            defaultPosition={{ x: 50, y: 50 }}
+                            bounds=".marginWrap"
+                            grid={[1, 1]} >
 
-                                <div tabIndex='0' className="moveableBarwrapper" style={{ width: mw + 'px', height: mh + 'px', backgroundColor: 'white', zIndex: isFocus ? 10 : 9 }}
-                                    onBlur={() => {
-                                        //console.log("OVM BLUR");
-                                        set_isFocus(false);
-                                    }}
-                                    onFocus={() => {
-                                        //console.log("OVM FOCUS");
-                                        set_isFocus(true);
-                                    }}
-                                >
-                                    <div className="header OVM-drag-handle" style={{ backgroundColor: isFocus ? 'rgb(40,40,40)' : 'rgb(20,20,20)' }}>
+                            <div tabIndex='0' className="moveableBarwrapper" style={{ width: mw + 'px', height: mh + 'px', backgroundColor: 'white', zIndex: isFocus ? 10 : 9 }}
+                                onBlur={() => {
+                                    //console.log("OVM BLUR");
+                                    set_isFocus(false);
+                                }}
+                                onFocus={() => {
+                                    //console.log("OVM FOCUS");
+                                    set_isFocus(true);
+                                }}
+                            >
+                                <div className="header OVM-drag-handle" style={{ backgroundColor: isFocus ? 'rgb(40,40,40)' : 'rgb(20,20,20)' }}>
 
-                                        Controller
-                                        <button className="icon-btn minimize" style={{ position: 'absolute', right: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={handleCloseController}>
-                                            <MinimizeSVG />
-                                        </button>
-                                    </div>
-                                    <div className="middle">
+                                    Controller
+                                    <button className="icon-btn minimize" style={{ position: 'absolute', right: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={handleCloseController}>
+                                        <MinimizeSVG />
+                                    </button>
+                                </div>
 
-                                        <div className="moveBar">
-
-
-
-
-                                            <div className="SideBar">
-                                    
-                                                <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        재생 배속
-                                                    </div>
-                                                    <div className="c_data">
-                                                        <select value={playSpeed} onChange={e => set_playSpeed(e.target.value)}>
-                                                            <option>
-                                                                0.1
-                                                            </option>
-                                                            <option>
-                                                                0.5
-                                                            </option>
-                                                            <option>
-                                                                1
-                                                            </option>
-                                                            <option>
-                                                                2
-                                                            </option>
-                                                        </select>
-                                                    </div>
+                                <div className="middle">
+                                    <div className="moveBar">
+                                        <div className="SideBar">
+                                            <div className="oneConfig">
+                                                <div className="c_label">
+                                                    평균응시시간
                                                 </div>
-                                                <div className="oneConfig" data-tip="모든 시선(gaze)의  원 (빨강색)의 크기를 조정합니다.">
-
-                                                    <div className="c_label">
-                                                        시선 크기
-                                                    </div>
-                                                    <div className="c_data">
-                                                        <input type="range" step={1} style={{ width: '70%' }} value={rawSize} min={0} max={200}
-                                                            onChange={(e) => {
-                                                                set_rawSize(e.target.value)
-
-                                                            }} />
-                                                    </div>
+                                                <div className="c_data">
+                                                    {fd_inform.avgDuration.toFixed(0)}ms
                                                 </div>
-
-                                                <div className="oneConfig" data-tip="응시(fixation)의 원 (초록색)의 크기를 조정합니다.">
-
-                                                    <div className="c_label">
-                                                        응시 크기
-                                                    </div>
-                                                    <div className="c_data">
-                                                        <input type="range" style={{ width: '70%' }} value={fixationSize} min={0} max={100}
-                                                            onChange={(e) => {
-                                                                set_fixationSize(e.target.value)
-
-                                                            }} />
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig" data-tip={'기록을 재생할 때, 몇 초 전의 시선까지 보여줄지를 설정합니다.'}>
-
-                                                    <div className="c_label">
-                                                        시선창 과거
-                                                    </div>
-                                                    <div className="c_data">
-                                                        <select value={pastTimeRange} onChange={e => set_pastTimeRange(e.target.value * 1)}>
-                                                            <option value={0}>전체</option>
-                                                            <option value={0.5}>0.5초</option>
-                                                            <option value={1}>1초</option>
-                                                            <option value={2}>2초</option>
-                                                            <option value={5}>5초</option>
-                                                            <option value={10}>10초</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        평균응시시간
-                                                    </div>
-                                                    <div className="c_data">
-                                                        {fd_inform.avgDuration.toFixed(0)}ms
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        응시비율
-                                                    </div>
-                                                    <div className="c_data">
-                                                        {fd_inform.fixationRatio.toFixed(0)}%
-                                                    </div>
-                                                </div>
-                                                <div style={{ display: 'flex' }}>
-                                                    <div
-                                                        className="oneConfig"
-                                                        data-tip={isfullscreen ? "전체화면취소" : "전체화면"}
-                                                        style={{ borderRight: '1px solid gray' }} onClick={() => set_isfullscreen(f => !f)}>
-                                                        <FullScreenBtn
-                                                            isfullscreen={isfullscreen}
-                                                        />&nbsp; {isfullscreen ? <span style={{ color: 'yellow' }}>취소</span> : <span>전체</span>}
-                                                    </div>
-                                                    <div className="oneConfig" onClick={handleTryPrint} data-tip="시선이동이 표현된 PDF를 다운로드 합니다.">
-                                                        <img src={pdfsvg} alt="" style={{ height: '70%' }} />&nbsp;다운
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig" data-tip="진단시 사용한 펜의 굵기">
-
-                                                    <div className="c_label">
-                                                        펜 굵기
-                                                    </div>
-                                                    <div className="c_data">
-                                                    <input type="range" style={{ width: '70%' }} value={penWeight} min={1} max={10}
-                                                            onChange={(e) => {
-                                                                set_penWeight(e.target.value)
-
-                                                            }} />
-                                                    </div>
-                                                </div>
-                                                {/* <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        fX diff
-                                                    </div>
-                                                    <div className="c_data">
-
-                                                        <input type="number" min={1} max={100} value={fminx} onChange={e => set_fminx(e.target.value)} />
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        fY diff
-                                                    </div>
-                                                    <div className="c_data">
-
-                                                        <input type="number" min={1} max={100} value={fminy} onChange={e => set_fminy(e.target.value)} />
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        minF_Cnt
-                                                    </div>
-                                                    <div className="c_data">
-
-                                                        <input type="number" min={1} max={100} value={minFixationCount} onChange={e => set_minFixationCount(e.target.value)} />
-                                                    </div>
-                                                </div> */}
-
-
                                             </div>
-                                            <div className="GC-playzone">
-                                                <div className="GC-playWrapper">
-                                                    <button className={isPlaying ? "GC-playbtn playing" : "GC-playbtn"} onClick={handleTogglePlay} />
+                                            <div className="oneConfig">
 
+                                                <div className="c_label">
+                                                    응시비율
                                                 </div>
-                                                <div className="GC-TimeWrapper">
-                                                    <div className="nowTimeWrapper">
-                                                        {nowTime.toFixed(2)}
-                                                    </div>
-                                                    <div className="endTimeWrapper">
-                                                        &nbsp;/&nbsp;{endTime.toFixed(2)}
-                                                    </div>
-
+                                                <div className="c_data">
+                                                    {fd_inform.fixationRatio.toFixed(0)}%
+                                                </div>
+                                            </div>
+                                            <div style={{ display: 'flex' }}>
+                                                <div className="oneConfig" onClick={handleTryPrint} data-tip="시선이동이 표현된 PDF를 다운로드 합니다.">
+                                                    <img src={pdfsvg} alt="" style={{ height: '70%' }} />&nbsp;다운
                                                 </div>
                                             </div>
                                         </div>
-
-                                    </div>
-                                </div>
-
-
-                            </Draggable>
-
-                        </>
-                        :
-                        <>
-                            <div className="minimizedController">
-                                <div>
-                                    <button className="makeHuge-btn" onClick={() => set_isMinimizedController(false)}>Controller&nbsp;<MaximizeSVG /></button>
-                                </div>
-                                <div>
-                                    <button className={isPlaying ? "mbbtn playing" : "mbbtn"} onClick={handleTogglePlay}></button>
-                                </div>
-                                <div className="timeWrapper">
-                                    <div className="nt">
-                                        {nowTime.toFixed(2)}
-                                    </div>
-                                    <div className="et">
-                                        &nbsp;/&nbsp;{endTime.toFixed(2)}
                                     </div>
 
                                 </div>
                             </div>
-                        </>
-                }
+                        </Draggable>
+
+                    </>
+                } */}
 
 
 
@@ -1433,25 +1200,21 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
                         </div>
                         <div className="rangeBtnWrapper">
-                    <div className="leftBtnWrap">
-                        <div>
-                            <button className={isPlaying ? "playBtn playing" : "playBtn"} onClick={handleTogglePlay}></button>
-                        </div>
-                        <div className="GC-TimeWrapper">
-                            <div className="nowTimeWrapper">{nowTime.toFixed(2)}</div>
-                            <div className="endTimeWrapper">&nbsp;/&nbsp;{endTime.toFixed(2)}</div>
-                        </div>
+                            <div className="leftBtnWrap">
+                                <div>
+                                    <button className={isPlaying ? "playBtn playing" : "playBtn"} onClick={handleTogglePlay}></button>
+                                </div>
+                                <div className="GC-TimeWrapper">
+                                    <div className="nowTimeWrapper">{nowTime.toFixed(2)}</div>
+                                    <div className="endTimeWrapper">&nbsp;/&nbsp;{endTime.toFixed(2)}</div>
+                                </div>
+                            </div>
 
-
-
-                    </div>
-
-
-                    <div className="rightBtnWrap">
-                        <div className="flex" style={{ width: 70, height: 48 }}
-                             data-tip="응시 / 히트맵 보기 선택"
-                        >
-                            {/* <ToggleSwitch
+                            <div className="rightBtnWrap">
+                                <div className="flex" style={{ width: 70, height: 48 }}
+                                    data-tip="응시 / 히트맵 보기 선택"
+                                >
+                                    {/* <ToggleSwitch
                                 // className="showattendingcheckbox"
                                 {...toggleInfo}
                                 onClickToggle={() => {
@@ -1487,91 +1250,89 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                 }}
                             /> */}
 
-                        </div>
+                                </div>
 
-              
-                        {/* <button className={`showControllerBtn ${!hideController && 'selected'}`}
+
+                                <button className={`showControllerBtn ${!hideController && 'selected'}`}
                              data-tip="제어판 보기"
                             onClick={() => {
                                 set_hideController(h => !h);
                             }}>
                             <RemoconSVG />
-                        </button> */}
-
-                
-                        <div style={{ position: 'relative' }}>
-                            <button className={`configBtn ${showConfig && 'selected'}`}
-                                 data-tip={`설정`}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    set_showConfig(c => !c)
-                                }}>
-                                <svg
-                                    className={showConfig ? "configArea config selected" : "configArea config"}
-                                    style={{
-                                        enableBackground: "new 0 0 24 24",
-                                    }}
-                                    fill="currentColor"
-                                    version="1.1"
-                                    viewBox="0 0 24 24"
-                                    xmlSpace="preserve"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                                >
-                                    <g />
-                                    <g>
-                                        <path d="M22.2,14.4L21,13.7c-1.3-0.8-1.3-2.7,0-3.5l1.2-0.7c1-0.6,1.3-1.8,0.7-2.7l-1-1.7c-0.6-1-1.8-1.3-2.7-0.7   L18,5.1c-1.3,0.8-3-0.2-3-1.7V2c0-1.1-0.9-2-2-2h-2C9.9,0,9,0.9,9,2v1.3c0,1.5-1.7,2.5-3,1.7L4.8,4.4c-1-0.6-2.2-0.2-2.7,0.7   l-1,1.7C0.6,7.8,0.9,9,1.8,9.6L3,10.3C4.3,11,4.3,13,3,13.7l-1.2,0.7c-1,0.6-1.3,1.8-0.7,2.7l1,1.7c0.6,1,1.8,1.3,2.7,0.7L6,18.9   c1.3-0.8,3,0.2,3,1.7V22c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2v-1.3c0-1.5,1.7-2.5,3-1.7l1.2,0.7c1,0.6,2.2,0.2,2.7-0.7l1-1.7   C23.4,16.2,23.1,15,22.2,14.4z M12,16c-2.2,0-4-1.8-4-4c0-2.2,1.8-4,4-4s4,1.8,4,4C16,14.2,14.2,16,12,16z" />
-                                    </g>
-                                </svg>
-                            </button>
-
-                            {/* <GazeChartConfigController
-                                resaveGazeChartOption={resaveGazeChartOption}
-                                showConfig={showConfig}
-                                GazeChartOption={GazeChartOption}
-                                AutoReplay={AutoReplay}
-                                set_AutoReplay={set_AutoReplay}
-
-                            /> */}
-                        </div>
-
-
-                        <button className={`fullScreenBtn ${isfullscreen ? 'fullscreenstate' : ''}`}
-                             data-tip="전체화면"
-                            onClick={handleFullScreen}>
-                            {isfullscreen ? <svg version="1.1" viewBox="0 0 36 36" fill="currentColor">
-                                <g>
-                                    <path d="m 14,14 -4,0 0,2 6,0 0,-6 -2,0 0,4 0,0 z" ></path>
-                                </g>
-                                <g>
-                                    <path d="m 22,14 0,-4 -2,0 0,6 6,0 0,-2 -4,0 0,0 z" ></path>
-                                </g>
-                                <g>
-                                    <path d="m 20,26 2,0 0,-4 4,0 0,-2 -6,0 0,6 0,0 z" ></path>
-                                </g>
-                                <g>
-                                    <path d="m 10,22 4,0 0,4 2,0 0,-6 -6,0 0,2 0,0 z" ></path>
-                                </g>
-                            </svg> :
-                                <svg version="1.1" viewBox="0 0 36 36" fill="currentColor">
-                                    <g>
-                                        <path d="m 10,16 2,0 0,-4 4,0 0,-2 L 10,10 l 0,6 0,0 z"></path>
-                                    </g>
-                                    <g>
-                                        <path d="m 20,10 0,2 4,0 0,4 2,0 L 26,10 l -6,0 0,0 z"></path>
-                                    </g>
-                                    <g>
-                                        <path d="m 24,24 -4,0 0,2 L 26,26 l 0,-6 -2,0 0,4 0,0 z"></path>
-                                    </g>
-                                    <g>
-                                        <path d="M 12,20 10,20 10,26 l 6,0 0,-2 -4,0 0,-4 0,0 z"></path>
-                                    </g>
-                                </svg>
-                            }
-
                         </button>
-                    </div>
-                </div>
+
+
+                                <div style={{ position: 'relative' }}>
+                                    <button className={`configBtn ${showConfig && 'selected'}`}
+                                        data-tip={`설정`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            set_showConfig(c => !c)
+                                        }}>
+                                        <svg
+                                            className={showConfig ? "configArea config selected" : "configArea config"}
+                                            style={{
+                                                enableBackground: "new 0 0 24 24",
+                                            }}
+                                            fill="currentColor"
+                                            version="1.1"
+                                            viewBox="0 0 24 24"
+                                            xmlSpace="preserve"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                        >
+                                            <g />
+                                            <g>
+                                                <path d="M22.2,14.4L21,13.7c-1.3-0.8-1.3-2.7,0-3.5l1.2-0.7c1-0.6,1.3-1.8,0.7-2.7l-1-1.7c-0.6-1-1.8-1.3-2.7-0.7   L18,5.1c-1.3,0.8-3-0.2-3-1.7V2c0-1.1-0.9-2-2-2h-2C9.9,0,9,0.9,9,2v1.3c0,1.5-1.7,2.5-3,1.7L4.8,4.4c-1-0.6-2.2-0.2-2.7,0.7   l-1,1.7C0.6,7.8,0.9,9,1.8,9.6L3,10.3C4.3,11,4.3,13,3,13.7l-1.2,0.7c-1,0.6-1.3,1.8-0.7,2.7l1,1.7c0.6,1,1.8,1.3,2.7,0.7L6,18.9   c1.3-0.8,3,0.2,3,1.7V22c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2v-1.3c0-1.5,1.7-2.5,3-1.7l1.2,0.7c1,0.6,2.2,0.2,2.7-0.7l1-1.7   C23.4,16.2,23.1,15,22.2,14.4z M12,16c-2.2,0-4-1.8-4-4c0-2.2,1.8-4,4-4s4,1.8,4,4C16,14.2,14.2,16,12,16z" />
+                                            </g>
+                                        </svg>
+                                    </button>
+
+                                    <ConfigController
+                                        resaveConfig={resaveConfig}
+                                        showConfig={showConfig}
+                                        ChartOption={chartOption}
+
+                                    />
+                                </div>
+
+
+                                <button className={`fullScreenBtn ${isfullscreen ? 'fullscreenstate' : ''}`}
+                                    data-tip="전체화면"
+                                    onClick={handleFullScreen}>
+                                    {isfullscreen ? <svg version="1.1" viewBox="0 0 36 36" fill="currentColor">
+                                        <g>
+                                            <path d="m 14,14 -4,0 0,2 6,0 0,-6 -2,0 0,4 0,0 z" ></path>
+                                        </g>
+                                        <g>
+                                            <path d="m 22,14 0,-4 -2,0 0,6 6,0 0,-2 -4,0 0,0 z" ></path>
+                                        </g>
+                                        <g>
+                                            <path d="m 20,26 2,0 0,-4 4,0 0,-2 -6,0 0,6 0,0 z" ></path>
+                                        </g>
+                                        <g>
+                                            <path d="m 10,22 4,0 0,4 2,0 0,-6 -6,0 0,2 0,0 z" ></path>
+                                        </g>
+                                    </svg> :
+                                        <svg version="1.1" viewBox="0 0 36 36" fill="currentColor">
+                                            <g>
+                                                <path d="m 10,16 2,0 0,-4 4,0 0,-2 L 10,10 l 0,6 0,0 z"></path>
+                                            </g>
+                                            <g>
+                                                <path d="m 20,10 0,2 4,0 0,4 2,0 L 26,10 l -6,0 0,0 z"></path>
+                                            </g>
+                                            <g>
+                                                <path d="m 24,24 -4,0 0,2 L 26,26 l 0,-6 -2,0 0,4 0,0 z"></path>
+                                            </g>
+                                            <g>
+                                                <path d="M 12,20 10,20 10,26 l 6,0 0,-2 -4,0 0,-4 0,0 z"></path>
+                                            </g>
+                                        </svg>
+                                    }
+
+                                </button>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
