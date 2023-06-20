@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import './PDFresultModal.scss';
 import PDFviewModal from 'react-rel-pdfviewer';
-// import Draggable from 'react-draggable';
+
 
 import { PDFDocument, rgb } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit'
 
-// import pdfsvg from './PDF_file_icon.svg';
+
 import ReactTooltip from 'react-tooltip';
 // import { base64img } from "./base64img";
 
@@ -19,6 +19,7 @@ import jeju from './JejuMyeongjo.ttf';
 import { closeFullscreen, openFullScreen } from "./util";
 import ConfigController from "./ConfigController";
 import { ReactComponent as RemoconSVG } from "./remotecontroller.svg";
+import RemoconController from "./RemoconController";
 
 // import * as pdfjsLib from 'pdfjs-dist/webpack';
 
@@ -70,7 +71,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
     }, [data])
 
     //리모콘
-    const [hideController,set_hideController] = useState(false);
+    const [hideController, set_hideController] = useState(false);
 
 
     //차트 옵션. 톱니바퀴
@@ -104,6 +105,8 @@ const PDFresultModal = ({ onClose, ...props }) => {
         penWeight: 1, //유저가 PDF에 펜으로 글씨 쓴것.
     })
 
+    const [offsetX, set_offsetX] = useState("0.00");
+    const [offsetY, set_offsetY] = useState("0.00");
 
     //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
     const [fminx] = React.useState(1);
@@ -1079,71 +1082,11 @@ const PDFresultModal = ({ onClose, ...props }) => {
             minWidth: isfullscreen ? '100%' : specialWidth,
         }}>
             <div className="marginWrap">
-
-                {/* {!hideController&&
-                    <>
-                        <Draggable
-
-                            handle=".OVM-drag-handle"
-                            defaultPosition={{ x: 50, y: 50 }}
-                            bounds=".marginWrap"
-                            grid={[1, 1]} >
-
-                            <div tabIndex='0' className="moveableBarwrapper" style={{ width: mw + 'px', height: mh + 'px', backgroundColor: 'white', zIndex: isFocus ? 10 : 9 }}
-                                onBlur={() => {
-                                    //console.log("OVM BLUR");
-                                    set_isFocus(false);
-                                }}
-                                onFocus={() => {
-                                    //console.log("OVM FOCUS");
-                                    set_isFocus(true);
-                                }}
-                            >
-                                <div className="header OVM-drag-handle" style={{ backgroundColor: isFocus ? 'rgb(40,40,40)' : 'rgb(20,20,20)' }}>
-
-                                    Controller
-                                    <button className="icon-btn minimize" style={{ position: 'absolute', right: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={handleCloseController}>
-                                        <MinimizeSVG />
-                                    </button>
-                                </div>
-
-                                <div className="middle">
-                                    <div className="moveBar">
-                                        <div className="SideBar">
-                                            <div className="oneConfig">
-                                                <div className="c_label">
-                                                    평균응시시간
-                                                </div>
-                                                <div className="c_data">
-                                                    {fd_inform.avgDuration.toFixed(0)}ms
-                                                </div>
-                                            </div>
-                                            <div className="oneConfig">
-
-                                                <div className="c_label">
-                                                    응시비율
-                                                </div>
-                                                <div className="c_data">
-                                                    {fd_inform.fixationRatio.toFixed(0)}%
-                                                </div>
-                                            </div>
-                                            <div style={{ display: 'flex' }}>
-                                                <div className="oneConfig" onClick={handleTryPrint} data-tip="시선이동이 표현된 PDF를 다운로드 합니다.">
-                                                    <img src={pdfsvg} alt="" style={{ height: '70%' }} />&nbsp;다운
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </Draggable>
-
-                    </>
-                } */}
-
-
-
+                <RemoconController fd_inform={fd_inform} handleTryPrint={handleTryPrint}
+                    offsetX={offsetX} offsetY={offsetY}
+                    hideController={hideController}
+                    set_offsetX={set_offsetX} set_offsetY={set_offsetY}
+                />
                 <div className="rightZone">
                     <div className="topVacancy" ref={topRef}>
                         <div className="viewWrap" style={{
@@ -1254,12 +1197,12 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
 
                                 <button className={`showControllerBtn ${!hideController && 'selected'}`}
-                             data-tip="제어판 보기"
-                            onClick={() => {
-                                set_hideController(h => !h);
-                            }}>
-                            <RemoconSVG />
-                        </button>
+                                    data-tip="제어판 보기"
+                                    onClick={() => {
+                                        set_hideController(h => !h);
+                                    }}>
+                                    <RemoconSVG />
+                                </button>
 
 
                                 <div style={{ position: 'relative' }}>
