@@ -47,8 +47,9 @@ function getFileAsArrayBuffer(importedfile) {
 }
 
 
-const PDFresultModal = ({ onClose, ...props }) => {
+const PDFresultModal = ({ ...props }) => {
     const { WORKERSRC,
+        onClose,
         path,
         viewpercent, data, specialWidth, specialHeight,
         onConfirm, showConfirmBtn, printPDFData, downloadFileName, PDFonloadCallback ,penweight,pencolor,penpermit } = props;
@@ -101,7 +102,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
         playSpeed: 1,
         drawFPS: 30,
-        penPermit:penpermit?penpermit:1,
+        penPermit:penpermit?1:0,
         penColor:pencolor?pencolor:'red',
         penWeight: penweight?penweight:1, //유저가 PDF에 펜으로 글씨 쓴것.
     })
@@ -1111,7 +1112,9 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                 onConfirm={onConfirm}
 
 
-                                onClose={onClose}
+                                onClose={()=>{
+                                    
+                                }}
                                 showViewMode={true}
                                 set_viewpercent={() => { }}
                                 path={path}
