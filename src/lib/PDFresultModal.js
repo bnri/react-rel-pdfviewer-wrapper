@@ -1113,7 +1113,7 @@ const PDFresultModal = ({ ...props }) => {
 
 
                                 onClose={()=>{
-                                    
+
                                 }}
                                 showViewMode={true}
                                 set_viewpercent={() => { }}
@@ -1235,12 +1235,12 @@ const PDFresultModal = ({ ...props }) => {
                                         </svg>
                                     </button>
 
-                                    <ConfigController
+                                    {/* <ConfigController
                                         resaveConfig={resaveConfig}
                                         showConfig={showConfig}
                                         ChartOption={chartOption}
 
-                                    />
+                                    /> */}
                                 </div>
 
 
