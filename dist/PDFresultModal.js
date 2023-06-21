@@ -19,17 +19,17 @@ var _fontkit = _interopRequireDefault(require("@pdf-lib/fontkit"));
 
 var _reactTooltip = _interopRequireDefault(require("react-tooltip"));
 
-var _readereyelogo = _interopRequireDefault(require("./readereyelogo.png"));
+var _readereyelogo = _interopRequireDefault(require("./img/readereyelogo.png"));
 
-var _JejuMyeongjo = _interopRequireDefault(require("./JejuMyeongjo.ttf"));
+var _JejuMyeongjo = _interopRequireDefault(require("./font/JejuMyeongjo.ttf"));
 
 var _util = require("./util");
 
-var _ConfigController = _interopRequireDefault(require("./ConfigController"));
+var _ConfigController = _interopRequireDefault(require("./controller/ConfigController"));
 
-var _remotecontroller = require("./remotecontroller.svg");
+var _remotecontroller = require("./img/remotecontroller.svg");
 
-var _RemoconController = _interopRequireDefault(require("./RemoconController"));
+var _RemoconController = _interopRequireDefault(require("./controller/RemoconController"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

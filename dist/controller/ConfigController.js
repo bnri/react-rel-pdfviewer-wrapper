@@ -9,11 +9,11 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _check = require("./check.svg");
+var _check = require("../img/check.svg");
 
-var _chevronRight = require("./chevron-right.svg");
+var _chevronRight = require("../img/chevron-right.svg");
 
-var _chevronLeft = require("./chevron-left.svg");
+var _chevronLeft = require("../img/chevron-left.svg");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 

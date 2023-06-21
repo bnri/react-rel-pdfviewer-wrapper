@@ -1,7 +1,7 @@
 import React,{ useState, useEffect } from "react";
-import { ReactComponent as CheckSVG } from "./check.svg";
-import { ReactComponent as RightArrowSVG } from "./chevron-right.svg";
-import { ReactComponent as LeftArrowSVG } from "./chevron-left.svg";
+import { ReactComponent as CheckSVG } from "../img/check.svg";
+import { ReactComponent as RightArrowSVG } from "../img/chevron-right.svg";
+import { ReactComponent as LeftArrowSVG } from "../img/chevron-left.svg";
 
 const ConfigController = ({ ...props }) => {
     const { resaveConfig,showConfig, ChartOption } = props;

@@ -11,7 +11,7 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _reactDraggable = _interopRequireDefault(require("react-draggable"));
 
-var _PDF_file_icon = _interopRequireDefault(require("./PDF_file_icon.svg"));
+var _PDF_file_icon = _interopRequireDefault(require("../img/PDF_file_icon.svg"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -201,90 +201,6 @@ var RemoconController = function RemoconController(_ref2) {
     className: "offsetWrapper"
   }, "X : " + offsetX + " Y : " + offsetY)))));
 };
-/*
-const RemoconController = ({ ...props }) => {
-    const { hideController, handleTryPrint, fd_inform } = props;
-
-
-    const [isFocus, set_isFocus] = useState();
-    const [visibility, set_visibility] = useState('visible');
-    useEffect(() => {
-        let a;
-        if (hideController) {
-            a = setTimeout(function () {
-                set_visibility('hidden');
-            }, 200)
-        }
-        else {
-            set_visibility('visible');
-        }
-        return () => {
-            clearTimeout(a);
-        }
-    }, [hideController])
-
-    return <Draggable
-        bounds=".topVacancy"
-        handle=".Remocon-drag-handle"
-        // defaultPosition={{ x: 50, y: 50 }}
-       
-        grid={[1, 1]} >
-
-        <div tabIndex='0' className="RemoconController"
-            style={{
-                backgroundColor: 'white',
-                opacity: hideController ? 0 : 1,
-                visibility: visibility,
-                transition: 'opacity .2s ease',
-                zIndex: isFocus ? 10 : 9
-            }}
-            onBlur={() => {
-                //console.log("OVM BLUR");
-                set_isFocus(false);
-            }}
-            onFocus={() => {
-                //console.log("OVM FOCUS");
-                set_isFocus(true);
-            }}
-        >
-            <div className="header Remocon-drag-handle" style={{ backgroundColor: isFocus ? 'rgb(40,40,40)' : 'rgb(20,20,20)' }}>
-                Drag
-            </div>
-
-            <div className="middle">
-                <div className="moveBar">
-                    <div className="SideBar">
-                        <div className="oneConfig">
-                            <div className="c_label">
-                                평균응시시간
-                            </div>
-                            <div className="c_data">
-                                {fd_inform.avgDuration.toFixed(0)}ms
-                            </div>
-                        </div>
-                        <div className="oneConfig">
-
-                            <div className="c_label">
-                                응시비율
-                            </div>
-                            <div className="c_data">
-                                {fd_inform.fixationRatio.toFixed(0)}%
-                            </div>
-                        </div>
-                        <div style={{ display: 'flex' }}>
-                            <div className="oneConfig" onClick={handleTryPrint} data-tip="시선이동이 표현된 PDF를 다운로드 합니다.">
-                                <img src={pdfsvg} alt="" style={{ height: '70%' }} />&nbsp;다운
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </Draggable>
-}
-*/
-
 
 var _default = RemoconController;
 exports.default = _default;
