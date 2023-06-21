@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState ,useRef ,useMemo} from "react";
 import './PDFresultModal.scss';
 import PDFviewModal from 'react-rel-pdfviewer';
 
@@ -55,11 +55,11 @@ const PDFresultModal = ({ ...props }) => {
         onConfirm, showConfirmBtn, printPDFData, downloadFileName, PDFonloadCallback ,penweight,pencolor,penpermit } = props;
 
     // console.log("WORKERSRC",WORKERSRC);
-    const topRef = React.useRef();
-    const pdfviewref = React.useRef();
-    const [nowPage, set_nowPage] = React.useState(1);
-    const [nowTime, set_nowTime] = React.useState(0);
-    const endTime = React.useMemo(() => {
+    const topRef = useRef();
+    const pdfviewref = useRef();
+    const [nowPage, set_nowPage] = useState(1);
+    const [nowTime, set_nowTime] = useState(0);
+    const endTime = useMemo(() => {
         // console.log(data.gazeInform.maxTime);
 
         let lastTime = data.gazeData[data.gazeData.length - 1].relTime;
@@ -111,9 +111,9 @@ const PDFresultModal = ({ ...props }) => {
     const [offsetY, set_offsetY] = useState("0.00");
 
     //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
-    const [fminx] = React.useState(1);
-    const [fminy] = React.useState(1);
-    const fixationData = React.useMemo(() => {
+    const [fminx] = useState(1);
+    const [fminy] = useState(1);
+    const fixationData = useMemo(() => {
         let fa = [];
         let sumPDF_x = 0;
         let sumPDF_y = 0;
@@ -220,26 +220,26 @@ const PDFresultModal = ({ ...props }) => {
     }, [data, fminx, fminy])
 
 
-    const [innerFrameScale, set_innerFrameScale] = React.useState(0.5);
-    const [innerFrameTop, set_innerFrameTop] = React.useState(0);
-    const [innerFrameLeft, set_innerFrameLeft] = React.useState(0);
+    const [innerFrameScale, set_innerFrameScale] = useState(0.5);
+    const [innerFrameTop, set_innerFrameTop] = useState(0);
+    const [innerFrameLeft, set_innerFrameLeft] = useState(0);
 
 
     //재생과 멈춤.
-    const [isPlaying, set_isPlaying] = React.useState(false);
+    const [isPlaying, set_isPlaying] = useState(false);
 
     //재생배속.
-    const [followEvent] = React.useState(true);
+    const [followEvent] = useState(true);
 
 
-    const [nowPDFviewInform, set_nowPDFviewInform] = React.useState(null);
-    const [minFixationCount] = React.useState(3);
+    const [nowPDFviewInform, set_nowPDFviewInform] = useState(null);
+    const [minFixationCount] = useState(3);
 
     //전체화면
-    const [isfullscreen, set_isfullscreen] = React.useState(false);
+    const [isfullscreen, set_isfullscreen] = useState(false);
 
     //fixation Duration정보..옮기자, 콘트롤러로
-    const fd_inform = React.useMemo(() => {
+    const fd_inform = useMemo(() => {
         if (!fixationData) return;
 
         let sumfd = 0;
@@ -267,6 +267,7 @@ const PDFresultModal = ({ ...props }) => {
 
     //리사이즈이벤트
     const resizeInnerFrame = React.useCallback(() => {
+        if(!topRef.current) return;
 
         setTimeout(function () {
             let max = (window.screen.height / (window.devicePixelRatio)).toFixed(0) * 1;
@@ -287,7 +288,6 @@ const PDFresultModal = ({ ...props }) => {
         const pastScreenW = data.screenSize.width;
         const pastScreenH = data.screenSize.height;
         let pastRatio = pastScreenH / pastScreenW;
-
         const width = topRef.current.clientWidth;
         const height = topRef.current.clientHeight;
         let nowRatio = height / width;
@@ -657,7 +657,7 @@ const PDFresultModal = ({ ...props }) => {
 
 
     //PDF writing 할때 쓰는것들임. 분리 필요
-    const [jejuFontArrayBuffer, set_jejuFontArrayBuffer] = React.useState(null);
+    const [jejuFontArrayBuffer, set_jejuFontArrayBuffer] = useState(null);
     React.useEffect(() => {
         getFileAsArrayBuffer(jeju).then(res_arrbuffer => {
             set_jejuFontArrayBuffer(res_arrbuffer);
@@ -667,7 +667,7 @@ const PDFresultModal = ({ ...props }) => {
 
 
     //path값에 따라서 PDFarraybuffer 보관
-    const [pdfArrayBuffer, set_pdfArrayBuffer] = React.useState(null);
+    const [pdfArrayBuffer, set_pdfArrayBuffer] = useState(null);
 
     React.useEffect(() => {
         if (!path) return;
@@ -680,7 +680,7 @@ const PDFresultModal = ({ ...props }) => {
 
 
 
-    const [readersEyeLogoArrayBuffer, set_readersEyeLogoArrayBuffer] = React.useState(null);
+    const [readersEyeLogoArrayBuffer, set_readersEyeLogoArrayBuffer] = useState(null);
     React.useEffect(() => {
         fetch(readerseyelogo).then(r => r.arrayBuffer()).then(buf => {
             set_readersEyeLogoArrayBuffer(buf);
@@ -1235,12 +1235,12 @@ const PDFresultModal = ({ ...props }) => {
                                         </svg>
                                     </button>
 
-                                    {/* <ConfigController
+                                    <ConfigController
                                         resaveConfig={resaveConfig}
                                         showConfig={showConfig}
                                         ChartOption={chartOption}
 
-                                    /> */}
+                                    />
                                 </div>
 
 

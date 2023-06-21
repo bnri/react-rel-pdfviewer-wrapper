@@ -97,21 +97,20 @@ var PDFresultModal = function PDFresultModal(_ref) {
       pencolor = props.pencolor,
       penpermit = props.penpermit; // console.log("WORKERSRC",WORKERSRC);
 
-  var topRef = _react.default.useRef();
+  var topRef = (0, _react.useRef)();
+  var pdfviewref = (0, _react.useRef)();
 
-  var pdfviewref = _react.default.useRef();
+  var _useState = (0, _react.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      nowPage = _useState2[0],
+      set_nowPage = _useState2[1];
 
-  var _React$useState = _react.default.useState(1),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      nowPage = _React$useState2[0],
-      set_nowPage = _React$useState2[1];
+  var _useState3 = (0, _react.useState)(0),
+      _useState4 = _slicedToArray(_useState3, 2),
+      nowTime = _useState4[0],
+      set_nowTime = _useState4[1];
 
-  var _React$useState3 = _react.default.useState(0),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      nowTime = _React$useState4[0],
-      set_nowTime = _React$useState4[1];
-
-  var endTime = _react.default.useMemo(function () {
+  var endTime = (0, _react.useMemo)(function () {
     // console.log(data.gazeInform.maxTime);
     var lastTime = data.gazeData[data.gazeData.length - 1].relTime; // console.log("et",et);
 
@@ -119,23 +118,22 @@ var PDFresultModal = function PDFresultModal(_ref) {
     return lastTime;
   }, [data]); //리모콘
 
+  var _useState5 = (0, _react.useState)(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      hideController = _useState6[0],
+      set_hideController = _useState6[1]; //차트 옵션. 톱니바퀴
 
-  var _useState = (0, _react.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      hideController = _useState2[0],
-      set_hideController = _useState2[1]; //차트 옵션. 톱니바퀴
 
-
-  var _useState3 = (0, _react.useState)(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      showConfig = _useState4[0],
-      set_showConfig = _useState4[1];
+  var _useState7 = (0, _react.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      showConfig = _useState8[0],
+      set_showConfig = _useState8[1];
 
   var resaveConfig = function resaveConfig() {
     set_chartOption(JSON.parse(JSON.stringify(chartOption)));
   };
 
-  var _useState5 = (0, _react.useState)({
+  var _useState9 = (0, _react.useState)({
     heatMap: true,
     heatMapMax: 40,
     heatMapRadius: 40,
@@ -159,30 +157,30 @@ var PDFresultModal = function PDFresultModal(_ref) {
     penWeight: penweight ? penweight : 1 //유저가 PDF에 펜으로 글씨 쓴것.
 
   }),
-      _useState6 = _slicedToArray(_useState5, 2),
-      chartOption = _useState6[0],
-      set_chartOption = _useState6[1];
-
-  var _useState7 = (0, _react.useState)("0.00"),
-      _useState8 = _slicedToArray(_useState7, 2),
-      offsetX = _useState8[0],
-      set_offsetX = _useState8[1];
-
-  var _useState9 = (0, _react.useState)("0.00"),
       _useState10 = _slicedToArray(_useState9, 2),
-      offsetY = _useState10[0],
-      set_offsetY = _useState10[1]; //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
+      chartOption = _useState10[0],
+      set_chartOption = _useState10[1];
+
+  var _useState11 = (0, _react.useState)("0.00"),
+      _useState12 = _slicedToArray(_useState11, 2),
+      offsetX = _useState12[0],
+      set_offsetX = _useState12[1];
+
+  var _useState13 = (0, _react.useState)("0.00"),
+      _useState14 = _slicedToArray(_useState13, 2),
+      offsetY = _useState14[0],
+      set_offsetY = _useState14[1]; //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
 
 
-  var _React$useState5 = _react.default.useState(1),
-      _React$useState6 = _slicedToArray(_React$useState5, 1),
-      fminx = _React$useState6[0];
+  var _useState15 = (0, _react.useState)(1),
+      _useState16 = _slicedToArray(_useState15, 1),
+      fminx = _useState16[0];
 
-  var _React$useState7 = _react.default.useState(1),
-      _React$useState8 = _slicedToArray(_React$useState7, 1),
-      fminy = _React$useState8[0];
+  var _useState17 = (0, _react.useState)(1),
+      _useState18 = _slicedToArray(_useState17, 1),
+      fminy = _useState18[0];
 
-  var fixationData = _react.default.useMemo(function () {
+  var fixationData = (0, _react.useMemo)(function () {
     var fa = [];
     var sumPDF_x = 0;
     var sumPDF_y = 0; // console.log("data", data);
@@ -280,49 +278,49 @@ var PDFresultModal = function PDFresultModal(_ref) {
     return fa;
   }, [data, fminx, fminy]);
 
-  var _React$useState9 = _react.default.useState(0.5),
-      _React$useState10 = _slicedToArray(_React$useState9, 2),
-      innerFrameScale = _React$useState10[0],
-      set_innerFrameScale = _React$useState10[1];
+  var _useState19 = (0, _react.useState)(0.5),
+      _useState20 = _slicedToArray(_useState19, 2),
+      innerFrameScale = _useState20[0],
+      set_innerFrameScale = _useState20[1];
 
-  var _React$useState11 = _react.default.useState(0),
-      _React$useState12 = _slicedToArray(_React$useState11, 2),
-      innerFrameTop = _React$useState12[0],
-      set_innerFrameTop = _React$useState12[1];
+  var _useState21 = (0, _react.useState)(0),
+      _useState22 = _slicedToArray(_useState21, 2),
+      innerFrameTop = _useState22[0],
+      set_innerFrameTop = _useState22[1];
 
-  var _React$useState13 = _react.default.useState(0),
-      _React$useState14 = _slicedToArray(_React$useState13, 2),
-      innerFrameLeft = _React$useState14[0],
-      set_innerFrameLeft = _React$useState14[1]; //재생과 멈춤.
-
-
-  var _React$useState15 = _react.default.useState(false),
-      _React$useState16 = _slicedToArray(_React$useState15, 2),
-      isPlaying = _React$useState16[0],
-      set_isPlaying = _React$useState16[1]; //재생배속.
+  var _useState23 = (0, _react.useState)(0),
+      _useState24 = _slicedToArray(_useState23, 2),
+      innerFrameLeft = _useState24[0],
+      set_innerFrameLeft = _useState24[1]; //재생과 멈춤.
 
 
-  var _React$useState17 = _react.default.useState(true),
-      _React$useState18 = _slicedToArray(_React$useState17, 1),
-      followEvent = _React$useState18[0];
-
-  var _React$useState19 = _react.default.useState(null),
-      _React$useState20 = _slicedToArray(_React$useState19, 2),
-      nowPDFviewInform = _React$useState20[0],
-      set_nowPDFviewInform = _React$useState20[1];
-
-  var _React$useState21 = _react.default.useState(3),
-      _React$useState22 = _slicedToArray(_React$useState21, 1),
-      minFixationCount = _React$useState22[0]; //전체화면
+  var _useState25 = (0, _react.useState)(false),
+      _useState26 = _slicedToArray(_useState25, 2),
+      isPlaying = _useState26[0],
+      set_isPlaying = _useState26[1]; //재생배속.
 
 
-  var _React$useState23 = _react.default.useState(false),
-      _React$useState24 = _slicedToArray(_React$useState23, 2),
-      isfullscreen = _React$useState24[0],
-      set_isfullscreen = _React$useState24[1]; //fixation Duration정보..옮기자, 콘트롤러로
+  var _useState27 = (0, _react.useState)(true),
+      _useState28 = _slicedToArray(_useState27, 1),
+      followEvent = _useState28[0];
+
+  var _useState29 = (0, _react.useState)(null),
+      _useState30 = _slicedToArray(_useState29, 2),
+      nowPDFviewInform = _useState30[0],
+      set_nowPDFviewInform = _useState30[1];
+
+  var _useState31 = (0, _react.useState)(3),
+      _useState32 = _slicedToArray(_useState31, 1),
+      minFixationCount = _useState32[0]; //전체화면
 
 
-  var fd_inform = _react.default.useMemo(function () {
+  var _useState33 = (0, _react.useState)(false),
+      _useState34 = _slicedToArray(_useState33, 2),
+      isfullscreen = _useState34[0],
+      set_isfullscreen = _useState34[1]; //fixation Duration정보..옮기자, 콘트롤러로
+
+
+  var fd_inform = (0, _react.useMemo)(function () {
     if (!fixationData) return;
     var sumfd = 0;
     var fc = 0;
@@ -343,8 +341,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
     return obj;
   }, [fixationData, minFixationCount, endTime]); //리사이즈이벤트
 
-
   var resizeInnerFrame = _react.default.useCallback(function () {
+    if (!topRef.current) return;
     setTimeout(function () {
       var max = (window.screen.height / window.devicePixelRatio).toFixed(0) * 1; // console.log("max:" + max);
       // console.log("window.innerHeight:" + window.innerHeight);
@@ -668,10 +666,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [handleDraw]); //PDF writing 할때 쓰는것들임. 분리 필요
 
 
-  var _React$useState25 = _react.default.useState(null),
-      _React$useState26 = _slicedToArray(_React$useState25, 2),
-      jejuFontArrayBuffer = _React$useState26[0],
-      set_jejuFontArrayBuffer = _React$useState26[1];
+  var _useState35 = (0, _react.useState)(null),
+      _useState36 = _slicedToArray(_useState35, 2),
+      jejuFontArrayBuffer = _useState36[0],
+      set_jejuFontArrayBuffer = _useState36[1];
 
   _react.default.useEffect(function () {
     getFileAsArrayBuffer(_JejuMyeongjo.default).then(function (res_arrbuffer) {
@@ -680,10 +678,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, []); //path값에 따라서 PDFarraybuffer 보관
 
 
-  var _React$useState27 = _react.default.useState(null),
-      _React$useState28 = _slicedToArray(_React$useState27, 2),
-      pdfArrayBuffer = _React$useState28[0],
-      set_pdfArrayBuffer = _React$useState28[1];
+  var _useState37 = (0, _react.useState)(null),
+      _useState38 = _slicedToArray(_useState37, 2),
+      pdfArrayBuffer = _useState38[0],
+      set_pdfArrayBuffer = _useState38[1];
 
   _react.default.useEffect(function () {
     if (!path) return;
@@ -728,10 +726,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }());
   }, [path]);
 
-  var _React$useState29 = _react.default.useState(null),
-      _React$useState30 = _slicedToArray(_React$useState29, 2),
-      readersEyeLogoArrayBuffer = _React$useState30[0],
-      set_readersEyeLogoArrayBuffer = _React$useState30[1];
+  var _useState39 = (0, _react.useState)(null),
+      _useState40 = _slicedToArray(_useState39, 2),
+      readersEyeLogoArrayBuffer = _useState40[0],
+      set_readersEyeLogoArrayBuffer = _useState40[1];
 
   _react.default.useEffect(function () {
     fetch(_readereyelogo.default).then(function (r) {
@@ -1236,7 +1234,11 @@ var PDFresultModal = function PDFresultModal(_ref) {
     xmlnsXlink: "http://www.w3.org/1999/xlink"
   }, /*#__PURE__*/_react.default.createElement("g", null), /*#__PURE__*/_react.default.createElement("g", null, /*#__PURE__*/_react.default.createElement("path", {
     d: "M22.2,14.4L21,13.7c-1.3-0.8-1.3-2.7,0-3.5l1.2-0.7c1-0.6,1.3-1.8,0.7-2.7l-1-1.7c-0.6-1-1.8-1.3-2.7-0.7   L18,5.1c-1.3,0.8-3-0.2-3-1.7V2c0-1.1-0.9-2-2-2h-2C9.9,0,9,0.9,9,2v1.3c0,1.5-1.7,2.5-3,1.7L4.8,4.4c-1-0.6-2.2-0.2-2.7,0.7   l-1,1.7C0.6,7.8,0.9,9,1.8,9.6L3,10.3C4.3,11,4.3,13,3,13.7l-1.2,0.7c-1,0.6-1.3,1.8-0.7,2.7l1,1.7c0.6,1,1.8,1.3,2.7,0.7L6,18.9   c1.3-0.8,3,0.2,3,1.7V22c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2v-1.3c0-1.5,1.7-2.5,3-1.7l1.2,0.7c1,0.6,2.2,0.2,2.7-0.7l1-1.7   C23.4,16.2,23.1,15,22.2,14.4z M12,16c-2.2,0-4-1.8-4-4c0-2.2,1.8-4,4-4s4,1.8,4,4C16,14.2,14.2,16,12,16z"
-  }))))), /*#__PURE__*/_react.default.createElement("button", {
+  })))), /*#__PURE__*/_react.default.createElement(_ConfigController.default, {
+    resaveConfig: resaveConfig,
+    showConfig: showConfig,
+    ChartOption: chartOption
+  })), /*#__PURE__*/_react.default.createElement("button", {
     className: "fullScreenBtn ".concat(isfullscreen ? 'fullscreenstate' : ''),
     "data-tip": "\uC804\uCCB4\uD654\uBA74",
     onClick: handleFullScreen
