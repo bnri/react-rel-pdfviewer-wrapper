@@ -7,7 +7,7 @@ import fontkit from '@pdf-lib/fontkit'
 import ReactTooltip from 'react-tooltip';
 import readerseyelogo from "./img/readereyelogo.png";
 import jeju from './font/JejuMyeongjo.ttf';
-import { closeFullscreen, openFullScreen } from "./util";
+import { closeFullscreen, hexToRgb, openFullScreen } from "./util";
 import { ReactComponent as RemoconSVG } from "./img/remotecontroller.svg";
 import {ConfigController,RemoconController} from "./controller";
 
@@ -84,7 +84,7 @@ const PDFresultModal = ({ ...props }) => {
         playSpeed: 1,
         drawFPS: 30,
         penPermit:penpermit?1:0,
-        penColor:pencolor?pencolor:'red',
+        penColor:pencolor?pencolor:'#FF0000',
         penWeight: penweight?penweight:1, //유저가 PDF에 펜으로 글씨 쓴것.
     })
 
@@ -761,7 +761,7 @@ const PDFresultModal = ({ ...props }) => {
         let size = chartOption.RPOG_size * 2 / 100;
         let r = cw * 0.01 * size;
         //draw rawData
-        for (let i = 0; i < gazeData.length; i++) {
+        for (let i = 0; chartOption.RPOG&&(i < gazeData.length); i++) {
             let d = gazeData[i];
 
 
@@ -773,15 +773,6 @@ const PDFresultModal = ({ ...props }) => {
                 if (r) {
 
                     if (prevx && prevy) {
-                        // rctx.beginPath();
-                        // rctx.lineWidth = 0.5;
-                        // rctx.strokeStyle = 'red';
-                        // rctx.fillStyle = 'red';
-                        // rctx.moveTo((prevx) * cw, (prevy) * ch);
-                        // rctx.lineTo((d.pdfx) * cw, (d.pdfy) * ch);
-                        // rctx.stroke();
-
-
                         pages[d.pageNum - 1].drawLine({
                             start: {
                                 x: prevx * cw,
@@ -848,7 +839,7 @@ const PDFresultModal = ({ ...props }) => {
         prevx = null;
         prevy = null;
 
-        for (let i = 0; i < fixationData.length; i++) {
+        for (let i = 0; chartOption.FPOG&&(i < fixationData.length); i++) {
 
             const f = fixationData[i];
 
@@ -859,7 +850,6 @@ const PDFresultModal = ({ ...props }) => {
 
                     //선그리기...
                     if (prevx && prevy) {
-
                         pages[f.pageNum_s - 1].drawLine({
                             start: {
                                 x: prevx * cw,
@@ -879,8 +869,6 @@ const PDFresultModal = ({ ...props }) => {
 
                     //원그리기 fixation
                     let fsize = fr * Math.sqrt(f.count);
-                    // if (f.relTime_e <= nowTime) {
-
                     pages[f.pageNum_s - 1].drawCircle({
                         x: f.x * cw,
                         y: height - f.y * ch,
@@ -940,6 +928,9 @@ const PDFresultModal = ({ ...props }) => {
                     // rctx.moveTo(draw.x * cw, draw.y * ch);
                 }
                 else if (draw.type === 'draw') {
+                    //hexToRgb(chartOption.penColor)
+                    let rgbobj=hexToRgb(chartOption.penColor);
+                    // console.log("rgbobj",rgbobj)
                     if (startdrawX && startdrawY) {
                         // rctx.lineTo(draw.x * cw, draw.y * ch);
                         // rctx.stroke();
@@ -953,7 +944,7 @@ const PDFresultModal = ({ ...props }) => {
                                 x: draw.x * cw,
                                 y: height - draw.y * ch,
                             },
-                            color: chartOption.penColor,
+                            color: rgbobj?rgb(rgbobj.r/255,rgbobj.g/255,rgbobj.b/255):'#0000FF',//#@! 여기 rgb 로
                             opacity: 1,
                             borderOpacity: 0.3,
                             thickness: (chartOption.penWeight / 2).toFixed(0) * 1 || 1,

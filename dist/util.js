@@ -3,12 +3,24 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.openFullScreen = exports.closeFullscreen = void 0;
-
+exports.openFullScreen = exports.hexToRgb = exports.closeFullscreen = void 0;
+var hexToRgb = function hexToRgb(hex) {
+  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+};
+exports.hexToRgb = hexToRgb;
 var openFullScreen = function openFullScreen() {
   // 호출할때 javscript로 한것 f11말고
   var elem = document.documentElement;
-
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
   } else if (elem.webkitRequestFullscreen) {
@@ -22,12 +34,9 @@ var openFullScreen = function openFullScreen() {
     elem.msRequestFullscreen();
   }
 };
-
 exports.openFullScreen = openFullScreen;
-
 var closeFullscreen = function closeFullscreen() {
   var errormsg = "F11키를 눌러서 전체화면을 해제해 주세요.";
-
   if (document.exitFullscreen) {
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -54,5 +63,4 @@ var closeFullscreen = function closeFullscreen() {
     }
   }
 };
-
 exports.closeFullscreen = closeFullscreen;

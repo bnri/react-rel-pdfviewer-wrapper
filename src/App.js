@@ -74,6 +74,8 @@ function App() {
           onClose={() => {
             set_selPathway(null);
           }}
+
+          
         />
 
       }

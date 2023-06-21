@@ -9,7 +9,5 @@ Object.defineProperty(exports, "PDFresultModal", {
     return _PDFresultModal.default;
   }
 });
-
 var _PDFresultModal = _interopRequireDefault(require("./PDFresultModal"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
