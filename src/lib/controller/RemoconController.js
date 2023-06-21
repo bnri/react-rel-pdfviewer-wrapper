@@ -79,7 +79,7 @@ const RemoconController = ({ ...props }) => {
         }
     }, [hideController])
 
-    return <Draggable
+    return (<Draggable
         bounds=".topVacancy"
         handle=".Remocon-drag-handle"
         // defaultPosition={{ x: 50, y: 50 }}
@@ -151,7 +151,7 @@ const RemoconController = ({ ...props }) => {
 
             </div>
         </div>
-    </Draggable>
+    </Draggable>);
 }
 
 export default RemoconController;

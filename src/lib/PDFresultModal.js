@@ -1276,7 +1276,7 @@ const PDFresultModal = ({ ...props }) => {
             textColor="black"
             border={true}
         />
-    </div>)
+    </div>);
 }
 
 export default PDFresultModal;
