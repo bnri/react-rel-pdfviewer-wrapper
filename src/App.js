@@ -1,6 +1,6 @@
 import React from "react";
 import './App.scss';
-import PDFresultModal from './lib/PDFresultModal';
+import {PDFresultModal} from './lib';
 // import data1 from './data/1.json';
 import data1 from './data/301.json';
 // import * as pdftk from 'node-pdftk';

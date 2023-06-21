@@ -2,34 +2,15 @@
 import React, { useState ,useRef ,useMemo} from "react";
 import './PDFresultModal.scss';
 import PDFviewModal from 'react-rel-pdfviewer';
-
-
 import { PDFDocument, rgb } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit'
-
-
 import ReactTooltip from 'react-tooltip';
-// import { base64img } from "./base64img";
-
 import readerseyelogo from "./img/readereyelogo.png";
 import jeju from './font/JejuMyeongjo.ttf';
-
-// import { ReactComponent as MinimizeSVG } from './minimize-2.svg';
-// import { ReactComponent as MaximizeSVG } from './maximize-2.svg';
 import { closeFullscreen, openFullScreen } from "./util";
-import ConfigController from "./controller/ConfigController";
 import { ReactComponent as RemoconSVG } from "./img/remotecontroller.svg";
-import RemoconController from "./controller/RemoconController";
+import {ConfigController,RemoconController} from "./controller";
 
-// import * as pdfjsLib from 'pdfjs-dist/webpack';
-
-// console.log("야야야")
-// console.log("pdfjsLib",pdfjsLib)
-
-
-// console.log ("readerseyelogo",typeof readerseyelogo, readerseyelogo);
-
-// console.log("jeju : ",typeof jeju, jeju);
 
 
 function getFileAsArrayBuffer(importedfile) {
@@ -1112,9 +1093,7 @@ const PDFresultModal = ({ ...props }) => {
                                 onConfirm={onConfirm}
 
 
-                                onClose={()=>{
-
-                                }}
+                                onClose={onClose}
                                 showViewMode={true}
                                 set_viewpercent={() => { }}
                                 path={path}
