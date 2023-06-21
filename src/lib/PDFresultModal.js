@@ -51,7 +51,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
     const { WORKERSRC,
         path,
         viewpercent, data, specialWidth, specialHeight,
-        onConfirm, showConfirmBtn, printPDFData, downloadFileName, PDFonloadCallback } = props;
+        onConfirm, showConfirmBtn, printPDFData, downloadFileName, PDFonloadCallback ,penweight,pencolor,penpermit } = props;
 
     // console.log("WORKERSRC",WORKERSRC);
     const topRef = React.useRef();
@@ -101,8 +101,9 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
         playSpeed: 1,
         drawFPS: 30,
-
-        penWeight: 1, //유저가 PDF에 펜으로 글씨 쓴것.
+        penPermit:penpermit?penpermit:1,
+        penColor:pencolor?pencolor:'red',
+        penWeight: penweight?penweight:1, //유저가 PDF에 펜으로 글씨 쓴것.
     })
 
     const [offsetX, set_offsetX] = useState("0.00");
@@ -575,8 +576,8 @@ const PDFresultModal = ({ onClose, ...props }) => {
                 // console.log("그려")
                 if (nowPage === pageNum) {
                     rctx.lineWidth = (chartOption.penWeight * 1).toFixed(0) * 1;
-                    rctx.strokeStyle = 'red';
-                    rctx.fillStyle = 'red';
+                    rctx.strokeStyle = chartOption.penColor;
+                    rctx.fillStyle = chartOption.penColor;
                     if (draw.type === 'startDrawing') {
                         // console.log("draw", draw);
                         // console.log("그리기시작");
@@ -970,7 +971,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                 x: draw.x * cw,
                                 y: height - draw.y * ch,
                             },
-                            color: rgb(1, 0, 0),
+                            color: chartOption.penColor,
                             opacity: 1,
                             borderOpacity: 0.3,
                             thickness: (chartOption.penWeight / 2).toFixed(0) * 1 || 1,

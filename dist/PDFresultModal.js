@@ -98,7 +98,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
       showConfirmBtn = props.showConfirmBtn,
       printPDFData = props.printPDFData,
       downloadFileName = props.downloadFileName,
-      PDFonloadCallback = props.PDFonloadCallback; // console.log("WORKERSRC",WORKERSRC);
+      PDFonloadCallback = props.PDFonloadCallback,
+      penweight = props.penweight,
+      pencolor = props.pencolor,
+      penpermit = props.penpermit; // console.log("WORKERSRC",WORKERSRC);
 
   var topRef = _react.default.useRef();
 
@@ -157,7 +160,9 @@ var PDFresultModal = function PDFresultModal(_ref) {
     //0인경우 전체
     playSpeed: 1,
     drawFPS: 30,
-    penWeight: 1 //유저가 PDF에 펜으로 글씨 쓴것.
+    penPermit: penpermit ? penpermit : 1,
+    penColor: pencolor ? pencolor : 'red',
+    penWeight: penweight ? penweight : 1 //유저가 PDF에 펜으로 글씨 쓴것.
 
   }),
       _useState6 = _slicedToArray(_useState5, 2),
@@ -606,8 +611,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
         // console.log("그려")
         if (nowPage === pageNum) {
           rctx.lineWidth = (chartOption.penWeight * 1).toFixed(0) * 1;
-          rctx.strokeStyle = 'red';
-          rctx.fillStyle = 'red';
+          rctx.strokeStyle = chartOption.penColor;
+          rctx.fillStyle = chartOption.penColor;
 
           if (draw.type === 'startDrawing') {
             // console.log("draw", draw);
@@ -1000,7 +1005,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
                         x: draw.x * cw,
                         y: height - draw.y * ch
                       },
-                      color: (0, _pdfLib.rgb)(1, 0, 0),
+                      color: chartOption.penColor,
                       opacity: 1,
                       borderOpacity: 0.3,
                       thickness: (chartOption.penWeight / 2).toFixed(0) * 1 || 1
