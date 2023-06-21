@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import { ReactComponent as CheckSVG } from "./check.svg";
 import { ReactComponent as RightArrowSVG } from "./chevron-right.svg";
 import { ReactComponent as LeftArrowSVG } from "./chevron-left.svg";

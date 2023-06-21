@@ -65,7 +65,6 @@ function App() {
           // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"}
           // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/18.pdf"} //300번
           path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/95.pdf"} //301번
-          // path="/54-unlocked.pdf"
           viewpercent={100}
      
           showConfirmBtn={false}
