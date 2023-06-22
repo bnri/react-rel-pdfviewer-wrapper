@@ -1,3 +1,17 @@
+export const getFileAsArrayBuffer=(importedfile)=>{
+  return new Promise(function (resolve) {
+      var oReq = new XMLHttpRequest();
+      oReq.open('get', importedfile, true);
+      oReq.responseType = 'arraybuffer';
+      oReq.onload = function () {
+          var arraybuffer = oReq.response;
+          // console.log("blob",blob); 
+          resolve(arraybuffer);
+      };
+      oReq.send();
+  });
+}
+
 export const hexToRgb=(hex) => {
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;

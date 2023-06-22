@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ReactComponent as CheckSVG } from "../img/check.svg";
-import { ReactComponent as RightArrowSVG } from "../img/chevron-right.svg";
-import { ReactComponent as LeftArrowSVG } from "../img/chevron-left.svg";
+
+import { CheckSVG, ChevronLeftSVG, ChevronRightSVG } from "../svg";
 
 const ConfigController = ({ ...props }) => {
     const { resaveConfig, showConfig, ChartOption } = props;
@@ -103,7 +102,7 @@ const ConfigController = ({ ...props }) => {
                 <div className="c_data">
                     <div style={{ width: "75%", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "15px" }}>기본</div>
                     <div style={{ width: "25%", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: "10px" }}>
-                        <RightArrowSVG />
+                        <ChevronRightSVG />
                     </div>
                 </div>
             </div>
@@ -263,7 +262,7 @@ const ConfigController = ({ ...props }) => {
                 <div className="c_data">
                     <div style={{ width: "75%", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "15px" }}>{ChartOption.GazePastRange !== null && ChartOption.GazePastRange === 0 ? "전체" : ChartOption.GazePastRange + "초"}</div>
                     <div style={{ width: "25%", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: "10px" }}>
-                        <RightArrowSVG />
+                        <ChevronRightSVG />
                     </div>
                 </div>
             </div>
@@ -282,7 +281,7 @@ const ConfigController = ({ ...props }) => {
                 <div className="c_data">
                     <div style={{ width: "75%", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "15px" }}>{ChartOption.playSpeed !== null && `x${ChartOption.playSpeed}`}</div>
                     <div style={{ width: "25%", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: "10px" }}>
-                        <RightArrowSVG />
+                        <ChevronRightSVG />
                     </div>
                 </div>
             </div>
@@ -300,7 +299,7 @@ const ConfigController = ({ ...props }) => {
                 <div className="c_data">
                     <div style={{ width: "75%", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "15px" }}>{ChartOption.drawFPS !== null && `${ChartOption.drawFPS}FPS`}</div>
                     <div style={{ width: "25%", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: "10px" }}>
-                        <RightArrowSVG />
+                        <ChevronRightSVG />
                     </div>
                 </div>
             </div>
@@ -322,7 +321,7 @@ const ConfigController = ({ ...props }) => {
                 }}
             >
                 <div className="c_label" style={{ width: '100%' }}>
-                    <LeftArrowSVG />
+                    <ChevronLeftSVG />
                     &nbsp; 시선창 과거범위
                 </div>
                 <div className="c_data" style={{ width: 0 }}></div>
@@ -402,7 +401,7 @@ const ConfigController = ({ ...props }) => {
                 }}
             >
                 <div className="c_label">
-                    <LeftArrowSVG />
+                    <ChevronLeftSVG />
                     &nbsp; 재생배속
                 </div>
                 <div className="c_data"></div>
@@ -482,7 +481,7 @@ const ConfigController = ({ ...props }) => {
                 }}
             >
                 <div className="c_label">
-                    <LeftArrowSVG />
+                    <ChevronLeftSVG />
                     &nbsp; 재생 목표 FPS
                 </div>
                 <div className="c_data"></div>
@@ -545,7 +544,7 @@ const ConfigController = ({ ...props }) => {
                 }}
             >
                 <div className="c_label" style={{ width: '100%' }}>
-                    <LeftArrowSVG />
+                    <ChevronLeftSVG />
                     &nbsp; 히트맵 세부설정
                 </div>
                 <div className="c_data" style={{ width: 0 }}></div>

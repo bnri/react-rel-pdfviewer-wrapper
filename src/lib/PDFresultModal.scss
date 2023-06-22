@@ -482,13 +482,14 @@ $main-border-color-70: #6b94b6;
           width:100%;
           box-sizing: border-box;
           &.downloadpdf{
-            img{
+            svg{
               height:70%;
+              width:40px;
             }
             &:hover{
               background:rgb(230,230,230);
               cursor:pointer;
-              img{
+              svg{
                 height:75%;
                 transition: 0.2s;
               }

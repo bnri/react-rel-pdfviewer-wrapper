@@ -1,5 +1,5 @@
 
-import React, { useState ,useRef ,useMemo} from "react";
+import React, { useState, useRef, useMemo } from "react";
 import './PDFresultModal.scss';
 import PDFviewModal from 'react-rel-pdfviewer';
 import { PDFDocument, rgb } from 'pdf-lib';
@@ -7,25 +7,13 @@ import fontkit from '@pdf-lib/fontkit'
 import ReactTooltip from 'react-tooltip';
 import readerseyelogo from "./img/readereyelogo.png";
 import jeju from './font/JejuMyeongjo.ttf';
-import { closeFullscreen, hexToRgb, openFullScreen } from "./util";
-import { ReactComponent as RemoconSVG } from "./img/remotecontroller.svg";
-import {ConfigController,RemoconController} from "./controller";
+import { closeFullscreen, getFileAsArrayBuffer, hexToRgb, openFullScreen } from "./util";
+// import { ReactComponent as RemoconSVG } from "./img/remotecontroller.svg";
+import { ConfigController, RemoconController } from "./controller";
+import { RemoconSVG } from "./svg";
 
 
 
-function getFileAsArrayBuffer(importedfile) {
-    return new Promise(function (resolve) {
-        var oReq = new XMLHttpRequest();
-        oReq.open('get', importedfile, true);
-        oReq.responseType = 'arraybuffer';
-        oReq.onload = function () {
-            var arraybuffer = oReq.response;
-            // console.log("blob",blob); 
-            resolve(arraybuffer);
-        };
-        oReq.send();
-    });
-}
 
 
 const PDFresultModal = ({ ...props }) => {
@@ -33,9 +21,7 @@ const PDFresultModal = ({ ...props }) => {
         onClose,
         path,
         viewpercent, data, specialWidth, specialHeight,
-        onConfirm, showConfirmBtn, printPDFData, downloadFileName, PDFonloadCallback ,penweight,pencolor,penpermit } = props;
-
-    // console.log("WORKERSRC",WORKERSRC);
+        onConfirm, showConfirmBtn, printPDFData, downloadFileName, PDFonloadCallback, penweight, pencolor, penpermit } = props;
     const topRef = useRef();
     const pdfviewref = useRef();
     const [nowPage, set_nowPage] = useState(1);
@@ -83,10 +69,11 @@ const PDFresultModal = ({ ...props }) => {
 
         playSpeed: 1,
         drawFPS: 30,
-        penPermit:penpermit?1:0,
-        penColor:pencolor?pencolor:'#FF0000',
-        penWeight: penweight?penweight:1, //유저가 PDF에 펜으로 글씨 쓴것.
+        penPermit: penpermit ? penpermit * 1 : 1,
+        penColor: pencolor ? pencolor : '#FF0000',
+        penWeight: penweight ? penweight : 1, //유저가 PDF에 펜으로 글씨 쓴것.
     })
+
 
     const [offsetX, set_offsetX] = useState("0.00");
     const [offsetY, set_offsetY] = useState("0.00");
@@ -248,7 +235,7 @@ const PDFresultModal = ({ ...props }) => {
 
     //리사이즈이벤트
     const resizeInnerFrame = React.useCallback(() => {
-        if(!topRef.current) return;
+        if (!topRef.current) return;
 
         setTimeout(function () {
             let max = (window.screen.height / (window.devicePixelRatio)).toFixed(0) * 1;
@@ -535,9 +522,10 @@ const PDFresultModal = ({ ...props }) => {
 
 
         //draw pencil
-        let startdrawX, startdrawY;
 
-        for (let i = 0; i < gazeData.length; i++) {
+        let startdrawX, startdrawY;
+        // console.log("chartOption.penPermit",chartOption.penPermit)
+        for (let i = 0; (chartOption.penPermit * 1 && (i < gazeData.length)); i++) {
 
             let d = gazeData[i];
             const { pageNum } = d;
@@ -590,6 +578,7 @@ const PDFresultModal = ({ ...props }) => {
                 }
             }
         }
+
     }, [data, nowTime, nowPage, chartOption, nowPDFviewInform, fixationData, minFixationCount]);
 
 
@@ -761,7 +750,7 @@ const PDFresultModal = ({ ...props }) => {
         let size = chartOption.RPOG_size * 2 / 100;
         let r = cw * 0.01 * size;
         //draw rawData
-        for (let i = 0; chartOption.RPOG&&(i < gazeData.length); i++) {
+        for (let i = 0; chartOption.RPOG && (i < gazeData.length); i++) {
             let d = gazeData[i];
 
 
@@ -839,7 +828,7 @@ const PDFresultModal = ({ ...props }) => {
         prevx = null;
         prevy = null;
 
-        for (let i = 0; chartOption.FPOG&&(i < fixationData.length); i++) {
+        for (let i = 0; chartOption.FPOG && (i < fixationData.length); i++) {
 
             const f = fixationData[i];
 
@@ -901,7 +890,7 @@ const PDFresultModal = ({ ...props }) => {
         //draw pencil
         let startdrawX, startdrawY;
 
-        for (let i = 0; i < gazeData.length; i++) {
+        for (let i = 0; (chartOption.penPermit && (i < gazeData.length)); i++) {
 
             let d = gazeData[i];
             const { pageNum } = d;
@@ -929,7 +918,7 @@ const PDFresultModal = ({ ...props }) => {
                 }
                 else if (draw.type === 'draw') {
                     //hexToRgb(chartOption.penColor)
-                    let rgbobj=hexToRgb(chartOption.penColor);
+                    let rgbobj = hexToRgb(chartOption.penColor);
                     // console.log("rgbobj",rgbobj)
                     if (startdrawX && startdrawY) {
                         // rctx.lineTo(draw.x * cw, draw.y * ch);
@@ -944,7 +933,7 @@ const PDFresultModal = ({ ...props }) => {
                                 x: draw.x * cw,
                                 y: height - draw.y * ch,
                             },
-                            color: rgbobj?rgb(rgbobj.r/255,rgbobj.g/255,rgbobj.b/255):'#0000FF',//#@! 여기 rgb 로
+                            color: rgbobj ? rgb(rgbobj.r / 255, rgbobj.g / 255, rgbobj.b / 255) : '#0000FF',//#@! 여기 rgb 로
                             opacity: 1,
                             borderOpacity: 0.3,
                             thickness: (chartOption.penWeight / 2).toFixed(0) * 1 || 1,
@@ -1098,7 +1087,7 @@ const PDFresultModal = ({ ...props }) => {
                                     // console.log("임시확인", d);
                                     set_nowPDFviewInform(d.PDF);
 
-                                    handleDraw();
+                                    // handleDraw();
 
                                 }}
 

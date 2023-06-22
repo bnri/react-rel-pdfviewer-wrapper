@@ -1,32 +1,13 @@
 import React from "react";
 import './App.scss';
-import {PDFresultModal} from './lib';
-// import data1 from './data/1.json';
+import PDFresultModal from './lib/PDFresultModal';
 import data1 from './data/301.json';
-// import * as pdftk from 'node-pdftk';
-// npm uninstall node-pdftk path-browserify crypto
-// import { decrypt } from "node-qpdf2";
-
-// const options = {
-//   input: "./54.pdf",
-//   output: "./54d.pdf",
-//   password: "YOUR_PASSWORD_TO_DECRYPT_PDF",
-// }
-// console.log("시작")
-// decrypt(options).then(res=>{
-//     console.log("res,res",res);
-// }).catch(e=>{
-//     console.log("e",e);
-// });
 
 
 function App() {
   // console.log("data1",data1);
   const [selPathway, set_selPathway] = React.useState(true);
 
-  React.useEffect(()=>{
-
-  },[])
   return (
     <div className="App">
 
@@ -36,6 +17,7 @@ function App() {
           PDFonloadCallback={(pages)=>{
             // console.log("페이지수?",pages);
           }}
+
           printPDFData={{
             agencyName: '테스트학원이름',
             testeeClass: 'xx반',
@@ -61,10 +43,11 @@ function App() {
               height: 2443
             }
           }}
-          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"}
-          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/18.pdf"} //300번
-          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/95.pdf"} //301번
-          viewpercent={100}
+
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"} //1번 json
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/18.pdf"} //300번 json
+          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/95.pdf"} //301번 json
+          viewpercent={100} //이건 측정할때의 값인데. 일단은 100 넣어버림.
      
           showConfirmBtn={false}
           onConfirm={() => {
@@ -74,7 +57,9 @@ function App() {
             set_selPathway(null);
           }}
 
-          
+          pencolor={"#0000FF"}
+          penweight={4}
+          penpermit={1}
         />
 
       }

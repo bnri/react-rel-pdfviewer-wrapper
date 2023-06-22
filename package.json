@@ -1,6 +1,6 @@
 {
   "name": "react-rel-pdfviewer-wrapper",
-  "version": "1.0.35",
+  "version": "1.1.0",
   "private": false,
   "babel": {
     "presets": [
@@ -9,8 +9,8 @@
     ]
   },
   "description": "react pdfviewer wrapper",
-  "module": "dist/index.js",
-  "main": "dist/index.js",
+  "module": "dist/PDFresultModal.js",
+  "main": "dist/PDFresultModal.js",
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",
     "pdf-lib": "^1.17.1",
