@@ -1,18 +1,23 @@
 
-import React from "react";
+import React , {useState} from "react";
 import './PDFresultModal.scss';
 import PDFviewModal from 'react-rel-pdfviewer';
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
 
 import { PDFDocument, rgb } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit'
 
-import pdfsvg from './PDF_file_icon.svg';
+// import pdfsvg from './PDF_file_icon.svg';
 import ReactTooltip from 'react-tooltip';
 // import { base64img } from "./base64img";
 
 import readerseyelogo from "./readereyelogo.png";
 import jeju from './JejuMyeongjo.ttf';
+
+import { closeFullscreen, openFullScreen } from "./util";
+// import GazeChartConfigController from "./GazeChartConfigController";
+
+
 // import * as pdfjsLib from 'pdfjs-dist/webpack';
 
 // console.log("야야야")
@@ -158,6 +163,8 @@ const PDFresultModal = ({ onClose, ...props }) => {
     const [playSpeed, set_playSpeed] = React.useState(1);
     const [followEvent] = React.useState(true);
     const [rawSize, set_rawSize] = React.useState(0);
+    const [penWeight,set_penWeight] = React.useState(1);
+
 
     const [fixationSize, set_fixationSize] = React.useState(32);
     const [pastTimeRange, set_pastTimeRange] = React.useState(0);
@@ -589,11 +596,11 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
             }
         }
-        
 
-     
+
+    
         //draw pencil
-        let startdrawX,startdrawY;
+        let startdrawX, startdrawY;
 
         for (let i = 0; i < gazeData.length; i++) {
 
@@ -601,41 +608,41 @@ const PDFresultModal = ({ onClose, ...props }) => {
             const { pageNum } = d;
             const draw = gazeData[i].draw;
 
-            if (pT) {
-                if (d.relTime < (nowTime - pT)) {
-                    continue;
-                }
-            }
+            // if (pT) {
+            //     if (d.relTime < (nowTime - pT)) {
+            //         continue;
+            //     }
+            // }
             if (!draw) {
                 continue;
             }
             // console.log("t",t);
-     
+
 
             if (d.relTime * 1 <= nowTime * 1) {
                 // console.log("그려")
                 if (nowPage === pageNum) {
-                    rctx.lineWidth = 0.5;
+                    rctx.lineWidth = (penWeight*1).toFixed(0)*1;
                     rctx.strokeStyle = 'red';
                     rctx.fillStyle = 'red';
                     if (draw.type === 'startDrawing') {
                         // console.log("draw", draw);
                         // console.log("그리기시작");
-                        startdrawX=draw.x * cw;
-                        startdrawY=draw.y * ch;
+                        startdrawX = draw.x * cw;
+                        startdrawY = draw.y * ch;
                         rctx.beginPath();
                         rctx.moveTo(draw.x * cw, draw.y * ch);
                         // testdata.push(draw);
                     }
                     else if (draw.type === 'draw') {
-                        if(startdrawX&&startdrawY){
+                        if (startdrawX && startdrawY) {
                             rctx.lineTo(draw.x * cw, draw.y * ch);
                             rctx.stroke();
                             // testdata.push(draw);
                         }
-                        else{
-                            startdrawX=draw.x * cw;
-                            startdrawY=draw.y * ch;
+                        else {
+                            startdrawX = draw.x * cw;
+                            startdrawY = draw.y * ch;
                             rctx.beginPath();
                             rctx.moveTo(draw.x * cw, draw.y * ch);
                         }
@@ -644,16 +651,16 @@ const PDFresultModal = ({ onClose, ...props }) => {
                     else if (draw.type === 'stopDrawing') {
                         rctx.closePath();
                     }
-               
+
                 }
             }
         }
-   
+
 
         // console.log("fixationSize", fixationSize);
 
 
-    }, [data, nowTime, nowPage, rawSize, nowPDFviewInform, fixationSize, fixationData, minFixationCount, pastTimeRange]);
+    }, [data, nowTime, nowPage, rawSize, nowPDFviewInform, fixationSize, fixationData, minFixationCount, pastTimeRange,penWeight]);
 
 
     const handleEvent = React.useCallback(() => {
@@ -708,11 +715,8 @@ const PDFresultModal = ({ onClose, ...props }) => {
         });
     }, []);
 
-    const [isMinimizedController, set_isMinimizedController] = React.useState(false);
 
-    const handleCloseController = () => {
-        set_isMinimizedController(true);
-    }
+
 
     //path값에 따라서 PDFarraybuffer 보관
     const [pdfArrayBuffer, set_pdfArrayBuffer] = React.useState(null);
@@ -747,6 +751,21 @@ const PDFresultModal = ({ onClose, ...props }) => {
     }, [])
 
 
+    const handleFullScreen = () => {
+        if (isfullscreen) {
+            closeFullscreen();
+        }
+        else {
+            let max = (window.screen.height / window.devicePixelRatio).toFixed(0) * 1;
+            if (max !== window.innerHeight) {
+                openFullScreen();
+                set_isfullscreen(true);
+            }
+        }
+    }
+
+
+    //pdf 인쇄
     const handleTryPrint = async () => {
 
         if (!data) {
@@ -766,15 +785,15 @@ const PDFresultModal = ({ onClose, ...props }) => {
         );
 
 
-        console.log("registerFontkit");
-        pdfDoc.registerFontkit(fontkit)
-        console.log("registerFontkitend");
+        // console.log("registerFontkit");
+        pdfDoc.registerFontkit(fontkit);
+        // console.log("registerFontkitend");
 
 
         // Embed the Helvetica font
         // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
         // Get the first page of the document
-        console.log("pdfDoc", pdfDoc);
+        // console.log("pdfDoc", pdfDoc);
 
         // const pageIndices = pdfDoc.getPageIndices();
         // console.log("pageIndices",pageIndices);
@@ -961,28 +980,6 @@ const PDFresultModal = ({ onClose, ...props }) => {
                     });
 
 
-                    // }
-                    // else {
-                    //     // 작게 그려
-                    //     let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
-
-
-                    //     pages[f.pageNum_s - 1].drawCircle({
-                    //         x: f.x * cw,
-                    //         y: height - f.y * ch,
-                    //         size: fsize*ratio,
-                    //         borderWidth: 1,
-                    //         // borderDashArray: [1],
-                    //         // borderDashPhase: 25,
-                    //         borderColor: rgb(0, 0, 1),
-                    //         borderOpacity: 0.3,
-                    //         // fill:rgb(1,0,0)
-                    //         color: rgb(0, 0, 1),
-                    //         opacity: 0.3
-                    //         // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                    //         // borderLineCap: LineCapStyle.Round,
-                    //     });
-                    // }
 
                     prevx = f.x;
                     prevy = f.y;
@@ -993,6 +990,81 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
             // }
         }
+
+
+        //draw pencil
+        let startdrawX, startdrawY;
+
+        for (let i = 0; i < gazeData.length; i++) {
+
+            let d = gazeData[i];
+            const { pageNum } = d;
+            const draw = gazeData[i].draw;
+
+            if (!draw) {
+                continue;
+            }
+            // console.log("t",t);
+
+
+            if (d.relTime * 1 <= nowTime * 1) {
+                // console.log("그려")
+
+
+
+                // rctx.lineWidth = 0.5;
+                // rctx.strokeStyle = 'red';
+                // rctx.fillStyle = 'red';
+                if (draw.type === 'startDrawing') {
+                    startdrawX = draw.x;
+                    startdrawY = draw.y;
+                    // rctx.beginPath();
+                    // rctx.moveTo(draw.x * cw, draw.y * ch);
+                }
+                else if (draw.type === 'draw') {
+                    if (startdrawX && startdrawY) {
+                        // rctx.lineTo(draw.x * cw, draw.y * ch);
+                        // rctx.stroke();
+                        // testdata.push(draw);
+                        pages[pageNum - 1].drawLine({
+                            start: {
+                                x: startdrawX * cw,
+                                y: height - startdrawY * ch,
+                            },
+                            end: {
+                                x: draw.x * cw,
+                                y: height - draw.y * ch,
+                            },
+                            color: rgb(1, 0, 0),
+                            opacity: 1,
+                            borderOpacity: 0.3,
+                            thickness: (penWeight/2).toFixed(0)*1||1,
+
+                        });
+                        startdrawX = draw.x;
+                        startdrawY = draw.y;
+                    }
+                    else {
+                        // startdrawX = draw.x * cw;
+                        // startdrawY = draw.y * ch;
+                        // rctx.beginPath();
+                        // rctx.moveTo(draw.x * cw, draw.y * ch);
+
+                        startdrawX = draw.x;
+                        startdrawY = draw.y;
+                    }
+
+                }
+                else if (draw.type === 'stopDrawing') {
+                    // rctx.closePath();
+                    startdrawX = null;
+                    startdrawY = null;
+                }
+
+
+            }
+        }
+
 
         //////새로운패이지 생성
         const newPage = pdfDoc.insertPage(0, [width, height]);
@@ -1064,6 +1136,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
     }
 
 
+    const [showConfig,set_showConfig] = useState(false);
 
     return (<div className="PDFresultModal">
         <div className="ResultWrap" style={{
@@ -1072,226 +1145,6 @@ const PDFresultModal = ({ onClose, ...props }) => {
             minWidth: isfullscreen ? '100%' : specialWidth,
         }}>
             <div className="marginWrap">
-
-                {
-                    isMinimizedController === false ?
-                        <>
-                            <Draggable
-
-                                handle=".OVM-drag-handle"
-                                defaultPosition={{ x: 50, y: 50 }}
-                                bounds=".marginWrap"
-                                grid={[1, 1]} >
-
-                                <div tabIndex='0' className="moveableBarwrapper" style={{ width: mw + 'px', height: mh + 'px', backgroundColor: 'white', zIndex: isFocus ? 10 : 9 }}
-                                    onBlur={() => {
-                                        //console.log("OVM BLUR");
-                                        set_isFocus(false);
-                                    }}
-                                    onFocus={() => {
-                                        //console.log("OVM FOCUS");
-                                        set_isFocus(true);
-                                    }}
-                                >
-                                    <div className="header OVM-drag-handle" style={{ backgroundColor: isFocus ? 'rgb(40,40,40)' : 'rgb(20,20,20)' }}>
-
-                                        Controller
-                                        <button className="icon-btn" style={{ position: 'absolute', right: 0 }} onClick={handleCloseController}>
-                                            <i className="fa fa-times" aria-hidden="true"></i></button>
-
-                                    </div>
-                                    <div className="middle">
-
-                                        <div className="moveBar">
-
-
-
-
-                                            <div className="SideBar">
-                                                {/* <div>
-                                                    이벤트동작 <input type="checkbox"
-                                                        checked={followEvent}
-                                                        onChange={(e) => {
-                                                            set_followEvent(evt => !evt);
-                                                        }} />
-                                                </div> */}
-
-                                                <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        재생 배속
-                                                    </div>
-                                                    <div className="c_data">
-                                                        <select value={playSpeed} onChange={e => set_playSpeed(e.target.value)}>
-                                                            <option>
-                                                                0.1
-                                                            </option>
-                                                            <option>
-                                                                0.5
-                                                            </option>
-                                                            <option>
-                                                                1
-                                                            </option>
-                                                            <option>
-                                                                2
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig" data-tip="모든 시선(gaze)의  원 (빨강색)의 크기를 조정합니다.">
-
-                                                    <div className="c_label">
-                                                        시선 크기
-                                                    </div>
-                                                    <div className="c_data">
-                                                        <input type="range" style={{ width: '70%' }} value={rawSize} min={0} max={200}
-                                                            onChange={(e) => {
-                                                                set_rawSize(e.target.value)
-
-                                                            }} />
-                                                    </div>
-                                                </div>
-
-                                                <div className="oneConfig" data-tip="응시(fixation)의 원 (초록색)의 크기를 조정합니다.">
-
-                                                    <div className="c_label">
-                                                        응시 크기
-                                                    </div>
-                                                    <div className="c_data">
-                                                        <input type="range" style={{ width: '70%' }} value={fixationSize} min={0} max={100}
-                                                            onChange={(e) => {
-                                                                set_fixationSize(e.target.value)
-
-                                                            }} />
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig" data-tip={'기록을 재생할 때, 몇 초 전의 시선까지 보여줄지를 설정합니다.'}>
-
-                                                    <div className="c_label">
-                                                        시선창 과거
-                                                    </div>
-                                                    <div className="c_data">
-                                                        <select value={pastTimeRange} onChange={e => set_pastTimeRange(e.target.value * 1)}>
-                                                            <option value={0}>전체</option>
-                                                            <option value={0.5}>0.5초</option>
-                                                            <option value={1}>1초</option>
-                                                            <option value={2}>2초</option>
-                                                            <option value={5}>5초</option>
-                                                            <option value={10}>10초</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        평균응시시간
-                                                    </div>
-                                                    <div className="c_data">
-                                                        {fd_inform.avgDuration.toFixed(0)}ms
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        응시비율
-                                                    </div>
-                                                    <div className="c_data">
-                                                        {fd_inform.fixationRatio.toFixed(0)}%
-                                                    </div>
-                                                </div>
-                                                <div style={{ display: 'flex' }}>
-                                                    <div
-                                                        className="oneConfig"
-                                                        data-tip={isfullscreen ? "전체화면취소" : "전체화면"}
-                                                        style={{ borderRight: '1px solid gray' }} onClick={() => set_isfullscreen(f => !f)}>
-                                                        <FullScreenBtn
-                                                            isfullscreen={isfullscreen}
-                                                        />&nbsp; {isfullscreen ? <span style={{ color: 'yellow' }}>취소</span> : <span>전체</span>}
-                                                    </div>
-                                                    <div className="oneConfig" onClick={handleTryPrint} data-tip="시선이동이 표현된 PDF를 다운로드 합니다.">
-                                                        <img src={pdfsvg} alt="" style={{ height: '70%' }} />&nbsp;다운
-                                                    </div>
-                                                </div>
-
-                                                {/* <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        fX diff
-                                                    </div>
-                                                    <div className="c_data">
-
-                                                        <input type="number" min={1} max={100} value={fminx} onChange={e => set_fminx(e.target.value)} />
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        fY diff
-                                                    </div>
-                                                    <div className="c_data">
-
-                                                        <input type="number" min={1} max={100} value={fminy} onChange={e => set_fminy(e.target.value)} />
-                                                    </div>
-                                                </div>
-                                                <div className="oneConfig">
-
-                                                    <div className="c_label">
-                                                        minF_Cnt
-                                                    </div>
-                                                    <div className="c_data">
-
-                                                        <input type="number" min={1} max={100} value={minFixationCount} onChange={e => set_minFixationCount(e.target.value)} />
-                                                    </div>
-                                                </div> */}
-
-
-                                            </div>
-                                            <div className="GC-playzone">
-                                                <div className="GC-playWrapper">
-                                                    <button className={isPlaying ? "GC-playbtn playing" : "GC-playbtn"} onClick={handleTogglePlay} />
-
-                                                </div>
-                                                <div className="GC-TimeWrapper">
-                                                    <div className="nowTimeWrapper">
-                                                        {nowTime.toFixed(2)}
-                                                    </div>
-                                                    <div className="endTimeWrapper">
-                                                        &nbsp;/&nbsp;{endTime.toFixed(2)}
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-
-                            </Draggable>
-
-                        </>
-                        :
-                        <>
-                            <div className="minimizedController">
-                                <div>
-                                    <button className="makeHuge-btn" onClick={() => set_isMinimizedController(false)}>Controller</button>
-                                </div>
-                                <div>
-                                    <button className={isPlaying ? "mbbtn playing" : "mbbtn"} onClick={handleTogglePlay}></button>
-                                </div>
-                                <div className="timeWrapper">
-                                    <div className="nt">
-                                        {nowTime.toFixed(2)}
-                                    </div>
-                                    <div className="et">
-                                        &nbsp;/&nbsp;{endTime.toFixed(2)}
-                                    </div>
-
-                                </div>
-                            </div>
-                        </>
-                }
-
 
 
                 <div className="rightZone">
@@ -1339,13 +1192,157 @@ const PDFresultModal = ({ onClose, ...props }) => {
 
                             />
 
-                        
+
                         </div>
 
                     </div>
-                    <div className="playBarWrap">
-                        <input className="rangePlay" type="range" step="0.01"
-                            value={nowTime} max={endTime} min='0' onChange={(e) => set_nowTime(e.target.value * 1)} />
+                    <div className="playbarWrapper no-drag">
+                        <div className="rangePlayWrapper">
+                            <input className="rangePlay" type="range" step="0.01"
+                                value={nowTime} max={endTime} min='0' onChange={(e) => set_nowTime(e.target.value * 1)} />
+
+                        </div>
+                        <div className="rangeBtnWrapper">
+                    <div className="leftBtnWrap">
+                        <div>
+                            <button className={isPlaying ? "playBtn playing" : "playBtn"} onClick={handleTogglePlay}></button>
+                        </div>
+                        <div className="GC-TimeWrapper">
+                            <div className="nowTimeWrapper">{nowTime.toFixed(2)}</div>
+                            <div className="endTimeWrapper">&nbsp;/&nbsp;{endTime.toFixed(2)}</div>
+                        </div>
+
+
+
+                    </div>
+
+
+                    <div className="rightBtnWrap">
+                        <div className="flex" style={{ width: 70, height: 48 }}
+                             data-tip="응시 / 히트맵 보기 선택"
+                        >
+                            {/* <ToggleSwitch
+                                // className="showattendingcheckbox"
+                                {...toggleInfo}
+                                onClickToggle={() => {
+                                    // console.log("토글");        
+                                    if (toggleInfo.checked) {
+                                        //응시온
+                                        GazeChartOption.FPOG = true;
+                                        GazeChartOption.FPOG_size = 20;
+                                        GazeChartOption.FPOG_line = true;
+                                        GazeChartOption.FPOG_number = false;
+                                        GazeChartOption.FPOG_number_size = 1.7;
+                                        GazeChartOption.heatMap = false;
+                                        GazeChartOption.heatMapMax = 40;
+                                        GazeChartOption.heatMapRadius = 40;
+                                        GazeChartOption.heatMapMaxOpacity = 0.7;
+                                        resaveGazeChartOption();
+                                    }
+                                    else {
+                                        //힛맵온
+                                        GazeChartOption.FPOG = false;
+                                        GazeChartOption.FPOG_size = 20;
+                                        GazeChartOption.FPOG_line = false;
+                                        GazeChartOption.FPOG_number = false;
+                                        GazeChartOption.FPOG_number_size = 1.7;
+                                        GazeChartOption.heatMap = true;
+                                        GazeChartOption.heatMapMax = 40;
+                                        GazeChartOption.heatMapRadius = 40;
+                                        GazeChartOption.heatMapMaxOpacity = 0.7;
+                                        resaveGazeChartOption();
+                                    }
+                                    setToggleInfo({ ...toggleInfo, checked: !toggleInfo.checked, color: !toggleInfo.checked ? "#145894" : "gray" });
+
+                                }}
+                            /> */}
+
+                        </div>
+
+              
+                        {/* <button className={`showControllerBtn ${!hideController && 'selected'}`}
+                             data-tip="제어판 보기"
+                            onClick={() => {
+                                set_hideController(h => !h);
+                            }}>
+                            <RemoconSVG />
+                        </button> */}
+
+                
+                        <div style={{ position: 'relative' }}>
+                            <button className={`configBtn ${showConfig && 'selected'}`}
+                                 data-tip={`설정`}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    set_showConfig(c => !c)
+                                }}>
+                                <svg
+                                    className={showConfig ? "configArea config selected" : "configArea config"}
+                                    style={{
+                                        enableBackground: "new 0 0 24 24",
+                                    }}
+                                    fill="currentColor"
+                                    version="1.1"
+                                    viewBox="0 0 24 24"
+                                    xmlSpace="preserve"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                                >
+                                    <g />
+                                    <g>
+                                        <path d="M22.2,14.4L21,13.7c-1.3-0.8-1.3-2.7,0-3.5l1.2-0.7c1-0.6,1.3-1.8,0.7-2.7l-1-1.7c-0.6-1-1.8-1.3-2.7-0.7   L18,5.1c-1.3,0.8-3-0.2-3-1.7V2c0-1.1-0.9-2-2-2h-2C9.9,0,9,0.9,9,2v1.3c0,1.5-1.7,2.5-3,1.7L4.8,4.4c-1-0.6-2.2-0.2-2.7,0.7   l-1,1.7C0.6,7.8,0.9,9,1.8,9.6L3,10.3C4.3,11,4.3,13,3,13.7l-1.2,0.7c-1,0.6-1.3,1.8-0.7,2.7l1,1.7c0.6,1,1.8,1.3,2.7,0.7L6,18.9   c1.3-0.8,3,0.2,3,1.7V22c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2v-1.3c0-1.5,1.7-2.5,3-1.7l1.2,0.7c1,0.6,2.2,0.2,2.7-0.7l1-1.7   C23.4,16.2,23.1,15,22.2,14.4z M12,16c-2.2,0-4-1.8-4-4c0-2.2,1.8-4,4-4s4,1.8,4,4C16,14.2,14.2,16,12,16z" />
+                                    </g>
+                                </svg>
+                            </button>
+
+                            {/* <GazeChartConfigController
+                                resaveGazeChartOption={resaveGazeChartOption}
+                                showConfig={showConfig}
+                                GazeChartOption={GazeChartOption}
+                                AutoReplay={AutoReplay}
+                                set_AutoReplay={set_AutoReplay}
+
+                            /> */}
+                        </div>
+
+
+                        <button className={`fullScreenBtn ${isfullscreen ? 'fullscreenstate' : ''}`}
+                             data-tip="전체화면"
+                            onClick={handleFullScreen}>
+                            {isfullscreen ? <svg version="1.1" viewBox="0 0 36 36" fill="currentColor">
+                                <g>
+                                    <path d="m 14,14 -4,0 0,2 6,0 0,-6 -2,0 0,4 0,0 z" ></path>
+                                </g>
+                                <g>
+                                    <path d="m 22,14 0,-4 -2,0 0,6 6,0 0,-2 -4,0 0,0 z" ></path>
+                                </g>
+                                <g>
+                                    <path d="m 20,26 2,0 0,-4 4,0 0,-2 -6,0 0,6 0,0 z" ></path>
+                                </g>
+                                <g>
+                                    <path d="m 10,22 4,0 0,4 2,0 0,-6 -6,0 0,2 0,0 z" ></path>
+                                </g>
+                            </svg> :
+                                <svg version="1.1" viewBox="0 0 36 36" fill="currentColor">
+                                    <g>
+                                        <path d="m 10,16 2,0 0,-4 4,0 0,-2 L 10,10 l 0,6 0,0 z"></path>
+                                    </g>
+                                    <g>
+                                        <path d="m 20,10 0,2 4,0 0,4 2,0 L 26,10 l -6,0 0,0 z"></path>
+                                    </g>
+                                    <g>
+                                        <path d="m 24,24 -4,0 0,2 L 26,26 l 0,-6 -2,0 0,4 0,0 z"></path>
+                                    </g>
+                                    <g>
+                                        <path d="M 12,20 10,20 10,26 l 6,0 0,-2 -4,0 0,-4 0,0 z"></path>
+                                    </g>
+                                </svg>
+                            }
+
+                        </button>
+                    </div>
+                </div>
+
                     </div>
                 </div>
 
