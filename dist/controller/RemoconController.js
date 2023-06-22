@@ -42,7 +42,8 @@ var RemoconController = function RemoconController(_ref) {
       offsetX = props.offsetX,
       offsetY = props.offsetY,
       set_offsetX = props.set_offsetX,
-      set_offsetY = props.set_offsetY;
+      set_offsetY = props.set_offsetY,
+      originViewPercent = props.originViewPercent;
 
   var _useState = (0, _react.useState)('visible'),
       _useState2 = _slicedToArray(_useState, 2),
@@ -96,6 +97,12 @@ var RemoconController = function RemoconController(_ref) {
   }, "\uC751\uC2DC\uBE44\uC728"), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data"
   }, fd_inform.fixationRatio.toFixed(0), "%")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uCE21\uC815\uC2DC\uBB38\uC11C\uBC30\uC728"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, originViewPercent, "%")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig downloadpdf",
     onClick: handleTryPrint,
     "data-tip": "\uC2DC\uC120\uC774\uB3D9\uC774 \uD45C\uD604\uB41C PDF\uB97C \uB2E4\uC6B4\uB85C\uB4DC \uD569\uB2C8\uB2E4."

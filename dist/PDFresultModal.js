@@ -92,7 +92,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
 
     set_nowTime(lastTime);
     return lastTime;
-  }, [data]); //리모콘
+  }, [data]);
+  var originViewPercent = (0, _react.useMemo)(function () {
+    return viewpercent;
+  }, [viewpercent]); //리모콘
 
   var _useState5 = (0, _react.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
@@ -135,7 +138,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }),
       _useState10 = _slicedToArray(_useState9, 2),
       chartOption = _useState10[0],
-      set_chartOption = _useState10[1];
+      set_chartOption = _useState10[1]; //문서내의 temp offset
+
 
   var _useState11 = (0, _react.useState)("0.00"),
       _useState12 = _slicedToArray(_useState11, 2),
@@ -252,7 +256,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
 
 
     return fa;
-  }, [data, fminx, fminy]);
+  }, [data, fminx, fminy]); //리사이즈시 스케일변수들
 
   var _useState19 = (0, _react.useState)(0.5),
       _useState20 = _slicedToArray(_useState19, 2),
@@ -273,7 +277,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   var _useState25 = (0, _react.useState)(false),
       _useState26 = _slicedToArray(_useState25, 2),
       isPlaying = _useState26[0],
-      set_isPlaying = _useState26[1]; //재생배속.
+      set_isPlaying = _useState26[1]; //재생시 스크롤 따라갈것인가 옵션
 
 
   var _useState27 = (0, _react.useState)(true),
@@ -1100,7 +1104,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
     offsetY: offsetY,
     hideController: hideController,
     set_offsetX: set_offsetX,
-    set_offsetY: set_offsetY
+    set_offsetY: set_offsetY,
+    originViewPercent: originViewPercent
   }), /*#__PURE__*/_react.default.createElement("div", {
     className: "rightZone"
   }, /*#__PURE__*/_react.default.createElement("div", {
