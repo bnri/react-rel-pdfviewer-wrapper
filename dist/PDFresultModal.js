@@ -25,9 +25,13 @@ var _JejuMyeongjo = _interopRequireDefault(require("./JejuMyeongjo.ttf"));
 
 var _util = require("./util");
 
-var _ConfigController = _interopRequireDefault(require("./ConfigController"));
-
 var _remotecontroller = require("./remotecontroller.svg");
+
+var _check = require("./check.svg");
+
+var _chevronRight = require("./chevron-right.svg");
+
+var _chevronLeft = require("./chevron-left.svg");
 
 var _excluded = ["onClose"];
 
@@ -37,13 +41,15 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator.return && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, catch: function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -57,9 +63,7 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 // import RemoconController from "./RemoconController";
 // import * as pdfjsLib from 'pdfjs-dist/webpack';
@@ -83,9 +87,714 @@ function getFileAsArrayBuffer(importedfile) {
   });
 }
 
-var PDFresultModal = function PDFresultModal(_ref) {
-  var onClose = _ref.onClose,
-      props = _objectWithoutProperties(_ref, _excluded);
+var ConfigController = function ConfigController(_ref) {
+  var props = _extends({}, _ref);
+
+  var resaveConfig = props.resaveConfig,
+      showConfig = props.showConfig,
+      ChartOption = props.ChartOption;
+
+  var _useState = (0, _react.useState)(),
+      _useState2 = _slicedToArray(_useState, 2),
+      forceUpdate = _useState2[1];
+
+  (0, _react.useEffect)(function () {
+    forceUpdate({});
+  }, [ChartOption]);
+
+  var _useState3 = (0, _react.useState)("250px"),
+      _useState4 = _slicedToArray(_useState3, 2),
+      mainConfigWidth = _useState4[0],
+      set_mainConfigWidth = _useState4[1];
+
+  var _useState5 = (0, _react.useState)("950px"),
+      _useState6 = _slicedToArray(_useState5, 2),
+      mainConfigHegiht = _useState6[0],
+      set_mainConfigHeight = _useState6[1];
+
+  var _useState7 = (0, _react.useState)("0"),
+      _useState8 = _slicedToArray(_useState7, 2),
+      subConfig1Width = _useState8[0],
+      set_subConfig1Width = _useState8[1];
+
+  var _useState9 = (0, _react.useState)("0"),
+      _useState10 = _slicedToArray(_useState9, 2),
+      subConfig1Hegiht = _useState10[0],
+      set_subConfig1Height = _useState10[1];
+
+  var _useState11 = (0, _react.useState)("0"),
+      _useState12 = _slicedToArray(_useState11, 2),
+      subConfig3Width = _useState12[0],
+      set_subConfig3Width = _useState12[1];
+
+  var _useState13 = (0, _react.useState)("0"),
+      _useState14 = _slicedToArray(_useState13, 2),
+      subConfig3Hegiht = _useState14[0],
+      set_subConfig3Height = _useState14[1];
+
+  var _useState15 = (0, _react.useState)("0"),
+      _useState16 = _slicedToArray(_useState15, 2),
+      subConfig4Width = _useState16[0],
+      set_subConfig4Width = _useState16[1];
+
+  var _useState17 = (0, _react.useState)("0"),
+      _useState18 = _slicedToArray(_useState17, 2),
+      subConfig4Hegiht = _useState18[0],
+      set_subConfig4Height = _useState18[1];
+
+  var _useState19 = (0, _react.useState)("0"),
+      _useState20 = _slicedToArray(_useState19, 2),
+      subConfig6Width = _useState20[0],
+      set_subConfig6Width = _useState20[1];
+
+  var _useState21 = (0, _react.useState)("0"),
+      _useState22 = _slicedToArray(_useState21, 2),
+      subConfig6Hegiht = _useState22[0],
+      set_subConfig6Height = _useState22[1];
+
+  (0, _react.useEffect)(function () {
+    var a;
+
+    if (!showConfig) {
+      a = setTimeout(function () {
+        set_mainConfigWidth('250px');
+        set_mainConfigHeight('800px');
+        set_subConfig1Width("0");
+        set_subConfig1Height("0");
+        set_subConfig3Width("0");
+        set_subConfig3Height("0");
+        set_subConfig4Width("0");
+        set_subConfig4Height("0");
+        set_subConfig6Width("0");
+        set_subConfig6Height("0");
+      }, 300);
+    }
+
+    return function () {
+      clearTimeout(a);
+    };
+  }, [showConfig]);
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "ConfigWrapper configArea",
+    style: {
+      opacity: showConfig ? "1" : "0",
+      visibility: showConfig ? "visible" : "hidden"
+    },
+    onClick: function onClick(e) {
+      e.stopPropagation();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "mainConfig",
+    style: {
+      width: mainConfigWidth,
+      height: mainConfigHegiht
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.heatMap = !ChartOption.heatMap;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uD788\uD2B8\uB9F5 \uBCF4\uAE30(H)"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "ckbx-style-8"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "checkbox",
+    name: "ckbx-style-8",
+    checked: ChartOption.heatMap,
+    onChange: function onChange() {}
+  }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig borderBottom",
+    onClick: function onClick() {
+      //여기 팝
+      set_mainConfigWidth(0);
+      set_mainConfigHeight(0);
+      set_subConfig6Width("250px");
+      set_subConfig6Height("200px");
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uD788\uD2B8\uB9F5 \uC138\uBD80\uC124\uC815"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      width: "75%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      paddingRight: "15px"
+    }
+  }, "\uAE30\uBCF8"), /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      width: "25%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingRight: "10px"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_chevronRight.ReactComponent, null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC2DC\uC120 \uD06C\uAE30"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "range",
+    style: {
+      width: "70%"
+    },
+    value: ChartOption.RPOG_size,
+    min: 1,
+    step: 0.1,
+    max: 80,
+    onChange: function onChange(e) {
+      ChartOption.RPOG_size = e.target.value * 1;
+      resaveConfig();
+    }
+  }))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.RPOG = !ChartOption.RPOG;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC2DC\uC120 \uBCF4\uAE30(G)"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "ckbx-style-8"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "checkbox",
+    name: "ckbx-style-8",
+    checked: ChartOption.RPOG,
+    onChange: function onChange() {}
+  }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig borderBottom",
+    onClick: function onClick() {
+      ChartOption.RPOG_line = !ChartOption.RPOG_line;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC2DC\uC120 \uC774\uB3D9 \uBCF4\uAE30(K)"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "ckbx-style-8"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "checkbox",
+    name: "ckbx-style-8",
+    checked: ChartOption.RPOG_line,
+    onChange: function onChange() {}
+  }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC751\uC2DC \uD06C\uAE30"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "range",
+    style: {
+      width: "70%"
+    },
+    value: ChartOption.FPOG_size,
+    min: 0,
+    step: 0.1,
+    max: 100,
+    onChange: function onChange(e) {
+      ChartOption.FPOG_size = e.target.value * 1;
+      resaveConfig();
+    }
+  }))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      if (ChartOption.FPOG && ChartOption.FPOG_number) {
+        ChartOption.FPOG_number = !ChartOption.FPOG_number;
+      }
+
+      ChartOption.FPOG = !ChartOption.FPOG;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC751\uC2DC \uBCF4\uAE30(F)"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "ckbx-style-8"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "checkbox",
+    name: "ckbx-style-8",
+    checked: ChartOption.FPOG,
+    onChange: function onChange() {}
+  }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.FPOG_line = !ChartOption.FPOG_line;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC751\uC2DC \uC774\uB3D9 \uBCF4\uAE30(L)"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "ckbx-style-8"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "checkbox",
+    name: "ckbx-style-8",
+    checked: ChartOption.FPOG_line,
+    onChange: function onChange() {}
+  }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      if (!ChartOption.FPOG_number && !ChartOption.FPOG) {
+        ChartOption.FPOG = !ChartOption.FPOG;
+      }
+
+      ChartOption.FPOG_number = !ChartOption.FPOG_number;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC751\uC2DC \uC21C\uBC88 \uBCF4\uAE30(N)"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "ckbx-style-8"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "checkbox",
+    name: "ckbx-style-8",
+    checked: ChartOption.FPOG_number,
+    onChange: function onChange() {}
+  }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig borderBottom"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC751\uC2DC \uC21C\uC11C \uD06C\uAE30"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "range",
+    style: {
+      width: "70%"
+    },
+    value: ChartOption.FPOG_number_size,
+    min: 0,
+    step: 0.1,
+    max: 5,
+    onChange: function onChange(e) {
+      ChartOption.FPOG_number_size = e.target.value * 1;
+      resaveConfig();
+    }
+  }))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      //subConfig1로
+      set_mainConfigWidth(0);
+      set_mainConfigHeight(0);
+      set_subConfig1Width("250px");
+      set_subConfig1Height("350px");
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC2DC\uC120\uCC3D \uACFC\uAC70\uBC94\uC704"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      width: "75%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      paddingRight: "15px"
+    }
+  }, ChartOption.GazePastRange !== null && ChartOption.GazePastRange === 0 ? "전체" : ChartOption.GazePastRange + "초"), /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      width: "25%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingRight: "10px"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_chevronRight.ReactComponent, null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      //subConfig1로
+      set_mainConfigWidth(0);
+      set_mainConfigHeight(0);
+      set_subConfig3Width("250px");
+      set_subConfig3Height("350px");
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC7AC\uC0DD \uBC30\uC18D"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      width: "75%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      paddingRight: "15px"
+    }
+  }, ChartOption.playSpeed !== null && "x".concat(ChartOption.playSpeed)), /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      width: "25%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingRight: "10px"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_chevronRight.ReactComponent, null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      //subConfig1로
+      set_mainConfigWidth(0);
+      set_mainConfigHeight(0);
+      set_subConfig4Width("250px");
+      set_subConfig4Height("250px");
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC7AC\uC0DD \uBAA9\uD45C FPS"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      width: "75%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      paddingRight: "15px"
+    }
+  }, ChartOption.drawFPS !== null && "".concat(ChartOption.drawFPS, "FPS")), /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      width: "25%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingRight: "10px"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_chevronRight.ReactComponent, null))))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "subConfig1",
+    style: {
+      width: subConfig1Width,
+      height: subConfig1Hegiht
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    style: {
+      borderBottom: "1px solid #fff"
+    },
+    onClick: function onClick() {
+      //다시 mainConfig으로
+      set_mainConfigWidth("250px");
+      set_mainConfigHeight("950px");
+      set_subConfig1Width("0");
+      set_subConfig1Height("0");
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label",
+    style: {
+      width: '100%'
+    }
+  }, /*#__PURE__*/_react.default.createElement(_chevronLeft.ReactComponent, null), "\xA0 \uC2DC\uC120\uCC3D \uACFC\uAC70\uBC94\uC704"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data",
+    style: {
+      width: 0
+    }
+  })), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.GazePastRange = 0;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.GazePastRange === 0 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "\uC804\uCCB4")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.GazePastRange = 0.5;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.GazePastRange === 0.5 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "0.5\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.GazePastRange = 1;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.GazePastRange === 1 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "1\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.GazePastRange = 2;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.GazePastRange === 2 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "2\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.GazePastRange = 5;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.GazePastRange === 5 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "5\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.GazePastRange = 10;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.GazePastRange === 10 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "10\uCD08"))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "subConfig3",
+    style: {
+      width: subConfig3Width,
+      height: subConfig3Hegiht
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    style: {
+      borderBottom: "1px solid #fff"
+    },
+    onClick: function onClick() {
+      //다시 mainConfig으로
+      set_mainConfigWidth("250px");
+      set_mainConfigHeight("950px");
+      set_subConfig3Width("0");
+      set_subConfig3Height("0");
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, /*#__PURE__*/_react.default.createElement(_chevronLeft.ReactComponent, null), "\xA0 \uC7AC\uC0DD\uBC30\uC18D"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  })), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.playSpeed = 0.1;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.playSpeed === 0.1 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "x0.1")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.playSpeed = 0.5;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.playSpeed === 0.5 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "x0.5")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.playSpeed = 1;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.playSpeed === 1 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "x1")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.playSpeed = 2;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.playSpeed === 2 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "x2")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.playSpeed = 3;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.playSpeed === 3 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "x3")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.playSpeed = 5;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.playSpeed === 5 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "x5"))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "subConfig4",
+    style: {
+      width: subConfig4Width,
+      height: subConfig4Hegiht
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    style: {
+      borderBottom: "1px solid #fff"
+    },
+    onClick: function onClick() {
+      //다시 mainConfig으로
+      set_mainConfigWidth("250px");
+      set_mainConfigHeight("950px");
+      set_subConfig4Width("0");
+      set_subConfig4Height("0");
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, /*#__PURE__*/_react.default.createElement(_chevronLeft.ReactComponent, null), "\xA0 \uC7AC\uC0DD \uBAA9\uD45C FPS"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  })), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.drawFPS = 10;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.drawFPS === 10 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "10FPS")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.drawFPS = 20;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.drawFPS === 20 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "20FPS")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.drawFPS = 30;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.drawFPS === 30 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "30FPS")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.drawFPS = 60;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_checkzone"
+  }, ChartOption.drawFPS === 60 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+    className: "sub_labelzone"
+  }, "60FPS"))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "subConfig6",
+    style: {
+      width: subConfig6Width,
+      height: subConfig6Hegiht
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    style: {
+      borderBottom: "1px solid #fff"
+    },
+    onClick: function onClick() {
+      //다시 mainConfig으로
+      set_mainConfigWidth("250px");
+      set_mainConfigHeight("950px");
+      set_subConfig6Width("0");
+      set_subConfig6Height("0");
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label",
+    style: {
+      width: '100%'
+    }
+  }, /*#__PURE__*/_react.default.createElement(_chevronLeft.ReactComponent, null), "\xA0 \uD788\uD2B8\uB9F5 \uC138\uBD80\uC124\uC815"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data",
+    style: {
+      width: 0
+    }
+  })), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "HM_max", ChartOption.heatMapMax), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "range",
+    style: {
+      width: "70%"
+    },
+    value: ChartOption.heatMapMax,
+    min: 1,
+    step: 1,
+    max: 420,
+    onChange: function onChange(e) {
+      ChartOption.heatMapMax = e.target.value * 1;
+      resaveConfig();
+    }
+  }))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "HM_radius", ChartOption.heatMapRadius), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "range",
+    style: {
+      width: "70%"
+    },
+    value: ChartOption.heatMapRadius,
+    min: 1,
+    step: 1,
+    max: 180,
+    onChange: function onChange(e) {
+      ChartOption.heatMapRadius = e.target.value * 1;
+      resaveConfig();
+    }
+  }))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "HM_MaxOpacity", ChartOption.heatMapMaxOpacity), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "range",
+    style: {
+      width: "70%"
+    },
+    value: ChartOption.heatMapMaxOpacity,
+    min: 0,
+    step: 0.01,
+    max: 1,
+    onChange: function onChange(e) {
+      ChartOption.heatMapMaxOpacity = e.target.value * 1;
+      resaveConfig();
+    }
+  })))));
+};
+
+var PDFresultModal = function PDFresultModal(_ref2) {
+  var onClose = _ref2.onClose,
+      props = _objectWithoutProperties(_ref2, _excluded);
 
   var WORKERSRC = props.WORKERSRC,
       path = props.path,
@@ -122,22 +831,22 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [data]); //리모콘
 
 
-  var _useState = (0, _react.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      hideController = _useState2[0],
-      set_hideController = _useState2[1]; //차트 옵션. 톱니바퀴
+  var _useState23 = (0, _react.useState)(false),
+      _useState24 = _slicedToArray(_useState23, 2),
+      hideController = _useState24[0],
+      set_hideController = _useState24[1]; //차트 옵션. 톱니바퀴
 
 
-  var _useState3 = (0, _react.useState)(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      showConfig = _useState4[0],
-      set_showConfig = _useState4[1];
+  var _useState25 = (0, _react.useState)(false),
+      _useState26 = _slicedToArray(_useState25, 2),
+      showConfig = _useState26[0],
+      set_showConfig = _useState26[1];
 
   var resaveConfig = function resaveConfig() {
     set_chartOption(JSON.parse(JSON.stringify(chartOption)));
   };
 
-  var _useState5 = (0, _react.useState)({
+  var _useState27 = (0, _react.useState)({
     heatMap: true,
     heatMapMax: 40,
     heatMapRadius: 40,
@@ -159,19 +868,19 @@ var PDFresultModal = function PDFresultModal(_ref) {
     penWeight: 1 //유저가 PDF에 펜으로 글씨 쓴것.
 
   }),
-      _useState6 = _slicedToArray(_useState5, 2),
-      chartOption = _useState6[0],
-      set_chartOption = _useState6[1];
+      _useState28 = _slicedToArray(_useState27, 2),
+      chartOption = _useState28[0],
+      set_chartOption = _useState28[1];
 
-  var _useState7 = (0, _react.useState)("0.00"),
-      _useState8 = _slicedToArray(_useState7, 2),
-      offsetX = _useState8[0],
-      set_offsetX = _useState8[1];
+  var _useState29 = (0, _react.useState)("0.00"),
+      _useState30 = _slicedToArray(_useState29, 2),
+      offsetX = _useState30[0],
+      set_offsetX = _useState30[1];
 
-  var _useState9 = (0, _react.useState)("0.00"),
-      _useState10 = _slicedToArray(_useState9, 2),
-      offsetY = _useState10[0],
-      set_offsetY = _useState10[1]; //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
+  var _useState31 = (0, _react.useState)("0.00"),
+      _useState32 = _slicedToArray(_useState31, 2),
+      offsetY = _useState32[0],
+      set_offsetY = _useState32[1]; //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
 
 
   var _React$useState5 = _react.default.useState(1),
@@ -688,7 +1397,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   _react.default.useEffect(function () {
     if (!path) return;
     fetch(path).then( /*#__PURE__*/function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(res) {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(res) {
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -704,10 +1413,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
       }));
 
       return function (_x) {
-        return _ref2.apply(this, arguments);
+        return _ref3.apply(this, arguments);
       };
     }()).then( /*#__PURE__*/function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(buffer) {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(buffer) {
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -723,7 +1432,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
       }));
 
       return function (_x2) {
-        return _ref3.apply(this, arguments);
+        return _ref4.apply(this, arguments);
       };
     }());
   }, [path]);
@@ -756,7 +1465,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
 
 
   var handleTryPrint = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
       var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, prevx, prevy, pngImageBytes, pngImage, pngDims, i, gazeData, size, r, _i4, d, fr, _i5, f, fsize, startdrawX, startdrawY, _i6, _d3, pageNum, draw, newPage, fontSize, title, titleFontSize, customFont, textWidth, topMargin, textMarginTop, textMarginLeft, keycount, key, pdfBytes, blob, blobURL, link;
 
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -1105,7 +1814,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }));
 
     return function handleTryPrint() {
-      return _ref4.apply(this, arguments);
+      return _ref5.apply(this, arguments);
     };
   }();
 
@@ -1228,7 +1937,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
     xmlnsXlink: "http://www.w3.org/1999/xlink"
   }, /*#__PURE__*/_react.default.createElement("g", null), /*#__PURE__*/_react.default.createElement("g", null, /*#__PURE__*/_react.default.createElement("path", {
     d: "M22.2,14.4L21,13.7c-1.3-0.8-1.3-2.7,0-3.5l1.2-0.7c1-0.6,1.3-1.8,0.7-2.7l-1-1.7c-0.6-1-1.8-1.3-2.7-0.7   L18,5.1c-1.3,0.8-3-0.2-3-1.7V2c0-1.1-0.9-2-2-2h-2C9.9,0,9,0.9,9,2v1.3c0,1.5-1.7,2.5-3,1.7L4.8,4.4c-1-0.6-2.2-0.2-2.7,0.7   l-1,1.7C0.6,7.8,0.9,9,1.8,9.6L3,10.3C4.3,11,4.3,13,3,13.7l-1.2,0.7c-1,0.6-1.3,1.8-0.7,2.7l1,1.7c0.6,1,1.8,1.3,2.7,0.7L6,18.9   c1.3-0.8,3,0.2,3,1.7V22c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2v-1.3c0-1.5,1.7-2.5,3-1.7l1.2,0.7c1,0.6,2.2,0.2,2.7-0.7l1-1.7   C23.4,16.2,23.1,15,22.2,14.4z M12,16c-2.2,0-4-1.8-4-4c0-2.2,1.8-4,4-4s4,1.8,4,4C16,14.2,14.2,16,12,16z"
-  })))), /*#__PURE__*/_react.default.createElement(_ConfigController.default, {
+  })))), /*#__PURE__*/_react.default.createElement(ConfigController, {
     resaveConfig: resaveConfig,
     showConfig: showConfig,
     ChartOption: chartOption
