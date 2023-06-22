@@ -1,3 +1,4 @@
+import React from "react";
 const svgstyle = {
     lineHeight: 'normal',
     fontVariantLigatures: 'normal',

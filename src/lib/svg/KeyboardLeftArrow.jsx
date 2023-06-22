@@ -1,3 +1,4 @@
+import React from "react";
 const KeyboardLeftArrow = ({ ...props }) => {
     const { onClick } = props;
     let defaultStyle = {
