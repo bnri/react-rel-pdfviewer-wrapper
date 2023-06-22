@@ -1,6 +1,6 @@
 {
   "name": "react-rel-pdfviewer-wrapper",
-  "version": "1.0.22-1",
+  "version": "1.0.22-2",
   "private": false,
   "babel": {
     "presets": [
