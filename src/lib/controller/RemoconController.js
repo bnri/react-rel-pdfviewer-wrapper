@@ -5,6 +5,7 @@ import { KeyboardLeftArrow, PDFSVG } from "../svg";
 const RemoconController = ({ ...props }) => {
     const { hideController, handleTryPrint, fd_inform
         , offsetX, offsetY, set_offsetX, set_offsetY
+        ,originViewPercent
     } = props;
 
     const [visibility, set_visibility] = useState('visible');
@@ -55,6 +56,14 @@ const RemoconController = ({ ...props }) => {
                         </div>
                         <div className="c_data">
                             {fd_inform.fixationRatio.toFixed(0)}%
+                        </div>
+                    </div>
+                    <div className="oneConfig">
+                        <div className="c_label">
+                            측정시문서배율
+                        </div>
+                        <div className="c_data">
+                            {originViewPercent}%
                         </div>
                     </div>
 

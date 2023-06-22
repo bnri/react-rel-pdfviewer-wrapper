@@ -13,9 +13,6 @@ import { ConfigController, RemoconController } from "./controller";
 import { RemoconSVG } from "./svg";
 
 
-
-
-
 const PDFresultModal = ({ ...props }) => {
     const { WORKERSRC,
         onClose,
@@ -38,15 +35,19 @@ const PDFresultModal = ({ ...props }) => {
         return lastTime;
     }, [data])
 
+    const originViewPercent=useMemo(()=>{
+        return viewpercent;
+    },[viewpercent]);
+
     //리모콘
     const [hideController, set_hideController] = useState(false);
-
 
     //차트 옵션. 톱니바퀴
     const [showConfig, set_showConfig] = useState(false);
     const resaveConfig = () => {
         set_chartOption(JSON.parse(JSON.stringify(chartOption)));
     }
+
     const [chartOption, set_chartOption] = useState({
         heatMap: true,
         heatMapMax: 40,
@@ -73,8 +74,7 @@ const PDFresultModal = ({ ...props }) => {
         penColor: pencolor ? pencolor : '#FF0000',
         penWeight: penweight ? penweight : 1, //유저가 PDF에 펜으로 글씨 쓴것.
     })
-
-
+    //문서내의 temp offset
     const [offsetX, set_offsetX] = useState("0.00");
     const [offsetY, set_offsetY] = useState("0.00");
 
@@ -187,7 +187,7 @@ const PDFresultModal = ({ ...props }) => {
         return fa;
     }, [data, fminx, fminy])
 
-
+    //리사이즈시 스케일변수들
     const [innerFrameScale, set_innerFrameScale] = useState(0.5);
     const [innerFrameTop, set_innerFrameTop] = useState(0);
     const [innerFrameLeft, set_innerFrameLeft] = useState(0);
@@ -196,7 +196,7 @@ const PDFresultModal = ({ ...props }) => {
     //재생과 멈춤.
     const [isPlaying, set_isPlaying] = useState(false);
 
-    //재생배속.
+    //재생시 스크롤 따라갈것인가 옵션
     const [followEvent] = useState(true);
 
 
@@ -1048,7 +1048,7 @@ const PDFresultModal = ({ ...props }) => {
                 <RemoconController fd_inform={fd_inform} handleTryPrint={handleTryPrint}
                     offsetX={offsetX} offsetY={offsetY}
                     hideController={hideController}
-                    set_offsetX={set_offsetX} set_offsetY={set_offsetY}
+                    set_offsetX={set_offsetX} set_offsetY={set_offsetY} originViewPercent={originViewPercent}
                 />
                 <div className="rightZone">
                     <div className="topVacancy" ref={topRef}>
@@ -1090,20 +1090,13 @@ const PDFresultModal = ({ ...props }) => {
                                     // handleDraw();
 
                                 }}
-
-
-
                             />
-
-
                         </div>
-
                     </div>
                     <div className="playbarWrapper no-drag">
                         <div className="rangePlayWrapper">
                             <input className="rangePlay" type="range" step="0.01"
                                 value={nowTime} max={endTime} min='0' onChange={(e) => set_nowTime(e.target.value * 1)} />
-
                         </div>
                         <div className="rangeBtnWrapper">
                             <div className="leftBtnWrap">
@@ -1198,7 +1191,6 @@ const PDFresultModal = ({ ...props }) => {
                                         resaveConfig={resaveConfig}
                                         showConfig={showConfig}
                                         ChartOption={chartOption}
-
                                     />
                                 </div>
 
