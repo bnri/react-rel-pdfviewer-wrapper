@@ -25,14 +25,6 @@ var _JejuMyeongjo = _interopRequireDefault(require("./JejuMyeongjo.ttf"));
 
 var _util = require("./util");
 
-var _remotecontroller = require("./remotecontroller.svg");
-
-var _check = require("./check.svg");
-
-var _chevronRight = require("./chevron-right.svg");
-
-var _chevronLeft = require("./chevron-left.svg");
-
 var _excluded = ["onClose"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -65,6 +57,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
+//#@!
+// import { ReactComponent as RemoconSVG } from "./remotecontroller.svg";
+// import { ReactComponent as CheckSVG } from "./check.svg";
+// import { ReactComponent as RightArrowSVG } from "./chevron-right.svg";
+// import { ReactComponent as LeftArrowSVG } from "./chevron-left.svg";
 // import RemoconController from "./RemoconController";
 // import * as pdfjsLib from 'pdfjs-dist/webpack';
 // console.log("야야야")
@@ -235,7 +232,7 @@ var ConfigController = function ConfigController(_ref) {
       justifyContent: "center",
       paddingRight: "10px"
     }
-  }, /*#__PURE__*/_react.default.createElement(_chevronRight.ReactComponent, null)))), /*#__PURE__*/_react.default.createElement("div", {
+  }, "[\uC6B0]"))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
@@ -414,7 +411,7 @@ var ConfigController = function ConfigController(_ref) {
       justifyContent: "center",
       paddingRight: "10px"
     }
-  }, /*#__PURE__*/_react.default.createElement(_chevronRight.ReactComponent, null)))), /*#__PURE__*/_react.default.createElement("div", {
+  }, "[\uC6B0]"))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
     onClick: function onClick() {
       //subConfig1로
@@ -443,7 +440,7 @@ var ConfigController = function ConfigController(_ref) {
       justifyContent: "center",
       paddingRight: "10px"
     }
-  }, /*#__PURE__*/_react.default.createElement(_chevronRight.ReactComponent, null)))), /*#__PURE__*/_react.default.createElement("div", {
+  }, "[\uC6B0]"))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
     onClick: function onClick() {
       //subConfig1로
@@ -472,7 +469,7 @@ var ConfigController = function ConfigController(_ref) {
       justifyContent: "center",
       paddingRight: "10px"
     }
-  }, /*#__PURE__*/_react.default.createElement(_chevronRight.ReactComponent, null))))), /*#__PURE__*/_react.default.createElement("div", {
+  }, "[\uC6B0]")))), /*#__PURE__*/_react.default.createElement("div", {
     className: "subConfig1",
     style: {
       width: subConfig1Width,
@@ -495,7 +492,7 @@ var ConfigController = function ConfigController(_ref) {
     style: {
       width: '100%'
     }
-  }, /*#__PURE__*/_react.default.createElement(_chevronLeft.ReactComponent, null), "\xA0 \uC2DC\uC120\uCC3D \uACFC\uAC70\uBC94\uC704"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "[\uC88C] \xA0 \uC2DC\uC120\uCC3D \uACFC\uAC70\uBC94\uC704"), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data",
     style: {
       width: 0
@@ -508,7 +505,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.GazePastRange === 0 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.GazePastRange === 0 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "\uC804\uCCB4")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -518,7 +515,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.GazePastRange === 0.5 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.GazePastRange === 0.5 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "0.5\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -528,7 +525,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.GazePastRange === 1 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.GazePastRange === 1 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "1\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -538,7 +535,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.GazePastRange === 2 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.GazePastRange === 2 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "2\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -548,7 +545,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.GazePastRange === 5 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.GazePastRange === 5 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "5\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -558,7 +555,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.GazePastRange === 10 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.GazePastRange === 10 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "10\uCD08"))), /*#__PURE__*/_react.default.createElement("div", {
     className: "subConfig3",
@@ -580,7 +577,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
-  }, /*#__PURE__*/_react.default.createElement(_chevronLeft.ReactComponent, null), "\xA0 \uC7AC\uC0DD\uBC30\uC18D"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "[\uC88C] \xA0 \uC7AC\uC0DD\uBC30\uC18D"), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data"
   })), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -590,7 +587,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.playSpeed === 0.1 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.playSpeed === 0.1 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "x0.1")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -600,7 +597,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.playSpeed === 0.5 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.playSpeed === 0.5 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "x0.5")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -610,7 +607,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.playSpeed === 1 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.playSpeed === 1 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "x1")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -620,7 +617,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.playSpeed === 2 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.playSpeed === 2 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "x2")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -630,7 +627,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.playSpeed === 3 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.playSpeed === 3 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "x3")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -640,7 +637,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.playSpeed === 5 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.playSpeed === 5 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "x5"))), /*#__PURE__*/_react.default.createElement("div", {
     className: "subConfig4",
@@ -662,7 +659,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
-  }, /*#__PURE__*/_react.default.createElement(_chevronLeft.ReactComponent, null), "\xA0 \uC7AC\uC0DD \uBAA9\uD45C FPS"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "[\uC88C] \xA0 \uC7AC\uC0DD \uBAA9\uD45C FPS"), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data"
   })), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -672,7 +669,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.drawFPS === 10 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.drawFPS === 10 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "10FPS")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -682,7 +679,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.drawFPS === 20 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.drawFPS === 20 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "20FPS")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -692,7 +689,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.drawFPS === 30 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.drawFPS === 30 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "30FPS")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
@@ -702,7 +699,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_checkzone"
-  }, ChartOption.drawFPS === 60 ? /*#__PURE__*/_react.default.createElement(_check.ReactComponent, null) : ""), /*#__PURE__*/_react.default.createElement("div", {
+  }, ChartOption.drawFPS === 60 ? "v" : ""), /*#__PURE__*/_react.default.createElement("div", {
     className: "sub_labelzone"
   }, "60FPS"))), /*#__PURE__*/_react.default.createElement("div", {
     className: "subConfig6",
@@ -727,7 +724,7 @@ var ConfigController = function ConfigController(_ref) {
     style: {
       width: '100%'
     }
-  }, /*#__PURE__*/_react.default.createElement(_chevronLeft.ReactComponent, null), "\xA0 \uD788\uD2B8\uB9F5 \uC138\uBD80\uC124\uC815"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "[\uC88C] \xA0 \uD788\uD2B8\uB9F5 \uC138\uBD80\uC124\uC815"), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data",
     style: {
       width: 0
@@ -1911,7 +1908,7 @@ var PDFresultModal = function PDFresultModal(_ref2) {
         return !h;
       });
     }
-  }, /*#__PURE__*/_react.default.createElement(_remotecontroller.ReactComponent, null)), /*#__PURE__*/_react.default.createElement("div", {
+  }, "\uB9AC\uBAA8\uCF58"), /*#__PURE__*/_react.default.createElement("div", {
     style: {
       position: 'relative'
     }

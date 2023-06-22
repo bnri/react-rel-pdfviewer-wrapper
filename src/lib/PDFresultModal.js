@@ -18,10 +18,12 @@ import jeju from './JejuMyeongjo.ttf';
 // import { ReactComponent as MaximizeSVG } from './maximize-2.svg';
 import { closeFullscreen, openFullScreen } from "./util";
 
-import { ReactComponent as RemoconSVG } from "./remotecontroller.svg";
-import { ReactComponent as CheckSVG } from "./check.svg";
-import { ReactComponent as RightArrowSVG } from "./chevron-right.svg";
-import { ReactComponent as LeftArrowSVG } from "./chevron-left.svg";
+
+//#@!
+// import { ReactComponent as RemoconSVG } from "./remotecontroller.svg";
+// import { ReactComponent as CheckSVG } from "./check.svg";
+// import { ReactComponent as RightArrowSVG } from "./chevron-right.svg";
+// import { ReactComponent as LeftArrowSVG } from "./chevron-left.svg";
 
 
 // import RemoconController from "./RemoconController";
@@ -152,7 +154,7 @@ const ConfigController = ({ ...props }) => {
                     <div className="c_data">
                         <div style={{ width: "75%", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "15px" }}>기본</div>
                         <div style={{ width: "25%", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: "10px" }}>
-                            <RightArrowSVG/>
+                            [우]
                         </div>
                     </div>
                 </div>
@@ -312,7 +314,7 @@ const ConfigController = ({ ...props }) => {
                     <div className="c_data">
                         <div style={{ width: "75%", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "15px" }}>{ChartOption.GazePastRange !== null && ChartOption.GazePastRange === 0 ? "전체" : ChartOption.GazePastRange + "초"}</div>
                         <div style={{ width: "25%", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: "10px" }}>
-                            <RightArrowSVG/>
+                            [우]
                         </div>
                     </div>
                 </div>
@@ -331,7 +333,7 @@ const ConfigController = ({ ...props }) => {
                     <div className="c_data">
                         <div style={{ width: "75%", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "15px" }}>{ChartOption.playSpeed !== null && `x${ChartOption.playSpeed}`}</div>
                         <div style={{ width: "25%", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: "10px" }}>
-                            <RightArrowSVG/>
+                            [우]
                         </div>
                     </div>
                 </div>
@@ -349,7 +351,7 @@ const ConfigController = ({ ...props }) => {
                     <div className="c_data">
                         <div style={{ width: "75%", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "15px" }}>{ChartOption.drawFPS !== null && `${ChartOption.drawFPS}FPS`}</div>
                         <div style={{ width: "25%", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: "10px" }}>
-                            <RightArrowSVG/>
+                            [우]
                         </div>
                     </div>
                 </div>
@@ -371,7 +373,7 @@ const ConfigController = ({ ...props }) => {
                     }}
                 >
                     <div className="c_label" style={{width:'100%'}}>
-                        <LeftArrowSVG/>
+                        [좌]
                         &nbsp; 시선창 과거범위
                     </div>
                     <div className="c_data" style={{width:0}}></div>
@@ -383,7 +385,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.GazePastRange === 0 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.GazePastRange === 0 ? "v" : ""}</div>
                     <div className="sub_labelzone">전체</div>
                 </div>
                 <div
@@ -393,7 +395,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.GazePastRange === 0.5 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.GazePastRange === 0.5 ? "v" : ""}</div>
                     <div className="sub_labelzone">0.5초</div>
                 </div>
                 <div
@@ -403,7 +405,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.GazePastRange === 1 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.GazePastRange === 1 ? "v" : ""}</div>
                     <div className="sub_labelzone">1초</div>
                 </div>
                 <div
@@ -413,7 +415,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.GazePastRange === 2 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.GazePastRange === 2 ? "v" : ""}</div>
                     <div className="sub_labelzone">2초</div>
                 </div>
                 <div
@@ -423,7 +425,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.GazePastRange === 5 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.GazePastRange === 5 ? "v" : ""}</div>
                     <div className="sub_labelzone">5초</div>
                 </div>
                 <div
@@ -433,7 +435,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.GazePastRange === 10 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.GazePastRange === 10 ? "v" : ""}</div>
                     <div className="sub_labelzone">10초</div>
                 </div>
             </div>
@@ -451,7 +453,7 @@ const ConfigController = ({ ...props }) => {
                     }}
                 >
                     <div className="c_label">
-                        <LeftArrowSVG/>
+                        [좌]
                         &nbsp; 재생배속
                     </div>
                     <div className="c_data"></div>
@@ -464,7 +466,7 @@ const ConfigController = ({ ...props }) => {
                     }}
 
                 >
-                    <div className="sub_checkzone">{ChartOption.playSpeed === 0.1 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.playSpeed === 0.1 ? "v" : ""}</div>
                     <div className="sub_labelzone">x0.1</div>
                 </div>
                 <div
@@ -474,7 +476,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.playSpeed === 0.5 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.playSpeed === 0.5 ? "v" : ""}</div>
                     <div className="sub_labelzone">x0.5</div>
                 </div>
                 <div
@@ -484,7 +486,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.playSpeed === 1 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.playSpeed === 1 ? "v" : ""}</div>
                     <div className="sub_labelzone">x1</div>
                 </div>
                 <div
@@ -494,7 +496,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.playSpeed === 2 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.playSpeed === 2 ? "v" : ""}</div>
                     <div className="sub_labelzone">x2</div>
                 </div>
                 <div
@@ -504,7 +506,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.playSpeed === 3 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.playSpeed === 3 ? "v" : ""}</div>
                     <div className="sub_labelzone">x3</div>
                 </div>
                 <div
@@ -514,7 +516,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.playSpeed === 5 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.playSpeed === 5 ? "v" : ""}</div>
                     <div className="sub_labelzone">x5</div>
                 </div>
             </div>
@@ -531,7 +533,7 @@ const ConfigController = ({ ...props }) => {
                     }}
                 >
                     <div className="c_label">
-                        <LeftArrowSVG/>
+                        [좌]
                         &nbsp; 재생 목표 FPS
                     </div>
                     <div className="c_data"></div>
@@ -543,7 +545,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.drawFPS === 10 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.drawFPS === 10 ? "v" : ""}</div>
                     <div className="sub_labelzone">10FPS</div>
                 </div>
                 <div
@@ -553,7 +555,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.drawFPS === 20 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.drawFPS === 20 ? "v" : ""}</div>
                     <div className="sub_labelzone">20FPS</div>
                 </div>
                 <div
@@ -563,7 +565,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.drawFPS === 30 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.drawFPS === 30 ? "v" : ""}</div>
                     <div className="sub_labelzone">30FPS</div>
                 </div>
                 <div
@@ -573,7 +575,7 @@ const ConfigController = ({ ...props }) => {
                         resaveConfig();
                     }}
                 >
-                    <div className="sub_checkzone">{ChartOption.drawFPS === 60 ? <CheckSVG/> : ""}</div>
+                    <div className="sub_checkzone">{ChartOption.drawFPS === 60 ? "v" : ""}</div>
                     <div className="sub_labelzone">60FPS</div>
                 </div>
 
@@ -594,7 +596,7 @@ const ConfigController = ({ ...props }) => {
                     }}
                 >
                     <div className="c_label" style={{width:'100%'}}>
-                        <LeftArrowSVG/>
+                        [좌]
                         &nbsp; 히트맵 세부설정
                     </div>
                     <div className="c_data" style={{width:0}}></div>
@@ -1810,7 +1812,7 @@ const PDFresultModal = ({ onClose, ...props }) => {
                                     onClick={() => {
                                         set_hideController(h => !h);
                                     }}>
-                                    <RemoconSVG />
+                                        리모콘
                                 </button>
 
 
