@@ -71,10 +71,10 @@ const PDFresultModal = ({ ...props }) => {
     const resaveConfig = () => {
 
         if(chartOption.heatMap){
-            console.log("히트맵킴")    
+            // console.log("히트맵킴")    
         }
         else{
-            console.log("히트맵끔")
+            // console.log("히트맵끔")
             set_HI(null);
             let heatmapref = pdfviewref.current.get_heatmapRef();
             while (heatmapref.current.firstChild) {
@@ -263,13 +263,15 @@ const PDFresultModal = ({ ...props }) => {
         if (nowPage) {
             if(!chartOption.heatMap){
                 // console.log("히트맵이 off임")
+                beforeHeatmap.current=false;
                 return;
             }
-            if (chartOption.heatMap === beforeHeatmap.current) {
-                // console.log("히트맵말고 다른옵션을 바꿈")
+            if (chartOption.heatMap*1 ===beforeHeatmap.current*1) {
+                // console.log("히트맵말고 다른옵션을 바꿈111",chartOption.heatMap,beforeHeatmap.current)
                 return;
-              }
-
+            }
+          
+            beforeHeatmap.current = chartOption.heatMap;
             a=setInterval(()=>{
                 let heatmapref = pdfviewref.current.get_heatmapRef();
                 if (heatmapref.current&&heatmapref.current.offsetWidth) {
@@ -305,7 +307,7 @@ const PDFresultModal = ({ ...props }) => {
                     });
                     // console.log("새로 히트맵인스터스 할당")
                     set_HI(heatmapInstance);
-                    beforeHeatmap.current = chartOption.heatMap;
+
                 }
             },50);
         }
