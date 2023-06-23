@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { CheckSVG, ChevronLeftSVG, ChevronRightSVG } from "../svg";
 
 const ConfigController = ({ ...props }) => {
-    const { resaveConfig, showConfig, ChartOption } = props;
+    const { resaveConfig, showConfig, ChartOption ,followEvent,set_followEvent } = props;
     const [, forceUpdate] = useState();
     useEffect(() => {
         forceUpdate({});
@@ -103,6 +103,21 @@ const ConfigController = ({ ...props }) => {
                     <div style={{ width: "75%", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "15px" }}>기본</div>
                     <div style={{ width: "25%", display: "flex", alignItems: "center", justifyContent: "center", paddingRight: "10px" }}>
                         <ChevronRightSVG />
+                    </div>
+                </div>
+            </div>
+            <div
+                className="oneConfig borderBottom"
+                onClick={() => {
+                    ChartOption.penPermit = !ChartOption.penPermit;
+                    resaveConfig();
+                }}
+            >
+                <div className="c_label">펜 보기</div>
+                <div className="c_data">
+                    <div className="ckbx-style-8">
+                        <input type="checkbox" name="ckbx-style-8" checked={ChartOption.penPermit} onChange={() => { }} />
+                        <label />
                     </div>
                 </div>
             </div>
@@ -303,8 +318,21 @@ const ConfigController = ({ ...props }) => {
                     </div>
                 </div>
             </div>
-
-
+            <div
+                className="oneConfig"
+                onClick={() => {
+                    set_followEvent(f=>!f)
+                }}
+            >
+                <div className="c_label">스크롤 따라가기</div>
+                <div className="c_data">
+                    <div className="ckbx-style-8">
+                        <input type="checkbox" name="ckbx-style-8" checked={followEvent} onChange={() => { }} />
+                        <label />
+                    </div>
+                </div>
+            </div>
+            
 
 
         </div>

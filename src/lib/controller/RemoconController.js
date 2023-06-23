@@ -22,7 +22,11 @@ const RemoconController = ({ ...props }) => {
         return () => {
             clearTimeout(a);
         }
-    }, [hideController])
+    }, [hideController]);
+
+
+
+    
 
     return (<Draggable
         bounds=".topVacancy"

@@ -35,9 +35,9 @@ const PDFresultModal = ({ ...props }) => {
         return lastTime;
     }, [data])
 
-    const originViewPercent=useMemo(()=>{
+    const originViewPercent = useMemo(() => {
         return viewpercent;
-    },[viewpercent]);
+    }, [viewpercent]);
 
     //리모콘
     const [hideController, set_hideController] = useState(false);
@@ -78,9 +78,12 @@ const PDFresultModal = ({ ...props }) => {
     const [offsetX, set_offsetX] = useState("0.00");
     const [offsetY, set_offsetY] = useState("0.00");
 
+
+
     //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
     const [fminx] = useState(1);
     const [fminy] = useState(1);
+    //fixationData는 darw시에도 사용됨.
     const fixationData = useMemo(() => {
         let fa = [];
         let sumPDF_x = 0;
@@ -186,27 +189,7 @@ const PDFresultModal = ({ ...props }) => {
         // console.log("fa", fa);
         return fa;
     }, [data, fminx, fminy])
-
-    //리사이즈시 스케일변수들
-    const [innerFrameScale, set_innerFrameScale] = useState(0.5);
-    const [innerFrameTop, set_innerFrameTop] = useState(0);
-    const [innerFrameLeft, set_innerFrameLeft] = useState(0);
-
-
-    //재생과 멈춤.
-    const [isPlaying, set_isPlaying] = useState(false);
-
-    //재생시 스크롤 따라갈것인가 옵션
-    const [followEvent] = useState(true);
-
-
-    const [nowPDFviewInform, set_nowPDFviewInform] = useState(null);
     const [minFixationCount] = useState(3);
-
-    //전체화면
-    const [isfullscreen, set_isfullscreen] = useState(false);
-
-    //fixation Duration정보..옮기자, 콘트롤러로
     const fd_inform = useMemo(() => {
         if (!fixationData) return;
 
@@ -231,6 +214,28 @@ const PDFresultModal = ({ ...props }) => {
         };
         return obj;
     }, [fixationData, minFixationCount, endTime]);
+    
+    
+
+
+
+    //리사이즈시 스케일변수들
+    const [innerFrameScale, set_innerFrameScale] = useState(0.5);
+    const [innerFrameTop, set_innerFrameTop] = useState(0);
+    const [innerFrameLeft, set_innerFrameLeft] = useState(0);
+
+
+    //재생과 멈춤.
+    const [isPlaying, set_isPlaying] = useState(false);
+
+    //재생시 스크롤 따라갈것인가 옵션
+    const [followEvent,set_followEvent] = useState(true);
+
+    //PDF 인쇄시 사용함
+    const [nowPDFviewInform, set_nowPDFviewInform] = useState(null);
+  
+    //전체화면
+    const [isfullscreen, set_isfullscreen] = useState(false);
 
 
     //리사이즈이벤트
@@ -290,11 +295,11 @@ const PDFresultModal = ({ ...props }) => {
         }
     }, [resizeInnerFrame]);
 
-
     const handleTogglePlay = () => {
         set_isPlaying((p) => !p);
     }
 
+    //재생
     React.useEffect(() => {
         const { playSpeed, drawFPS } = chartOption;
         const fpsInterval = 1000 / drawFPS;
@@ -369,7 +374,6 @@ const PDFresultModal = ({ ...props }) => {
         let cw = nowPDFviewInform.width;
         let ch = nowPDFviewInform.height;
 
-
         let size = chartOption.RPOG_size * 2 / 100;
 
         let r = cw * 0.01 * size;
@@ -388,198 +392,208 @@ const PDFresultModal = ({ ...props }) => {
         let prevx = null;
         let prevy = null;
         // let prevp = null;
+        let osx = offsetX * 1;
+        let osy = offsetY * 1;
+
+        function drawRPOG() {
+            //draw rawdata
+            for (let i = 0; chartOption.RPOG && (i < gazeData.length); i++) {
+                let d = gazeData[i];
+
+                if (pT) {
+                    if (d.relTime < (nowTime - pT)) {
+                        continue;
+                    }
+                }
+
+                // console.log("t",t);
+                if (d.relTime * 1 <= nowTime * 1) {
+
+                    if (d.pdfx && d.pdfy) {
+                        // console.log("그려")
+                        if (nowPage === d.pageNum && r) {
+
+                            if (chartOption.RPOG_line && prevx && prevy) {
+                                rctx.beginPath();
+                                rctx.lineWidth = 0.5;
+                                rctx.strokeStyle = 'red';
+                                rctx.fillStyle = 'red';
+                                rctx.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
+                                rctx.lineTo((d.pdfx + osx) * cw, (d.pdfy + osy) * ch);
+                                rctx.stroke();
+                            } //선먼저 그린후 그리기
 
 
-        //draw rawdata
-        for (let i = 0; chartOption.RPOG && (i < gazeData.length); i++) {
-            let d = gazeData[i];
+                            rctx.beginPath();
+                            rctx.lineWidth = 0.5;
+                            rctx.strokeStyle = 'rgb(255,0,0,0.3)';
+                            rctx.fillStyle = 'rgb(255,0,0,0.3)';
+                            rctx.arc((d.pdfx + osx) * cw, (d.pdfy + osy) * ch, r, 0, Math.PI * 2);
+                            rctx.fill();
 
-            if (pT) {
-                if (d.relTime < (nowTime - pT)) {
-                    continue;
+                        }
+                        // prevp = d.pageNum
+                        prevx = d.pdfx;
+                        prevy = d.pdfy;
+
+
+
+                    }
+
+
+
+
+                }
+
+            }
+
+
+
+        }
+
+        function drawFixation() {
+            //draw Fixation
+            let fr = cw * 0.01 * chartOption.FPOG_size * 1.5 / 100;
+            prevx = null;
+            prevy = null;
+            for (let i = 0; (chartOption.FPOG && (i < fixationData.length)); i++) {
+
+                const f = fixationData[i];
+                if (pT) { //과거시간까지만 재생. pT가0이면 전체시간
+                    if (f.relTime_e < (nowTime - pT)) {
+                        continue;
+                    }
+                }
+                //현재시간 전까지만 재생
+                if (f.relTime_s * 1 <= nowTime * 1) {
+                    if (nowPage === f.pageNum_s && fr) {
+                        if (f.count >= minFixationCount) {
+
+                            //선그리기...
+                            if (chartOption.FPOG_line && prevx && prevy) {
+                                rctx.beginPath();
+                                rctx.lineWidth = 0.5;
+                                rctx.strokeStyle = 'green';
+                                rctx.fillStyle = 'green';
+                                rctx.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
+                                rctx.lineTo((f.x + osx) * cw, (f.y + osy) * ch);
+                                rctx.stroke();
+                                rctx.closePath();
+                            }
+
+                            //원그리기 fixation
+                            let fsize = fr * Math.sqrt(f.count);
+                            if (f.relTime_e <= nowTime) {
+                                //전체 다그려
+                                rctx.beginPath();
+                                rctx.lineWidth = 0.5;
+                                rctx.strokeStyle = 'rgb(0,255,0,0.3)';
+                                rctx.fillStyle = 'rgb(0,255,0,0.3)';
+                                rctx.arc((f.x + osx) * cw, (f.y + osy) * ch, fsize, 0, Math.PI * 2);
+                                rctx.fill();
+                                rctx.closePath();
+                            }
+                            else {
+                                // 작게 그려
+                                let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
+
+                                rctx.beginPath();
+                                rctx.lineWidth = 0.5;
+                                rctx.strokeStyle = 'rgb(0,0,255,0.3)';
+                                rctx.fillStyle = 'rgb(0,0,255,0.3)';
+                                rctx.arc((f.x + osx) * cw, (f.y + osy) * ch, fsize * ratio, 0, Math.PI * 2);
+                                rctx.fill();
+                                rctx.closePath();
+                            }
+
+
+                            if (chartOption.FPOG_number === true) {
+                                rctx.beginPath();
+                                rctx.strokeStyle = "black";
+                                rctx.fillStyle = "black";
+                                rctx.lineWidth = 1;
+                                rctx.font = (cw / 100) * chartOption.FPOG_number_size + "px Arial";
+                                rctx.textAlign = "center";
+                                rctx.textBaseline = "middle";
+                                rctx.fillText(f.fixationNumber, (f.x + osx) * cw, (f.y + osy) * ch);
+                                rctx.stroke();
+                            }
+                            prevx = f.x;
+                            prevy = f.y;
+                        }
+                    }
                 }
             }
 
-            // console.log("t",t);
-            if (d.relTime * 1 <= nowTime * 1) {
+        }
 
-                if (d.pdfx && d.pdfy) {
+        function drawPencil() {
+            //draw pencil
+
+            let startdrawX, startdrawY;
+            // console.log("chartOption.penPermit",chartOption.penPermit)
+            for (let i = 0; (chartOption.penPermit * 1 && (i < gazeData.length)); i++) {
+
+                let d = gazeData[i];
+                const { pageNum } = d;
+                const draw = gazeData[i].draw;
+
+                // if (pT) {
+                //     if (d.relTime < (nowTime - pT)) {
+                //         continue;
+                //     }
+                // }
+                if (!draw) {
+                    continue;
+                }
+                // console.log("t",t);
+
+
+                if (d.relTime * 1 <= nowTime * 1) {
                     // console.log("그려")
-                    if (nowPage === d.pageNum && r) {
-
-                        if (chartOption.RPOG_line && prevx && prevy) {
-                            rctx.beginPath();
-                            rctx.lineWidth = 0.5;
-                            rctx.strokeStyle = 'red';
-                            rctx.fillStyle = 'red';
-                            rctx.moveTo((prevx) * cw, (prevy) * ch);
-                            rctx.lineTo((d.pdfx) * cw, (d.pdfy) * ch);
-                            rctx.stroke();
-                        } //선먼저 그린후 그리기
-
-
-                        rctx.beginPath();
-                        rctx.lineWidth = 0.5;
-                        rctx.strokeStyle = 'rgb(255,0,0,0.3)';
-                        rctx.fillStyle = 'rgb(255,0,0,0.3)';
-                        rctx.arc((d.pdfx) * cw, (d.pdfy) * ch, r, 0, Math.PI * 2);
-                        rctx.fill();
-
-                    }
-                    // prevp = d.pageNum
-                    prevx = d.pdfx;
-                    prevy = d.pdfy;
-
-
-
-                }
-
-
-
-
-            }
-
-        }
-
-
-
-
-        //draw Fixation
-        let fr = cw * 0.01 * chartOption.FPOG_size * 1.5 / 100;
-        prevx = null;
-        prevy = null;
-        for (let i = 0; (chartOption.FPOG && (i < fixationData.length)); i++) {
-
-            const f = fixationData[i];
-            if (pT) {
-                if (f.relTime_e < (nowTime - pT)) {
-                    continue;
-                }
-            }
-
-            if (f.relTime_s * 1 <= nowTime * 1) {
-                if (nowPage === f.pageNum_s && fr) {
-                    if (f.count >= minFixationCount) {
-
-                        //선그리기...
-                        if (chartOption.FPOG_line && prevx && prevy) {
-                            rctx.beginPath();
-                            rctx.lineWidth = 0.5;
-                            rctx.strokeStyle = 'green';
-                            rctx.fillStyle = 'green';
-                            rctx.moveTo((prevx) * cw, (prevy) * ch);
-                            rctx.lineTo((f.x) * cw, (f.y) * ch);
-                            rctx.stroke();
-                            rctx.closePath();
-                        }
-
-                        //원그리기 fixation
-                        let fsize = fr * Math.sqrt(f.count);
-                        if (f.relTime_e <= nowTime) {
-                            //전체 다그려
-                            rctx.beginPath();
-                            rctx.lineWidth = 0.5;
-                            rctx.strokeStyle = 'rgb(0,255,0,0.3)';
-                            rctx.fillStyle = 'rgb(0,255,0,0.3)';
-                            rctx.arc((f.x) * cw, (f.y) * ch, fsize, 0, Math.PI * 2);
-                            rctx.fill();
-                            rctx.closePath();
-                        }
-                        else {
-                            // 작게 그려
-                            let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
-
-                            rctx.beginPath();
-                            rctx.lineWidth = 0.5;
-                            rctx.strokeStyle = 'rgb(0,0,255,0.3)';
-                            rctx.fillStyle = 'rgb(0,0,255,0.3)';
-                            rctx.arc((f.x) * cw, (f.y) * ch, fsize * ratio, 0, Math.PI * 2);
-                            rctx.fill();
-                            rctx.closePath();
-                        }
-
-                        if (chartOption.FPOG_number === true) {
-                            rctx.beginPath();
-                            rctx.strokeStyle = "black";
-                            rctx.fillStyle = "black";
-                            rctx.lineWidth = 1;
-                            rctx.font = (cw / 100) * chartOption.FPOG_number_size + "px Arial";
-                            rctx.textAlign = "center";
-                            rctx.textBaseline = "middle";
-                            rctx.fillText(f.fixationNumber, (f.x) * cw, (f.y) * ch);
-                            rctx.stroke();
-                        }
-                        prevx = f.x;
-                        prevy = f.y;
-                    }
-
-                }
-
-
-            }
-        }
-
-
-
-        //draw pencil
-
-        let startdrawX, startdrawY;
-        // console.log("chartOption.penPermit",chartOption.penPermit)
-        for (let i = 0; (chartOption.penPermit * 1 && (i < gazeData.length)); i++) {
-
-            let d = gazeData[i];
-            const { pageNum } = d;
-            const draw = gazeData[i].draw;
-
-            // if (pT) {
-            //     if (d.relTime < (nowTime - pT)) {
-            //         continue;
-            //     }
-            // }
-            if (!draw) {
-                continue;
-            }
-            // console.log("t",t);
-
-
-            if (d.relTime * 1 <= nowTime * 1) {
-                // console.log("그려")
-                if (nowPage === pageNum) {
-                    rctx.lineWidth = (chartOption.penWeight * 1).toFixed(0) * 1;
-                    rctx.strokeStyle = chartOption.penColor;
-                    rctx.fillStyle = chartOption.penColor;
-                    if (draw.type === 'startDrawing') {
-                        // console.log("draw", draw);
-                        // console.log("그리기시작");
-                        startdrawX = draw.x * cw;
-                        startdrawY = draw.y * ch;
-                        rctx.beginPath();
-                        rctx.moveTo(draw.x * cw, draw.y * ch);
-                        // testdata.push(draw);
-                    }
-                    else if (draw.type === 'draw') {
-                        if (startdrawX && startdrawY) {
-                            rctx.lineTo(draw.x * cw, draw.y * ch);
-                            rctx.stroke();
-                            // testdata.push(draw);
-                        }
-                        else {
+                    if (nowPage === pageNum) {
+                        rctx.lineWidth = (chartOption.penWeight * 1).toFixed(0) * 1;
+                        rctx.strokeStyle = chartOption.penColor;
+                        rctx.fillStyle = chartOption.penColor;
+                        if (draw.type === 'startDrawing') {
+                            // console.log("draw", draw);
+                            // console.log("그리기시작");
                             startdrawX = draw.x * cw;
                             startdrawY = draw.y * ch;
                             rctx.beginPath();
                             rctx.moveTo(draw.x * cw, draw.y * ch);
+                            // testdata.push(draw);
+                        }
+                        else if (draw.type === 'draw') {
+                            if (startdrawX && startdrawY) {
+                                rctx.lineTo(draw.x * cw, draw.y * ch);
+                                rctx.stroke();
+                                // testdata.push(draw);
+                            }
+                            else {
+                                startdrawX = draw.x * cw;
+                                startdrawY = draw.y * ch;
+                                rctx.beginPath();
+                                rctx.moveTo(draw.x * cw, draw.y * ch);
+                            }
+
+                        }
+                        else if (draw.type === 'stopDrawing') {
+                            rctx.closePath();
                         }
 
                     }
-                    else if (draw.type === 'stopDrawing') {
-                        rctx.closePath();
-                    }
-
                 }
             }
         }
+        drawRPOG();
+        drawFixation();
+        drawPencil();
 
-    }, [data, nowTime, nowPage, chartOption, nowPDFviewInform, fixationData, minFixationCount]);
+
+
+
+    }, [data, nowTime, nowPage, chartOption, nowPDFviewInform, fixationData, minFixationCount, offsetX, offsetY]);
 
 
 
@@ -614,6 +628,7 @@ const PDFresultModal = ({ ...props }) => {
 
 
     }, [data, nowTime]);
+
     React.useEffect(() => {
         if (followEvent) {
             handlePDFmoveEvent();
@@ -635,10 +650,8 @@ const PDFresultModal = ({ ...props }) => {
     }, []);
 
 
-
-    //path값에 따라서 PDFarraybuffer 보관
+    //인쇄할 PDF데이터 path값에 따라서 PDFarraybuffer 보관
     const [pdfArrayBuffer, set_pdfArrayBuffer] = useState(null);
-
     React.useEffect(() => {
         if (!path) return;
         fetch(path).then(async res => {
@@ -648,8 +661,7 @@ const PDFresultModal = ({ ...props }) => {
         });
     }, [path]);
 
-
-
+    //인쇄할 리더스아이로고 데이터
     const [readersEyeLogoArrayBuffer, set_readersEyeLogoArrayBuffer] = useState(null);
     React.useEffect(() => {
         fetch(readerseyelogo).then(r => r.arrayBuffer()).then(buf => {
@@ -746,30 +758,27 @@ const PDFresultModal = ({ ...props }) => {
             })
         }
 
+        let osx=offsetX*1;
+        let osy=offsetY*1;
+
         const gazeData = data.gazeData;
         let size = chartOption.RPOG_size * 2 / 100;
         let r = cw * 0.01 * size;
         //draw rawData
         for (let i = 0; chartOption.RPOG && (i < gazeData.length); i++) {
             let d = gazeData[i];
-
-
-            // console.log("t",t);
-            // if (d.relTime * 1 <= nowTime * 1) {
-
             if (d.pdfx && d.pdfy) {
-                // console.log("그려")
                 if (r) {
 
                     if (prevx && prevy) {
                         pages[d.pageNum - 1].drawLine({
                             start: {
-                                x: prevx * cw,
-                                y: height - prevy * ch,
+                                x: (prevx+osx) * cw,
+                                y: height - (prevy+osy) * ch,
                             },
                             end: {
-                                x: d.pdfx * cw,
-                                y: height - d.pdfy * ch,
+                                x: (d.pdfx+osx) * cw,
+                                y: height - (d.pdfy+osy) * ch,
                             },
                             color: rgb(1, 0, 0),
                             opacity: 0.3,
@@ -781,8 +790,8 @@ const PDFresultModal = ({ ...props }) => {
                     } //선먼저 그린후 그리기
 
                     pages[d.pageNum - 1].drawCircle({
-                        x: d.pdfx * cw,
-                        y: height - d.pdfy * ch,
+                        x: (d.pdfx+osx) * cw,
+                        y: height - (d.pdfy+osy) * ch,
                         size: r,
                         borderWidth: 1,
                         // borderDashArray: [1],
@@ -796,30 +805,11 @@ const PDFresultModal = ({ ...props }) => {
                         // borderLineCap: LineCapStyle.Round,
                     });
 
-
-                    // rctx.beginPath();
-                    // rctx.lineWidth = 0.5;
-                    // rctx.strokeStyle = 'rgb(255,0,0,0.3)';
-                    // rctx.fillStyle = 'rgb(255,0,0,0.3)';
-                    // rctx.arc((d.pdfx) * cw, (d.pdfy) * ch, r, 0, Math.PI * 2);
-                    // rctx.fill();
-
                 }
-                // prevp = d.pageNum
                 prevx = d.pdfx;
                 prevy = d.pdfy;
-
-
-
             }
-
-
-
-
-            // }
-
         }
-
 
 
 
@@ -829,11 +819,7 @@ const PDFresultModal = ({ ...props }) => {
         prevy = null;
 
         for (let i = 0; chartOption.FPOG && (i < fixationData.length); i++) {
-
             const f = fixationData[i];
-
-
-            // if (f.relTime_s * 1 <= nowTime * 1) {
             if (fr) {
                 if (f.count >= minFixationCount) {
 
@@ -841,12 +827,12 @@ const PDFresultModal = ({ ...props }) => {
                     if (prevx && prevy) {
                         pages[f.pageNum_s - 1].drawLine({
                             start: {
-                                x: prevx * cw,
-                                y: height - prevy * ch,
+                                x: (prevx+osx) * cw,
+                                y: height - (prevy+osy) * ch,
                             },
                             end: {
-                                x: f.x * cw,
-                                y: height - f.y * ch,
+                                x: (f.x+osx) * cw,
+                                y: height - (f.y+osy) * ch,
                             },
                             color: rgb(0, 1, 0),
                             opacity: 0.3,
@@ -859,8 +845,8 @@ const PDFresultModal = ({ ...props }) => {
                     //원그리기 fixation
                     let fsize = fr * Math.sqrt(f.count);
                     pages[f.pageNum_s - 1].drawCircle({
-                        x: f.x * cw,
-                        y: height - f.y * ch,
+                        x: (f.x+osx) * cw,
+                        y: height - (f.y+osy) * ch,
                         size: fsize,
                         borderWidth: 1,
                         // borderDashArray: [1],
@@ -873,9 +859,6 @@ const PDFresultModal = ({ ...props }) => {
                         // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
                         // borderLineCap: LineCapStyle.Round,
                     });
-
-
-
                     prevx = f.x;
                     prevy = f.y;
                 }
@@ -889,7 +872,6 @@ const PDFresultModal = ({ ...props }) => {
 
         //draw pencil
         let startdrawX, startdrawY;
-
         for (let i = 0; (chartOption.penPermit && (i < gazeData.length)); i++) {
 
             let d = gazeData[i];
@@ -972,7 +954,6 @@ const PDFresultModal = ({ ...props }) => {
         const fontSize = 15;
         const title = "Pathway 시선추적 측정 결과";
         const titleFontSize = 25;
-
         const customFont = await pdfDoc.embedFont(fontBytes);
         // const HelveticaFont =await pdfDoc.embedFont(StandardFonts.Helvetica); 
 
@@ -989,7 +970,6 @@ const PDFresultModal = ({ ...props }) => {
         });
 
         const topMargin = 15;
-
         const textMarginTop = 5;
         const textMarginLeft = 15;
         let keycount = 1;
@@ -1009,9 +989,6 @@ const PDFresultModal = ({ ...props }) => {
         }
 
         newPage.drawImage(pngImage, {
-            // x: newpage.getWidth() / 2 - pngDims.width / 2,
-            // y: newpage.getHeight() / 2 - pngDims.height / 2,
-            // x: newpage.getWidth()- pngDims.width ,
             x: width / 2 - pngDims.width / 2,
             y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount + 3) * fontSize,
             width: pngDims.width,
@@ -1020,7 +997,6 @@ const PDFresultModal = ({ ...props }) => {
 
 
         /////////////저장 다운로드/////////////
-
         const pdfBytes = await pdfDoc.save({ updateFieldAppearances: false })
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
         const blobURL = URL.createObjectURL(blob);
@@ -1191,6 +1167,8 @@ const PDFresultModal = ({ ...props }) => {
                                         resaveConfig={resaveConfig}
                                         showConfig={showConfig}
                                         ChartOption={chartOption}
+                                        set_followEvent={set_followEvent}
+                                        followEvent={followEvent}
                                     />
                                 </div>
 
