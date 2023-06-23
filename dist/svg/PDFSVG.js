@@ -4,11 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
 var _react = _interopRequireDefault(require("react"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var svgstyle = {
   lineHeight: 'normal',
   fontVariantLigatures: 'normal',
@@ -31,7 +28,6 @@ var svgstyle = {
   solidColor: '#000000',
   solidOpacity: 1
 };
-
 var PDFSVG = function PDFSVG() {
   return /*#__PURE__*/_react.default.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
@@ -71,6 +67,5 @@ var PDFSVG = function PDFSVG() {
     wordSpacing: "4.26000023"
   })));
 };
-
 var _default = PDFSVG;
 exports.default = _default;

@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect} from "react";
 import './PDFresultModal.scss';
 import PDFviewModal from 'react-rel-pdfviewer';
 import { PDFDocument, rgb } from 'pdf-lib';
@@ -11,10 +11,11 @@ import { closeFullscreen, getFileAsArrayBuffer, hexToRgb, openFullScreen } from 
 // import { ReactComponent as RemoconSVG } from "./img/remotecontroller.svg";
 import { ConfigController, RemoconController } from "./controller";
 import { RemoconSVG } from "./svg";
-
+import * as h337 from "heatmap.js";
 
 const PDFresultModal = ({ ...props }) => {
-    const { WORKERSRC,
+    const { 
+        // WORKERSRC,
         onClose,
         path,
         viewpercent, data, specialWidth, specialHeight,
@@ -22,16 +23,10 @@ const PDFresultModal = ({ ...props }) => {
     const topRef = useRef();
     const pdfviewref = useRef();
     const [nowPage, set_nowPage] = useState(1);
-    const [nowTime, set_nowTime] = useState(0);
+    const [nowTime, set_nowTime] = useState(data.gazeData[data.gazeData.length - 1].relTime);
     const endTime = useMemo(() => {
-        // console.log(data.gazeInform.maxTime);
-
         let lastTime = data.gazeData[data.gazeData.length - 1].relTime;
-
-
-
-        // console.log("et",et);
-        set_nowTime(lastTime);
+        // set_nowTime(lastTime);
         return lastTime;
     }, [data])
 
@@ -44,21 +39,19 @@ const PDFresultModal = ({ ...props }) => {
 
     //차트 옵션. 톱니바퀴
     const [showConfig, set_showConfig] = useState(false);
-    const resaveConfig = () => {
-        set_chartOption(JSON.parse(JSON.stringify(chartOption)));
-    }
+
 
     const [chartOption, set_chartOption] = useState({
         heatMap: true,
-        heatMapMax: 40,
+        heatMapMax: 20,
         heatMapRadius: 40,
         heatMapMaxOpacity: 0.7,
 
-        RPOG: false,
+        RPOG: true,
         RPOG_size: 10,
         RPOG_line: false,
 
-        FPOG: true,
+        FPOG: false,
         FPOG_size: 20,
         FPOG_line: true,
         FPOG_number: false,
@@ -74,6 +67,24 @@ const PDFresultModal = ({ ...props }) => {
         penColor: pencolor ? pencolor : '#FF0000',
         penWeight: penweight ? penweight : 1, //유저가 PDF에 펜으로 글씨 쓴것.
     })
+
+    const resaveConfig = () => {
+
+        if(chartOption.heatMap){
+            console.log("히트맵킴")    
+        }
+        else{
+            console.log("히트맵끔")
+            set_HI(null);
+            let heatmapref = pdfviewref.current.get_heatmapRef();
+            while (heatmapref.current.firstChild) {
+                heatmapref.current.removeChild(heatmapref.current.lastChild);
+            }
+        }
+
+        set_chartOption(JSON.parse(JSON.stringify(chartOption)));
+    }
+
     //문서내의 temp offset
     const [offsetX, set_offsetX] = useState("0.00");
     const [offsetY, set_offsetY] = useState("0.00");
@@ -214,8 +225,9 @@ const PDFresultModal = ({ ...props }) => {
         };
         return obj;
     }, [fixationData, minFixationCount, endTime]);
-    
-    
+
+
+
 
 
 
@@ -229,19 +241,84 @@ const PDFresultModal = ({ ...props }) => {
     const [isPlaying, set_isPlaying] = useState(false);
 
     //재생시 스크롤 따라갈것인가 옵션
-    const [followEvent,set_followEvent] = useState(true);
+    const [followEvent, set_followEvent] = useState(true);
 
     //PDF 인쇄시 사용함
     const [nowPDFviewInform, set_nowPDFviewInform] = useState(null);
-  
+
     //전체화면
     const [isfullscreen, set_isfullscreen] = useState(false);
+
+    //히트맵 인스턴스
+    // const [HI, set_HI] = useState();
+    // const HIref = useRef();
+    const [HI,set_HI] = useState();
+   
+
+
+    const beforeHeatmap = useRef(null);
+    //히트맵 인스턴스 생성부분.
+    useEffect(() => {
+        let a;
+        if (nowPage) {
+            if(!chartOption.heatMap){
+                // console.log("히트맵이 off임")
+                return;
+            }
+            if (chartOption.heatMap === beforeHeatmap.current) {
+                // console.log("히트맵말고 다른옵션을 바꿈")
+                return;
+              }
+
+            a=setInterval(()=>{
+                let heatmapref = pdfviewref.current.get_heatmapRef();
+                if (heatmapref.current&&heatmapref.current.offsetWidth) {
+                 
+                    clearInterval(a);
+
+                    //히트맵인스턴스 다 지우기.
+                    // console.log("모든 히트맵 인스턴스를 다지워라")
+                    while (heatmapref.current.firstChild) {
+                        heatmapref.current.removeChild(heatmapref.current.lastChild);
+                    }
+                    
+                    // console.log("@@@@@@heatmapref", heatmapref.current)
+                    var heatmapInstance = h337.create({
+                        // only container is required, the rest will be defaults
+                        container: heatmapref.current,
+                        //이게 디폴트값들임
+                        radius: chartOption.heatMapRadius,
+                        maxOpacity: chartOption.heatMapMaxOpacity,
+                        minOpacity: 0,
+                        blur: 0.85,
+                        gradient: {
+                            '0.25': "rgb(0,0,255)",
+                            "0.55": "rgb(0,255,0)",
+                            "0.85": "yellow",
+                            "1": "rgb(192,0,0)"
+                        }
+                    });
+        
+                    heatmapInstance.setData({
+                        max: chartOption.heatMapMax,
+                        data: []
+                    });
+                    // console.log("새로 히트맵인스터스 할당")
+                    set_HI(heatmapInstance);
+                    beforeHeatmap.current = chartOption.heatMap;
+                }
+            },50);
+        }
+        return ()=>{
+            clearInterval(a);
+        }
+    }, [nowPage,chartOption])
+ 
 
 
     //리사이즈이벤트
     const resizeInnerFrame = React.useCallback(() => {
         if (!topRef.current) return;
-
         setTimeout(function () {
             let max = (window.screen.height / (window.devicePixelRatio)).toFixed(0) * 1;
 
@@ -284,9 +361,10 @@ const PDFresultModal = ({ ...props }) => {
             set_innerFrameLeft((width - newwidth) / 2);
 
         }
+
     }, [data, isfullscreen]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         resizeInnerFrame();
         window.addEventListener('resize', resizeInnerFrame);
         return () => {
@@ -300,7 +378,7 @@ const PDFresultModal = ({ ...props }) => {
     }
 
     //재생
-    React.useEffect(() => {
+    useEffect(() => {
         const { playSpeed, drawFPS } = chartOption;
         const fpsInterval = 1000 / drawFPS;
 
@@ -350,13 +428,14 @@ const PDFresultModal = ({ ...props }) => {
 
 
     //툴팁
-    React.useEffect(() => {
+    useEffect(() => {
         ReactTooltip.rebuild();
     });
 
+
+
     //그리기
     const handleDraw = React.useCallback(() => {
-        // console.log("handleDraw!! nowP",nowPage);
         let canvasref = pdfviewref.current.get_canvasRef();
         if (!canvasref || !canvasref.current) {
             // console.log("오잉?");
@@ -367,10 +446,22 @@ const PDFresultModal = ({ ...props }) => {
         if (!nowPDFviewInform) {
             return;
         }
+
+        if(chartOption.heatMap&&!HI){
+            // console.log("히트맵켰는데 히트맵인스턴스없음")
+            return;
+        }
+
+        // console.log("=====================================================================")
+        // console.log("랜더확인")
+        // console.log("nowPage",nowPage);
+        // console.log("HI",HI);
+        // console.log("chartOption.heatMap",chartOption.heatMap)
+        // console.log("============================================")        
+        // console.log("handleDraw!! nowP", nowPage);
         let canvas = canvasref.current;
-
-        let rctx = canvas.getContext('2d');
-
+        // let rctx = canvas.getContext('2d');
+        let rctx = canvas.getContext('2d',{willReadFrequently:true});
         let cw = nowPDFviewInform.width;
         let ch = nowPDFviewInform.height;
 
@@ -394,6 +485,51 @@ const PDFresultModal = ({ ...props }) => {
         // let prevp = null;
         let osx = offsetX * 1;
         let osy = offsetY * 1;
+       
+        function drawHeatmap() {
+            // console.log("드로")
+            let points = [];
+            if (chartOption.heatMap) {
+                // console.log("1")
+                for (let i = 0; i < gazeData.length; i++) {
+                    const d = gazeData[i];
+
+                    if (pT) {
+                        if (d.relTime < (nowTime - pT)) {
+                            continue;
+                        }
+                    }
+                    if (d.relTime <= nowTime) {
+                        if (d.pdfx && d.pdfy) {
+                            if (nowPage === d.pageNum) {
+                                let baseobj = {
+                                    x: 0,
+                                    y: 0,
+                                    value: 0,
+                                    radius: chartOption.heatMapRadius
+                                };
+                                let x = Math.floor((d.pdfx + osx) * cw);
+                                let y = Math.floor((d.pdfy + osy) * ch);
+                                baseobj.x = x;
+                                baseobj.y = y;
+                                baseobj.value = 1;
+                                points.push(baseobj);
+                            }
+
+                        }
+                    } else {
+                        break;
+                    }
+                }
+           
+            }
+            // console.log("셋데이타",points.length)
+            HI.setData({
+                max: chartOption.heatMapMax,
+                min: 0,
+                data: points
+            });
+        }
 
         function drawRPOG() {
             //draw rawdata
@@ -586,6 +722,15 @@ const PDFresultModal = ({ ...props }) => {
                 }
             }
         }
+
+        if (HI) {
+            HI.configure({
+                maxOpacity: chartOption.heatMapMaxOpacity
+            });
+            // console.log("드로힛맵")
+            drawHeatmap();
+        }
+
         drawRPOG();
         drawFixation();
         drawPencil();
@@ -593,10 +738,10 @@ const PDFresultModal = ({ ...props }) => {
 
 
 
-    }, [data, nowTime, nowPage, chartOption, nowPDFviewInform, fixationData, minFixationCount, offsetX, offsetY]);
+    }, [data, nowTime, nowPage, chartOption, nowPDFviewInform, fixationData, minFixationCount, offsetX, offsetY,HI]);
 
 
-
+    
     //PDF 스크롤과 page 이동기록을 따라가는 함수
     const handlePDFmoveEvent = React.useCallback(() => {
         // console.log("handleDraw!!");
@@ -629,21 +774,21 @@ const PDFresultModal = ({ ...props }) => {
 
     }, [data, nowTime]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (followEvent) {
             handlePDFmoveEvent();
         }
     }, [handlePDFmoveEvent, followEvent])
 
 
-    React.useEffect(() => {
+    useEffect(() => {
         handleDraw();
     }, [handleDraw]);
 
 
     //PDF writing 할때 쓰는것들임. 분리 필요
     const [jejuFontArrayBuffer, set_jejuFontArrayBuffer] = useState(null);
-    React.useEffect(() => {
+    useEffect(() => {
         getFileAsArrayBuffer(jeju).then(res_arrbuffer => {
             set_jejuFontArrayBuffer(res_arrbuffer);
         });
@@ -652,7 +797,7 @@ const PDFresultModal = ({ ...props }) => {
 
     //인쇄할 PDF데이터 path값에 따라서 PDFarraybuffer 보관
     const [pdfArrayBuffer, set_pdfArrayBuffer] = useState(null);
-    React.useEffect(() => {
+    useEffect(() => {
         if (!path) return;
         fetch(path).then(async res => {
             return res.arrayBuffer()
@@ -663,7 +808,7 @@ const PDFresultModal = ({ ...props }) => {
 
     //인쇄할 리더스아이로고 데이터
     const [readersEyeLogoArrayBuffer, set_readersEyeLogoArrayBuffer] = useState(null);
-    React.useEffect(() => {
+    useEffect(() => {
         fetch(readerseyelogo).then(r => r.arrayBuffer()).then(buf => {
             set_readersEyeLogoArrayBuffer(buf);
         });
@@ -758,8 +903,8 @@ const PDFresultModal = ({ ...props }) => {
             })
         }
 
-        let osx=offsetX*1;
-        let osy=offsetY*1;
+        let osx = offsetX * 1;
+        let osy = offsetY * 1;
 
         const gazeData = data.gazeData;
         let size = chartOption.RPOG_size * 2 / 100;
@@ -773,12 +918,12 @@ const PDFresultModal = ({ ...props }) => {
                     if (prevx && prevy) {
                         pages[d.pageNum - 1].drawLine({
                             start: {
-                                x: (prevx+osx) * cw,
-                                y: height - (prevy+osy) * ch,
+                                x: (prevx + osx) * cw,
+                                y: height - (prevy + osy) * ch,
                             },
                             end: {
-                                x: (d.pdfx+osx) * cw,
-                                y: height - (d.pdfy+osy) * ch,
+                                x: (d.pdfx + osx) * cw,
+                                y: height - (d.pdfy + osy) * ch,
                             },
                             color: rgb(1, 0, 0),
                             opacity: 0.3,
@@ -790,8 +935,8 @@ const PDFresultModal = ({ ...props }) => {
                     } //선먼저 그린후 그리기
 
                     pages[d.pageNum - 1].drawCircle({
-                        x: (d.pdfx+osx) * cw,
-                        y: height - (d.pdfy+osy) * ch,
+                        x: (d.pdfx + osx) * cw,
+                        y: height - (d.pdfy + osy) * ch,
                         size: r,
                         borderWidth: 1,
                         // borderDashArray: [1],
@@ -827,12 +972,12 @@ const PDFresultModal = ({ ...props }) => {
                     if (prevx && prevy) {
                         pages[f.pageNum_s - 1].drawLine({
                             start: {
-                                x: (prevx+osx) * cw,
-                                y: height - (prevy+osy) * ch,
+                                x: (prevx + osx) * cw,
+                                y: height - (prevy + osy) * ch,
                             },
                             end: {
-                                x: (f.x+osx) * cw,
-                                y: height - (f.y+osy) * ch,
+                                x: (f.x + osx) * cw,
+                                y: height - (f.y + osy) * ch,
                             },
                             color: rgb(0, 1, 0),
                             opacity: 0.3,
@@ -845,8 +990,8 @@ const PDFresultModal = ({ ...props }) => {
                     //원그리기 fixation
                     let fsize = fr * Math.sqrt(f.count);
                     pages[f.pageNum_s - 1].drawCircle({
-                        x: (f.x+osx) * cw,
-                        y: height - (f.y+osy) * ch,
+                        x: (f.x + osx) * cw,
+                        y: height - (f.y + osy) * ch,
                         size: fsize,
                         borderWidth: 1,
                         // borderDashArray: [1],
@@ -915,7 +1060,7 @@ const PDFresultModal = ({ ...props }) => {
                                 x: draw.x * cw,
                                 y: height - draw.y * ch,
                             },
-                            color: rgbobj ? rgb(rgbobj.r / 255, rgbobj.g / 255, rgbobj.b / 255) : '#0000FF',//#@! 여기 rgb 로
+                            color: rgbobj ? rgb(rgbobj.r / 255, rgbobj.g / 255, rgbobj.b / 255) : '#0000FF',// 여기 rgb 로
                             opacity: 1,
                             borderOpacity: 0.3,
                             thickness: (chartOption.penWeight / 2).toFixed(0) * 1 || 1,
@@ -1010,7 +1155,27 @@ const PDFresultModal = ({ ...props }) => {
     }
 
 
+    const handlePDFonloadCallback = (pageNum) => {
+        // console.log("@PDFonloadCallback", pageNum)
+        if (PDFonloadCallback) {
+            PDFonloadCallback(pageNum);
+        }
+    }
 
+    const handlePageCallback = (p) => {
+        // console.log("@pageCallback", p);
+        set_nowPage(p);
+    }
+
+
+    const handlePDFsizeCallback = (d) => {
+        // console.log("@pdfSizeCallback", d);
+        set_nowPDFviewInform(d.PDF);
+        // 
+
+
+        // handleDraw();
+    }
 
     return (<div className="PDFresultModal" onClick={() => {
         set_showConfig(false);
@@ -1038,34 +1203,18 @@ const PDFresultModal = ({ ...props }) => {
 
                             <PDFviewModal
                                 {...props}
-
                                 ref={pdfviewref}
-                                WORKERSRC={WORKERSRC || "http://localhost:3000"}
-                                PDFonloadCallback={PDFonloadCallback ? PDFonloadCallback : (pageNums) => {
-                                    //페이지수 콜백이 여기로옴
-                                }}
-
+                                // WORKERSRC={WORKERSRC || "http://localhost:3000"}
+                                PDFonloadCallback={handlePDFonloadCallback}
                                 showConfirmBtn={showConfirmBtn}
                                 onConfirm={onConfirm}
-
-
                                 onClose={onClose}
                                 showViewMode={true}
-                                set_viewpercent={() => { }}
+                                // set_viewpercent={() => { }}
                                 path={path}
                                 viewpercent={viewpercent}
-                                pageCallback={(p) => {
-                                    // console.log("page콜백", p);
-                                    set_nowPage(p);
-
-                                }}
-                                pdfSizeCallback={(d) => {
-                                    // console.log("임시확인", d);
-                                    set_nowPDFviewInform(d.PDF);
-
-                                    // handleDraw();
-
-                                }}
+                                pageCallback={handlePageCallback}
+                                pdfSizeCallback={handlePDFsizeCallback}
                             />
                         </div>
                     </div>

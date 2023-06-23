@@ -4,25 +4,20 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.openFullScreen = exports.hexToRgb = exports.getFileAsArrayBuffer = exports.closeFullscreen = void 0;
-
 var getFileAsArrayBuffer = function getFileAsArrayBuffer(importedfile) {
   return new Promise(function (resolve) {
     var oReq = new XMLHttpRequest();
     oReq.open('get', importedfile, true);
     oReq.responseType = 'arraybuffer';
-
     oReq.onload = function () {
-      var arraybuffer = oReq.response; // console.log("blob",blob); 
-
+      var arraybuffer = oReq.response;
+      // console.log("blob",blob); 
       resolve(arraybuffer);
     };
-
     oReq.send();
   });
 };
-
 exports.getFileAsArrayBuffer = getFileAsArrayBuffer;
-
 var hexToRgb = function hexToRgb(hex) {
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -36,13 +31,10 @@ var hexToRgb = function hexToRgb(hex) {
     b: parseInt(result[3], 16)
   } : null;
 };
-
 exports.hexToRgb = hexToRgb;
-
 var openFullScreen = function openFullScreen() {
   // 호출할때 javscript로 한것 f11말고
   var elem = document.documentElement;
-
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
   } else if (elem.webkitRequestFullscreen) {
@@ -56,12 +48,9 @@ var openFullScreen = function openFullScreen() {
     elem.msRequestFullscreen();
   }
 };
-
 exports.openFullScreen = openFullScreen;
-
 var closeFullscreen = function closeFullscreen() {
   var errormsg = "F11키를 눌러서 전체화면을 해제해 주세요.";
-
   if (document.exitFullscreen) {
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -88,5 +77,4 @@ var closeFullscreen = function closeFullscreen() {
     }
   }
 };
-
 exports.closeFullscreen = closeFullscreen;

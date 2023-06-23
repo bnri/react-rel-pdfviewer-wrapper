@@ -39,17 +39,10 @@ Object.defineProperty(exports, "RemoconSVG", {
     return _RemoconSVG.default;
   }
 });
-
 var _RemoconSVG = _interopRequireDefault(require("./RemoconSVG"));
-
 var _CheckSVG = _interopRequireDefault(require("./CheckSVG"));
-
 var _ChevronLeftSVG = _interopRequireDefault(require("./ChevronLeftSVG"));
-
 var _ChevronRightSVG = _interopRequireDefault(require("./ChevronRightSVG"));
-
 var _PDFSVG = _interopRequireDefault(require("./PDFSVG"));
-
 var _KeyboardLeftArrow = _interopRequireDefault(require("./KeyboardLeftArrow"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
