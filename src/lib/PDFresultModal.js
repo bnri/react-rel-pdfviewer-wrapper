@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useMemo, useEffect} from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import './PDFresultModal.scss';
 import PDFviewModal from 'react-rel-pdfviewer';
 import { PDFDocument, rgb } from 'pdf-lib';
@@ -14,7 +14,7 @@ import { RemoconSVG } from "./svg";
 import * as h337 from "heatmap.js";
 
 const PDFresultModal = ({ ...props }) => {
-    const { 
+    const {
         // WORKERSRC,
         onClose,
         path,
@@ -34,6 +34,14 @@ const PDFresultModal = ({ ...props }) => {
         return viewpercent;
     }, [viewpercent]);
 
+    const POG_swapcanvasRef = useRef();
+    const FPOG_swapCanvasRef = useRef();
+    const FPOGcanvasRef_last = useRef();
+    const PENcanvasRef = useRef();
+    const tempIndexRef = useRef();
+
+
+
     //리모콘
     const [hideController, set_hideController] = useState(false);
 
@@ -42,16 +50,16 @@ const PDFresultModal = ({ ...props }) => {
 
 
     const [chartOption, set_chartOption] = useState({
-        heatMap: true,
+        heatMap: false,
         heatMapMax: 20,
         heatMapRadius: 40,
         heatMapMaxOpacity: 0.7,
 
-        RPOG: true,
+        RPOG: false,
         RPOG_size: 10,
-        RPOG_line: false,
+        RPOG_line: true,
 
-        FPOG: false,
+        FPOG: true,
         FPOG_size: 20,
         FPOG_line: true,
         FPOG_number: false,
@@ -63,6 +71,8 @@ const PDFresultModal = ({ ...props }) => {
 
         playSpeed: 1,
         drawFPS: 30,
+
+
         penPermit: penpermit ? penpermit * 1 : 1,
         penColor: pencolor ? pencolor : '#FF0000',
         penWeight: penweight ? penweight : 1, //유저가 PDF에 펜으로 글씨 쓴것.
@@ -70,10 +80,10 @@ const PDFresultModal = ({ ...props }) => {
 
     const resaveConfig = () => {
 
-        if(chartOption.heatMap){
+        if (chartOption.heatMap) {
             // console.log("히트맵킴")    
         }
-        else{
+        else {
             // console.log("히트맵끔")
             set_HI(null);
             let heatmapref = pdfviewref.current.get_heatmapRef();
@@ -89,7 +99,33 @@ const PDFresultModal = ({ ...props }) => {
     const [offsetX, set_offsetX] = useState("0.00");
     const [offsetY, set_offsetY] = useState("0.00");
 
+    useEffect(() => {
+        tempIndexRef.current = {
+            lastPageIndex: 0,
 
+            lastDrawRawGazeIndex: 0,
+            lastDrawRawGazePoint: {
+                x: null,
+                y: null
+            },
+
+
+            lastDrawFPOGIndex: 0,
+            lastDrawFPOGPoint: {
+                x: null,
+                y: null,
+            },
+
+
+            lastDrawPenIndex: 0, //마지막에 그린 펜 인덱스
+            lastDrawPenPoint: {
+                x: null,
+                y: null
+            },
+            needClear: true,
+
+        }
+    }, []);
 
     //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
     const [fminx] = useState(1);
@@ -112,11 +148,11 @@ const PDFresultModal = ({ ...props }) => {
         let prevy = null;
         const xdiff_f = fminx / 100;
         const ydiff_f = fminy / 100 * heightmul;
-
         //거리기준 
         for (let i = 0; i < rawGaze.length; i++) {
             //거리가 가까운 PDF 를 찾아야하는데..
             let d = rawGaze[i];
+            d.rawGazeindex = i;
 
             if (fixationStart === false) {
                 if (!d.pdfx || !d.pdfy) {
@@ -197,9 +233,119 @@ const PDFresultModal = ({ ...props }) => {
                 prevy = d.pdfy;
             }
         }
-        // console.log("fa", fa);
+        console.log("fa", fa);
+        let colorObj = {
+            0: {
+                r: 255,
+                g: 0,
+                b: 0,
+            },//빨
+            11: {
+                r: 255,
+                g: 127,
+                b: 0
+            },//주
+            22: {
+                r: 255,
+                g: 255,
+                b: 0
+            },//노
+            33: {
+                r: 127,
+                g: 255,
+                b: 0
+            },
+            44: {
+                r: 0,
+                g: 255,
+                b: 0
+            },
+            55: {
+                r: 0,
+                g: 255,
+                b: 127
+            },
+            66: {
+                r: 0,
+                g: 255,
+                b: 255
+            },
+            77: {
+                r: 0,
+                g: 127,
+                b: 255
+            },
+            88: {
+                r: 0,
+                g: 0,
+                b: 255
+            },
+            100: {
+                r: 127,
+                g: 0,
+                b: 255
+            }
+        };
+        const colorObjKeyArr = Object.keys(colorObj);
+        let pagePerFixationCount = {};
+        for (let i = 0; i < fa.length; i++) {
+            if (!pagePerFixationCount[fa[i].pageNum_s]) {
+                pagePerFixationCount[fa[i].pageNum_s] = {
+                    count: 1
+                }
+                fa[i].pageFixationCount = pagePerFixationCount[fa[i].pageNum_s].count;
+            }
+            else {
+                pagePerFixationCount[fa[i].pageNum_s].count++;
+                fa[i].pageFixationCount = pagePerFixationCount[fa[i].pageNum_s].count;
+            }
+        }
+
+        for (let i = 0; i < fa.length; i++) {
+            let targetPageTotalFixationCount = pagePerFixationCount[fa[i].pageNum_s].count;
+            let ratio = fa[i].pageFixationCount / targetPageTotalFixationCount;
+            fa[i].ratio = ratio;
+            //ratio가 0~0.1 사이  0.1~0.2 사이  0.2~0.3 사이..0.9~1 사이
+            //일경우 fa[i].color = 
+            let percent = ratio*100; //0~100 사이에
+            let minKey,maxKey;
+
+            for(let j = 0 ; j <colorObjKeyArr.length-1 ; j++){
+                if(percent>=colorObjKeyArr[j]&&percent<=colorObjKeyArr[j+1]){
+                    minKey=colorObjKeyArr[j];
+      
+                    maxKey=colorObjKeyArr[j+1];
+      
+                    break;
+                }
+            }
+            // console.log("minmaxKey",minKey,maxKey);
+
+            let lowerColor = colorObj[minKey];
+            let upperColor = colorObj[maxKey];
+
+            let t = (percent - minKey) / (maxKey - minKey);
+            // console.log("구간ratio",t);
+
+            let r = Math.round(lowerColor.r + (upperColor.r - lowerColor.r) * t);
+            let g = Math.round(lowerColor.g + (upperColor.g - lowerColor.g) * t);
+            let b = Math.round(lowerColor.b + (upperColor.b - lowerColor.b) * t);
+            //percent 에 따라서
+            //colorObjKeyArr 사이값을 interpolation
+            //예를 들어서 10percent 의 경우에는
+            //colorObj[0] 과 colorObj[11] rgb 값의  10/11 값을 할당하고 싶음.
+            fa[i].color = {
+                r: r,
+                g: g,
+                b: b
+            };
+        }
+
+
         return fa;
-    }, [data, fminx, fminy])
+    }, [data, fminx, fminy]);
+
+
     const [minFixationCount] = useState(3);
     const fd_inform = useMemo(() => {
         if (!fixationData) return;
@@ -252,8 +398,45 @@ const PDFresultModal = ({ ...props }) => {
     //히트맵 인스턴스
     // const [HI, set_HI] = useState();
     // const HIref = useRef();
-    const [HI,set_HI] = useState();
-   
+    const [HI, set_HI] = useState();
+
+    //캔버스 래프들 초기화
+    useEffect(() => {
+        // if (!data) return;
+        if (FPOG_swapCanvasRef && FPOG_swapCanvasRef.current) return;
+        if (POG_swapcanvasRef && POG_swapcanvasRef.current) return;
+        if (FPOGcanvasRef_last && FPOGcanvasRef_last.current) return;
+        if (PENcanvasRef && PENcanvasRef.current) return;
+        // const { width: w, height: h } = data.screenSize;
+        //
+        if (!nowPDFviewInform) {
+            return;
+        }
+        const { width: w, height: h } = nowPDFviewInform;
+
+        var canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        POG_swapcanvasRef.current = canvas;
+        // console.log("딱한번 등록");
+        var canvas2 = document.createElement('canvas');
+        canvas2.width = w;
+        canvas2.height = h;
+        FPOG_swapCanvasRef.current = canvas2;
+
+        var canvas3 = document.createElement('canvas');
+        canvas3.width = w;
+        canvas3.height = h;
+        FPOGcanvasRef_last.current = canvas3;
+
+        var canvas4 = document.createElement('canvas');
+        canvas4.width = w;
+        canvas4.height = h;
+        PENcanvasRef.current = canvas4;
+
+    }, [nowPDFviewInform, FPOG_swapCanvasRef]);
+
+
 
 
     const beforeHeatmap = useRef(null);
@@ -261,21 +444,22 @@ const PDFresultModal = ({ ...props }) => {
     useEffect(() => {
         let a;
         if (nowPage) {
-            if(!chartOption.heatMap){
+            // console.log("호출")
+            if (!chartOption.heatMap) {
                 // console.log("히트맵이 off임")
-                beforeHeatmap.current=false;
+                beforeHeatmap.current = false;
                 return;
             }
-            if (chartOption.heatMap*1 ===beforeHeatmap.current*1) {
-                // console.log("히트맵말고 다른옵션을 바꿈111",chartOption.heatMap,beforeHeatmap.current)
+            if (tempIndexRef.current.lastPageIndex === nowPage && chartOption.heatMap * 1 === beforeHeatmap.current * 1) {
+                // console.log("페이지가 같은상태에서 히트맵말고 다른옵션을 바꿈111",chartOption.heatMap,beforeHeatmap.current)
                 return;
             }
-          
+
             beforeHeatmap.current = chartOption.heatMap;
-            a=setInterval(()=>{
+            a = setInterval(() => {
                 let heatmapref = pdfviewref.current.get_heatmapRef();
-                if (heatmapref.current&&heatmapref.current.offsetWidth) {
-                 
+                if (heatmapref.current && heatmapref.current.offsetWidth) {
+
                     clearInterval(a);
 
                     //히트맵인스턴스 다 지우기.
@@ -283,7 +467,7 @@ const PDFresultModal = ({ ...props }) => {
                     while (heatmapref.current.firstChild) {
                         heatmapref.current.removeChild(heatmapref.current.lastChild);
                     }
-                    
+
                     // console.log("@@@@@@heatmapref", heatmapref.current)
                     var heatmapInstance = h337.create({
                         // only container is required, the rest will be defaults
@@ -300,7 +484,7 @@ const PDFresultModal = ({ ...props }) => {
                             "1": "rgb(192,0,0)"
                         }
                     });
-        
+
                     heatmapInstance.setData({
                         max: chartOption.heatMapMax,
                         data: []
@@ -309,13 +493,13 @@ const PDFresultModal = ({ ...props }) => {
                     set_HI(heatmapInstance);
 
                 }
-            },50);
+            }, 50);
         }
-        return ()=>{
+        return () => {
             clearInterval(a);
         }
-    }, [nowPage,chartOption])
- 
+    }, [nowPage, chartOption])
+
 
 
     //리사이즈이벤트
@@ -434,11 +618,14 @@ const PDFresultModal = ({ ...props }) => {
         ReactTooltip.rebuild();
     });
 
+    useEffect(() => {
+        tempIndexRef.current.needClear = true;
+    }, [data, chartOption, nowPage, offsetX, offsetY, HI]);
 
 
     //그리기
     const handleDraw = React.useCallback(() => {
-        let canvasref = pdfviewref.current.get_canvasRef();
+        const canvasref = pdfviewref.current.get_canvasRef(); //heatmap 제외 캔버스
         if (!canvasref || !canvasref.current) {
             // console.log("오잉?");
             // console.log("canvasref",canvasref);
@@ -449,7 +636,7 @@ const PDFresultModal = ({ ...props }) => {
             return;
         }
 
-        if(chartOption.heatMap&&!HI){
+        if (chartOption.heatMap && !HI) {
             // console.log("히트맵켰는데 히트맵인스턴스없음")
             return;
         }
@@ -461,33 +648,71 @@ const PDFresultModal = ({ ...props }) => {
         // console.log("chartOption.heatMap",chartOption.heatMap)
         // console.log("============================================")        
         // console.log("handleDraw!! nowP", nowPage);
-        let canvas = canvasref.current;
+        const canvas = canvasref.current;
         // let rctx = canvas.getContext('2d');
-        let rctx = canvas.getContext('2d',{willReadFrequently:true});
-        let cw = nowPDFviewInform.width;
-        let ch = nowPDFviewInform.height;
+        const rctx = canvas.getContext('2d', { willReadFrequently: true });
+        const cw = nowPDFviewInform.width;
+        const ch = nowPDFviewInform.height;
 
-        let size = chartOption.RPOG_size * 2 / 100;
-
-        let r = cw * 0.01 * size;
-        // console.log("지워");
-        rctx.clearRect(0, 0, cw, ch);
+        // let RPOGsize = chartOption.RPOG_size * 2 / 100;
+        const RPOG_size = cw * 0.01 * (chartOption.RPOG_size * 2 / 100);
 
         const gazeData = data.gazeData;
 
         const pT = chartOption.GazePastRange;
 
-        // console.log("gazeData",gazeData)
-        // //비율계산필요
-        // //cw,ch는 지금의 사이즈고
-        // //기록된 
 
-        let prevx = null;
-        let prevy = null;
-        // let prevp = null;
         let osx = offsetX * 1;
         let osy = offsetY * 1;
-       
+        let needClear = tempIndexRef.current.needClear;
+
+        const canvas_pog = POG_swapcanvasRef.current;
+        const ctx_pog = canvas_pog.getContext("2d");
+
+        const canvas_f = FPOG_swapCanvasRef.current;
+        const ctx_f = canvas_f.getContext("2d");
+
+        const canvas_fl = FPOGcanvasRef_last.current;
+        const ctx_fl = canvas_fl.getContext("2d");
+
+        const canvas_p = PENcanvasRef.current;
+        const ctx_p = canvas_p.getContext("2d");
+
+
+        function clearAllCanvas() {
+            ctx_p.clearRect(0, 0, cw, ch);
+            ctx_pog.clearRect(0, 0, cw, ch);
+            ctx_f.clearRect(0, 0, cw, ch);
+
+            tempIndexRef.current = {
+                lastPageIndex: 0,
+
+                lastDrawRawGazeIndex: 0,
+                lastDrawRawGazePoint: {
+                    x: null,
+                    y: null
+                },
+
+
+                lastDrawFPOGIndex: 0,
+                lastDrawFPOGPoint: {
+                    x: null,
+                    y: null,
+                },
+
+                lastDrawPenIndex: 0, //마지막에 그린 펜 인덱스
+                lastDrawPenPoint: {
+                    x: null,
+                    y: null
+                },
+                needClear: false,
+
+            };
+
+
+
+        }
+
         function drawHeatmap() {
             // console.log("드로")
             let points = [];
@@ -523,7 +748,7 @@ const PDFresultModal = ({ ...props }) => {
                         break;
                     }
                 }
-           
+
             }
             // console.log("셋데이타",points.length)
             HI.setData({
@@ -535,7 +760,11 @@ const PDFresultModal = ({ ...props }) => {
 
         function drawRPOG() {
             //draw rawdata
-            for (let i = 0; chartOption.RPOG && (i < gazeData.length); i++) {
+            let startIndex = tempIndexRef.current.lastDrawRawGazeIndex + 1;
+            let prevx = tempIndexRef.current.lastDrawRawGazePoint.x;
+            let prevy = tempIndexRef.current.lastDrawRawGazePoint.y;
+
+            for (let i = startIndex; chartOption.RPOG && (i < gazeData.length); i++) {
                 let d = gazeData[i];
 
                 if (pT) {
@@ -544,57 +773,89 @@ const PDFresultModal = ({ ...props }) => {
                     }
                 }
 
-                // console.log("t",t);
                 if (d.relTime * 1 <= nowTime * 1) {
-
                     if (d.pdfx && d.pdfy) {
-                        // console.log("그려")
-                        if (nowPage === d.pageNum && r) {
-
+                        if (RPOG_size && nowPage === d.pageNum) {
+                            tempIndexRef.current.prevPagePOG = nowPage;
                             if (chartOption.RPOG_line && prevx && prevy) {
-                                rctx.beginPath();
-                                rctx.lineWidth = 0.5;
-                                rctx.strokeStyle = 'red';
-                                rctx.fillStyle = 'red';
-                                rctx.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
-                                rctx.lineTo((d.pdfx + osx) * cw, (d.pdfy + osy) * ch);
-                                rctx.stroke();
+                                ctx_pog.beginPath();
+                                ctx_pog.lineWidth = 0.5;
+                                ctx_pog.strokeStyle = 'red';
+                                ctx_pog.fillStyle = 'red';
+                                ctx_pog.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
+                                ctx_pog.lineTo((d.pdfx + osx) * cw, (d.pdfy + osy) * ch);
+                                ctx_pog.stroke();
+                                tempIndexRef.current.lastDrawRawGazeIndex = i;
+
                             } //선먼저 그린후 그리기
 
 
-                            rctx.beginPath();
-                            rctx.lineWidth = 0.5;
-                            rctx.strokeStyle = 'rgb(255,0,0,0.3)';
-                            rctx.fillStyle = 'rgb(255,0,0,0.3)';
-                            rctx.arc((d.pdfx + osx) * cw, (d.pdfy + osy) * ch, r, 0, Math.PI * 2);
-                            rctx.fill();
+                            ctx_pog.beginPath();
+                            ctx_pog.lineWidth = 0.5;
+                            ctx_pog.strokeStyle = 'rgb(255,0,0,0.3)';
+                            ctx_pog.fillStyle = 'rgb(255,0,0,0.3)';
+                            ctx_pog.arc((d.pdfx + osx) * cw, (d.pdfy + osy) * ch, RPOG_size, 0, Math.PI * 2);
+                            ctx_pog.fill();
+                            tempIndexRef.current.lastDrawRawGazeIndex = i;
 
+                            prevx = d.pdfx;
+                            prevy = d.pdfy;
                         }
-                        // prevp = d.pageNum
-                        prevx = d.pdfx;
-                        prevy = d.pdfy;
-
-
-
+                        else {
+                            prevx = null;
+                            prevy = null;
+                        }
                     }
-
-
-
-
                 }
-
             }
 
-
+            tempIndexRef.current.lastDrawRawGazePoint = {
+                x: prevx,
+                y: prevy
+            };
 
         }
 
         function drawFixation() {
+
+            // console.log("fixationData",fixationData)
+            let startFixationIndex = tempIndexRef.current.lastDrawFPOGIndex;
+
+            let prevx = tempIndexRef.current.lastDrawFPOGPoint.x || null;
+            let prevy = tempIndexRef.current.lastDrawFPOGPoint.y || null;
+            // console.log("prevx",prevx,prevy);
             //draw Fixation
             let fr = cw * 0.01 * chartOption.FPOG_size * 1.5 / 100;
-            prevx = null;
-            prevy = null;
-            for (let i = 0; (chartOption.FPOG && (i < fixationData.length)); i++) {
+            ctx_fl.clearRect(0, 0, cw, ch);
+
+            function findAVGxy(si, ei, f) {
+                let s = si;
+                let e = ei < si ? si : ei;
+                // console.log("==================")
+                // console.log("sef",s,e,f)
+                let obj = {
+                    sumx: 0,
+                    sumy: 0,
+                    count: 0,
+                    x: null,
+                    y: null,
+                }
+                for (let i = s; (i <= e && i < gazeData.length); i++) {
+                    //#@!   
+                    if (gazeData[i].pdfx && gazeData[i].pdfy) {
+                        obj.sumx += gazeData[i].pdfx;
+                        obj.sumy += gazeData[i].pdfy;
+                        obj.count++;
+                    }
+                }
+                obj.x = obj.sumx / obj.count;
+                obj.y = obj.sumy / obj.count;
+                // console.log("@obj",obj);
+                // console.log("==================")
+                return obj;
+            }
+            //    console.log("fixationData",fixationData)
+            for (let i = startFixationIndex + 1; (chartOption.FPOG && (i < fixationData.length)); i++) {
 
                 const f = fixationData[i];
                 if (pT) { //과거시간까지만 재생. pT가0이면 전체시간
@@ -602,128 +863,198 @@ const PDFresultModal = ({ ...props }) => {
                         continue;
                     }
                 }
+
                 //현재시간 전까지만 재생
                 if (f.relTime_s * 1 <= nowTime * 1) {
-                    if (nowPage === f.pageNum_s && fr) {
-                        if (f.count >= minFixationCount) {
-
-                            //선그리기...
-                            if (chartOption.FPOG_line && prevx && prevy) {
-                                rctx.beginPath();
-                                rctx.lineWidth = 0.5;
-                                rctx.strokeStyle = 'green';
-                                rctx.fillStyle = 'green';
-                                rctx.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
-                                rctx.lineTo((f.x + osx) * cw, (f.y + osy) * ch);
-                                rctx.stroke();
-                                rctx.closePath();
-                            }
+                    if (nowPage === f.pageNum_s && fr) { //페이지 넘버가 같아야함.
+                        if (f.count >= minFixationCount) { //fixation의 숫자가 통과
+                            //f.relTime_e <= nowTime
 
                             //원그리기 fixation
                             let fsize = fr * Math.sqrt(f.count);
                             if (f.relTime_e <= nowTime) {
                                 //전체 다그려
-                                rctx.beginPath();
-                                rctx.lineWidth = 0.5;
-                                rctx.strokeStyle = 'rgb(0,255,0,0.3)';
-                                rctx.fillStyle = 'rgb(0,255,0,0.3)';
-                                rctx.arc((f.x + osx) * cw, (f.y + osy) * ch, fsize, 0, Math.PI * 2);
-                                rctx.fill();
-                                rctx.closePath();
+                                ctx_f.beginPath();
+                                ctx_f.lineWidth = 0.5;
+                                // ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
+                                // ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
+                                ctx_f.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                ctx_f.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+
+                                ctx_f.arc((f.x + osx) * cw, (f.y + osy) * ch, fsize, 0, Math.PI * 2);
+                                ctx_f.fill();
+                                ctx_f.closePath();
+                                tempIndexRef.current.lastDrawFPOGIndex = i;
+
                             }
                             else {
-                                // 작게 그려
+                                // 작게 그려 fixation의 중간녀석임.
                                 let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
 
-                                rctx.beginPath();
-                                rctx.lineWidth = 0.5;
-                                rctx.strokeStyle = 'rgb(0,0,255,0.3)';
-                                rctx.fillStyle = 'rgb(0,0,255,0.3)';
-                                rctx.arc((f.x + osx) * cw, (f.y + osy) * ch, fsize * ratio, 0, Math.PI * 2);
-                                rctx.fill();
-                                rctx.closePath();
+                                let obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * ratio).toFixed(0) * 1, f);
+                                ctx_fl.beginPath();
+                                ctx_fl.lineWidth = 0.5;
+                                // ctx_fl.strokeStyle = 'rgb(0,0,255,0.3)';
+                                // ctx_fl.fillStyle = 'rgb(0,0,255,0.3)';
+                                ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                ctx_fl.arc((obj.x + osx) * cw, (obj.y + osy) * ch, fsize * ratio, 0, Math.PI * 2);
+                                ctx_fl.fill();
+                                ctx_fl.closePath();
+
                             }
 
+                            //선그리기...
+                            if (chartOption.FPOG_line) {
+                                if (f.relTime_e <= nowTime) {
+                                    // console.log("여기 왜")
+                                    if (prevx !== null && prevy !== null) {
+                                        ctx_f.beginPath();
+                                        ctx_f.lineWidth = 1;
+                                        // ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
+                                        // ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
+                                        ctx_f.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                        ctx_f.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                        ctx_f.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
+                                        ctx_f.lineTo((f.x + osx) * cw, (f.y + osy) * ch);
+                                        ctx_f.stroke();
+                                        ctx_f.closePath();
 
+                                    }
+                                    prevx = f.x;
+                                    prevy = f.y;
+                                }
+                                else {
+                                    //마지막 고정되지 않은 사카드 방향. 위치가 계속 바뀌어야함.
+                                    if (prevx !== null && prevy !== null) {
+                                        let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
+                                        let obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * ratio).toFixed(0) * 1, f);
+
+                                        ctx_fl.beginPath();
+                                        ctx_fl.lineWidth = 0.5;
+                                        // ctx_fl.strokeStyle = 'blue';
+                                        // ctx_fl.fillStyle = 'blue';
+                                        ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                        ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                        ctx_fl.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
+                                        ctx_fl.lineTo((obj.x + osx) * cw, (obj.y + osy) * ch);
+                                        ctx_fl.stroke();
+                                        ctx_fl.closePath();
+                                    }
+
+
+
+
+                                }
+
+                            }
+
+                            //숫자 그리기
                             if (chartOption.FPOG_number === true) {
-                                rctx.beginPath();
-                                rctx.strokeStyle = "black";
-                                rctx.fillStyle = "black";
-                                rctx.lineWidth = 1;
-                                rctx.font = (cw / 100) * chartOption.FPOG_number_size + "px Arial";
-                                rctx.textAlign = "center";
-                                rctx.textBaseline = "middle";
-                                rctx.fillText(f.fixationNumber, (f.x + osx) * cw, (f.y + osy) * ch);
-                                rctx.stroke();
+                                if (f.relTime_e <= nowTime) {
+                                    ctx_f.beginPath();
+                                    ctx_f.strokeStyle = "black";
+                                    ctx_f.fillStyle = "black";
+                                    ctx_f.lineWidth = 1;
+                                    ctx_f.font = (cw / 100) * chartOption.FPOG_number_size + "px Arial";
+                                    ctx_f.textAlign = "center";
+                                    ctx_f.textBaseline = "middle";
+                                    ctx_f.fillText(f.fixationNumber, (f.x + osx) * cw, (f.y + osy) * ch);
+                                    ctx_f.stroke();
+                                    ctx_f.closePath();
+                                }
+                                else {
+                                    //마지막 fixation의 넘ㄴ버
+                                    //#@!
+                                }
+
                             }
-                            prevx = f.x;
-                            prevy = f.y;
+
                         }
+                    }
+                    else {
+                        prevx = null;
+                        prevy = null;
                     }
                 }
             }
 
+            tempIndexRef.current.lastDrawFPOGPoint = {
+                x: prevx,
+                y: prevy
+            };
+
         }
+
 
         function drawPencil() {
             //draw pencil
-
-            let startdrawX, startdrawY;
+            let startdrawX = tempIndexRef.current.lastDrawPenPoint.x, startdrawY = tempIndexRef.current.lastDrawPenPoint.y;
             // console.log("chartOption.penPermit",chartOption.penPermit)
-            for (let i = 0; (chartOption.penPermit * 1 && (i < gazeData.length)); i++) {
-
+            for (let i = (tempIndexRef.current.lastDrawPenIndex + 1); (chartOption.penPermit * 1 && (i < gazeData.length)); i++) {
                 let d = gazeData[i];
                 const { pageNum } = d;
                 const draw = gazeData[i].draw;
-
-                // if (pT) {
-                //     if (d.relTime < (nowTime - pT)) {
-                //         continue;
-                //     }
-                // }
                 if (!draw) {
                     continue;
                 }
-                // console.log("t",t);
-
-
                 if (d.relTime * 1 <= nowTime * 1) {
-                    // console.log("그려")
                     if (nowPage === pageNum) {
-                        rctx.lineWidth = (chartOption.penWeight * 1).toFixed(0) * 1;
-                        rctx.strokeStyle = chartOption.penColor;
-                        rctx.fillStyle = chartOption.penColor;
+                        ctx_p.lineWidth = (chartOption.penWeight * 1).toFixed(0) * 1;
+                        ctx_p.strokeStyle = chartOption.penColor;
+                        ctx_p.fillStyle = chartOption.penColor;
                         if (draw.type === 'startDrawing') {
                             // console.log("draw", draw);
                             // console.log("그리기시작");
                             startdrawX = draw.x * cw;
                             startdrawY = draw.y * ch;
-                            rctx.beginPath();
-                            rctx.moveTo(draw.x * cw, draw.y * ch);
+                            ctx_p.beginPath();
+                            ctx_p.moveTo(draw.x * cw, draw.y * ch);
                             // testdata.push(draw);
                         }
                         else if (draw.type === 'draw') {
                             if (startdrawX && startdrawY) {
-                                rctx.lineTo(draw.x * cw, draw.y * ch);
-                                rctx.stroke();
+                                ctx_p.lineTo(draw.x * cw, draw.y * ch);
+                                ctx_p.stroke();
                                 // testdata.push(draw);
                             }
                             else {
                                 startdrawX = draw.x * cw;
                                 startdrawY = draw.y * ch;
-                                rctx.beginPath();
-                                rctx.moveTo(draw.x * cw, draw.y * ch);
+                                ctx_p.beginPath();
+                                ctx_p.moveTo(draw.x * cw, draw.y * ch);
                             }
 
                         }
                         else if (draw.type === 'stopDrawing') {
-                            rctx.closePath();
+                            ctx_p.closePath();
                         }
-
+                        tempIndexRef.current.lastDrawPenIndex = i;
+                    }
+                    else {
+                        startdrawX = null;
+                        startdrawY = null;
                     }
                 }
             }
+            tempIndexRef.current.lastDrawPenPoint = {
+                x: startdrawX,
+                y: startdrawY
+            };
         }
+
+        function drawAll() {
+            rctx.clearRect(0, 0, cw, ch);
+            rctx.drawImage(POG_swapcanvasRef.current, 0, 0);
+            rctx.drawImage(FPOG_swapCanvasRef.current, 0, 0);
+            rctx.drawImage(FPOGcanvasRef_last.current, 0, 0);
+            rctx.drawImage(PENcanvasRef.current, 0, 0);
+
+            tempIndexRef.current.prevNowtime = nowTime;
+            tempIndexRef.current.lastPageIndex = nowPage;
+
+        }
+
 
         if (HI) {
             HI.configure({
@@ -733,41 +1064,49 @@ const PDFresultModal = ({ ...props }) => {
             drawHeatmap();
         }
 
+
+        if (needClear) {
+            //속성값을 바꾼경우
+            clearAllCanvas();
+        }
+        else {
+            if (tempIndexRef.current.prevNowtime > nowTime) {
+                //시간이 뒤로간경우
+                clearAllCanvas();
+            }
+            else {
+                if (chartOption.GazePastRange * 1 !== 0) {
+                    clearAllCanvas();
+                }
+            }
+        }
+
         drawRPOG();
         drawFixation();
+
         drawPencil();
 
+        drawAll();
 
 
 
-    }, [data, nowTime, nowPage, chartOption, nowPDFviewInform, fixationData, minFixationCount, offsetX, offsetY,HI]);
 
 
-    
+    }, [data, nowTime, nowPage, chartOption, nowPDFviewInform, fixationData, minFixationCount, offsetX, offsetY, HI]);
+
+
+
     //PDF 스크롤과 page 이동기록을 따라가는 함수
     const handlePDFmoveEvent = React.useCallback(() => {
-        // console.log("handleDraw!!");
-
         let gazeData = data.gazeData;
-
-        // let firstTime = gazeData[0].t;
-
         for (let i = 0; i < gazeData.length; i++) {
-            // let d = gazeData[i];
-            // let dt = d.t;
-            // let t = (dt - firstTime) / 1000000;
-            // console.log("t",t);
             if (gazeData[i].relTime * 1 <= nowTime * 1) {
-
             }
             else {
                 if (i > 0) {
                     let lastd = gazeData[i - 1];
-                    // console.log("lastd",lastd);
-                    // if (nowPage !== lastd.pageNum) {
                     pdfviewref.current.set_pageNumber(lastd.pageNum);
                     pdfviewref.current.set_scrollTop(lastd.scrollTop);
-                    // }
                 }
                 break;
             }
@@ -775,12 +1114,12 @@ const PDFresultModal = ({ ...props }) => {
 
 
     }, [data, nowTime]);
-
     useEffect(() => {
         if (followEvent) {
             handlePDFmoveEvent();
         }
     }, [handlePDFmoveEvent, followEvent])
+
 
 
     useEffect(() => {
@@ -1223,7 +1562,10 @@ const PDFresultModal = ({ ...props }) => {
                     <div className="playbarWrapper no-drag">
                         <div className="rangePlayWrapper">
                             <input className="rangePlay" type="range" step="0.01"
-                                value={nowTime} max={endTime} min='0' onChange={(e) => set_nowTime(e.target.value * 1)} />
+                                value={nowTime} max={endTime} min='0' onChange={(e) => {
+                                    e.stopPropagation();
+                                    set_nowTime(e.target.value * 1)
+                                }} />
                         </div>
                         <div className="rangeBtnWrapper">
                             <div className="leftBtnWrap">

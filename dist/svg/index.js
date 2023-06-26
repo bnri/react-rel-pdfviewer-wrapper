@@ -6,37 +6,37 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "CheckSVG", {
   enumerable: true,
   get: function get() {
-    return _CheckSVG["default"];
+    return _CheckSVG.default;
   }
 });
 Object.defineProperty(exports, "ChevronLeftSVG", {
   enumerable: true,
   get: function get() {
-    return _ChevronLeftSVG["default"];
+    return _ChevronLeftSVG.default;
   }
 });
 Object.defineProperty(exports, "ChevronRightSVG", {
   enumerable: true,
   get: function get() {
-    return _ChevronRightSVG["default"];
+    return _ChevronRightSVG.default;
   }
 });
 Object.defineProperty(exports, "KeyboardLeftArrow", {
   enumerable: true,
   get: function get() {
-    return _KeyboardLeftArrow["default"];
+    return _KeyboardLeftArrow.default;
   }
 });
 Object.defineProperty(exports, "PDFSVG", {
   enumerable: true,
   get: function get() {
-    return _PDFSVG["default"];
+    return _PDFSVG.default;
   }
 });
 Object.defineProperty(exports, "RemoconSVG", {
   enumerable: true,
   get: function get() {
-    return _RemoconSVG["default"];
+    return _RemoconSVG.default;
   }
 });
 var _RemoconSVG = _interopRequireDefault(require("./RemoconSVG"));
@@ -45,4 +45,4 @@ var _ChevronLeftSVG = _interopRequireDefault(require("./ChevronLeftSVG"));
 var _ChevronRightSVG = _interopRequireDefault(require("./ChevronRightSVG"));
 var _PDFSVG = _interopRequireDefault(require("./PDFSVG"));
 var _KeyboardLeftArrow = _interopRequireDefault(require("./KeyboardLeftArrow"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

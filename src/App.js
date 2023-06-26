@@ -1,7 +1,7 @@
 import React from "react";
 import './App.scss';
 import PDFresultModal from './lib/PDFresultModal';
-import data1 from './data/301.json';
+import data1 from './data/302.json';
 
 
 function App() {
@@ -46,8 +46,9 @@ function App() {
 
           // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"} //1번 json
           // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/18.pdf"} //300번 json
-          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/95.pdf"} //301번 json
-          viewpercent={89} //이건 측정할때의 값인데. 일단은 100 넣어버림.
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/95.pdf"} //301번 json
+          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/4.pdf"} //302번 json
+          viewpercent={100} //이건 측정할때의 값인데. 일단은 100 넣어버림.
      
           showConfirmBtn={false}
           onConfirm={() => {
@@ -58,7 +59,7 @@ function App() {
           }}
 
           pencolor={"#0000FF"}
-          penweight={4}
+          penweight={5}
           penpermit={1}
         />
 
