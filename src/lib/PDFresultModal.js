@@ -33,6 +33,7 @@ const PDFresultModal = ({ ...props }) => {
     const originViewPercent = useMemo(() => {
         return viewpercent;
     }, [viewpercent]);
+    const [tempViewPercent,set_tempViewPercent]=useState(viewpercent);
 
     const POG_swapcanvasRef = useRef();
     const FPOG_swapCanvasRef = useRef();
@@ -233,7 +234,7 @@ const PDFresultModal = ({ ...props }) => {
                 prevy = d.pdfy;
             }
         }
-        console.log("fa", fa);
+        // console.log("fa", fa);
         let colorObj = {
             0: {
                 r: 255,
@@ -413,7 +414,6 @@ const PDFresultModal = ({ ...props }) => {
             return;
         }
         const { width: w, height: h } = nowPDFviewInform;
-
         var canvas = document.createElement('canvas');
         canvas.width = w;
         canvas.height = h;
@@ -561,6 +561,10 @@ const PDFresultModal = ({ ...props }) => {
 
     const handleTogglePlay = () => {
         set_isPlaying((p) => !p);
+        if(!isPlaying){
+            set_tempViewPercent(originViewPercent);
+        }
+
     }
 
     //재생
@@ -620,12 +624,14 @@ const PDFresultModal = ({ ...props }) => {
 
     useEffect(() => {
         tempIndexRef.current.needClear = true;
-    }, [data, chartOption, nowPage, offsetX, offsetY, HI]);
+    }, [data, chartOption, nowPage, offsetX, offsetY, HI,tempViewPercent]);
 
 
     //그리기
     const handleDraw = React.useCallback(() => {
         const canvasref = pdfviewref.current.get_canvasRef(); //heatmap 제외 캔버스
+
+
         if (!canvasref || !canvasref.current) {
             // console.log("오잉?");
             // console.log("canvasref",canvasref);
@@ -649,11 +655,15 @@ const PDFresultModal = ({ ...props }) => {
         // console.log("============================================")        
         // console.log("handleDraw!! nowP", nowPage);
         const canvas = canvasref.current;
+
+
+
         // let rctx = canvas.getContext('2d');
         const rctx = canvas.getContext('2d', { willReadFrequently: true });
         const cw = nowPDFviewInform.width;
         const ch = nowPDFviewInform.height;
-
+        // console.log("cw",cw);
+        // console.log("ch",ch);
         // let RPOGsize = chartOption.RPOG_size * 2 / 100;
         const RPOG_size = cw * 0.01 * (chartOption.RPOG_size * 2 / 100);
 
@@ -1098,6 +1108,8 @@ const PDFresultModal = ({ ...props }) => {
 
     //PDF 스크롤과 page 이동기록을 따라가는 함수
     const handlePDFmoveEvent = React.useCallback(() => {
+        //배율이 똑같을경우에만..그래야함..
+
         let gazeData = data.gazeData;
         for (let i = 0; i < gazeData.length; i++) {
             if (gazeData[i].relTime * 1 <= nowTime * 1) {
@@ -1120,6 +1132,11 @@ const PDFresultModal = ({ ...props }) => {
         }
     }, [handlePDFmoveEvent, followEvent])
 
+    useEffect(()=>{
+        console.log("=======================")
+        console.log("tempViewPercent",tempViewPercent)
+        console.log("=======================")
+    },[tempViewPercent])
 
 
     useEffect(() => {
@@ -1518,6 +1535,25 @@ const PDFresultModal = ({ ...props }) => {
         // handleDraw();
     }
 
+
+
+    const handleViewPercentCallback = (newViewPercent)=>{
+        if(!tempIndexRef.current) return;
+        if(!tempIndexRef.current.prevViewPercent){
+            tempIndexRef.current.prevViewPercent=newViewPercent
+        }
+
+        else{
+            if(tempIndexRef.current.prevViewPercent!==newViewPercent){
+                tempIndexRef.current.prevViewPercent=newViewPercent;
+                console.log("콜백 뷰퍼센트",newViewPercent)
+                set_tempViewPercent(newViewPercent);
+            }
+        }
+    }
+
+
+
     return (<div className="PDFresultModal" onClick={() => {
         set_showConfig(false);
     }}>
@@ -1551,11 +1587,13 @@ const PDFresultModal = ({ ...props }) => {
                                 onConfirm={onConfirm}
                                 onClose={onClose}
                                 showViewMode={true}
-                                // set_viewpercent={() => { }}
+
+
                                 path={path}
-                                viewpercent={viewpercent}
+                                viewpercent={tempViewPercent}
                                 pageCallback={handlePageCallback}
                                 pdfSizeCallback={handlePDFsizeCallback}
+                                viewPercentChangeCallback={handleViewPercentCallback}
                             />
                         </div>
                     </div>
