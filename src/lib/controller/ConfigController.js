@@ -124,7 +124,7 @@ const ConfigController = ({ ...props }) => {
 
 
             <div className="oneConfig">
-                <div className="c_label">시선 크기</div>
+                <div className="c_label">시선 크기&nbsp;<span style={{fontSize:'7px'}}>{ChartOption.RPOG_size}</span></div>
                 <div className="c_data">
                     <input
                         type="range"
@@ -175,7 +175,7 @@ const ConfigController = ({ ...props }) => {
             </div>
 
             <div className="oneConfig">
-                <div className="c_label">응시 크기</div>
+                <div className="c_label">응시 크기&nbsp;<span style={{fontSize:'7px'}}>{ChartOption.FPOG_size}</span></div>
                 <div className="c_data">
                     <input
                         type="range"

@@ -7,7 +7,7 @@ import fontkit from '@pdf-lib/fontkit'
 import ReactTooltip from 'react-tooltip';
 import readerseyelogo from "./img/readereyelogo.png";
 import jeju from './font/JejuMyeongjo.ttf';
-import { closeFullscreen, getFileAsArrayBuffer, hexToRgb, openFullScreen } from "./util";
+import { closeFullscreen, getFileAsArrayBuffer, getMedian, hexToRgb, openFullScreen } from "./util";
 // import { ReactComponent as RemoconSVG } from "./img/remotecontroller.svg";
 import { ConfigController, RemoconController } from "./controller";
 import { RemoconSVG } from "./svg";
@@ -132,11 +132,15 @@ const PDFresultModal = ({ ...props }) => {
         }
     }, []);
 
-    //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
-    const [fminx] = useState(1);
-    const [fminy] = useState(1);
+
+   //PDF 인쇄시 사용함
+   const [nowPDFviewInform, set_nowPDFviewInform] = useState(null);
 
 
+       //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
+       const [fminx] = useState(1);
+       const [fminy] = useState(1);
+   
     //fixationData는 darw시에도 사용됨.
     const fixationData = useMemo(() => {
         let fa = [];
@@ -352,6 +356,47 @@ const PDFresultModal = ({ ...props }) => {
         return fa;
     }, [data, fminx, fminy]);
 
+    const saccadeMedianPixelAndVariable = useMemo(()=>{
+        if(!fixationData||!nowPDFviewInform){
+            return;
+        }
+        const {width:cw,height:ch}=nowPDFviewInform;
+        const saccadeArr= [];
+
+        for(let i = 1 ; i <fixationData.length ; i++){
+            let s=fixationData[i-1];
+            let e=fixationData[i];
+            var dx = (s.x - e.x) * cw;
+            var dy = (s.y - e.y) * ch;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+            // var distance2 = Math.sqrt( Math.pow((s.x*cw-e.x*cw), 2) + Math.pow((s.y*ch-s.y*ch), 2) );
+            saccadeArr.push(distance);
+            // saccadeArr2.push(distance2);
+        }
+        // console.log("saccadeArr",saccadeArr);
+        let a =getMedian(saccadeArr);
+        let newval=(a/cw).toFixed(6)*1;
+
+
+        set_chartOption(o=>{
+            return {
+                ...o,
+                FPOG_size:20*newval * 33.3333
+            }
+        })
+        let obj= {
+            median:a,
+            variable:newval,
+            FPOG_size_noFix:(20*newval * 33.3333),
+            FPOG_size:(20*newval * 33.3333).toFixed(0)
+        };
+        console.log("배포확인용",obj);
+        return obj;
+    },[fixationData,nowPDFviewInform])
+
+
+
+
 
     const [minFixationCount] = useState(3);
     const fd_inform = useMemo(() => {
@@ -396,8 +441,7 @@ const PDFresultModal = ({ ...props }) => {
     //재생시 스크롤 따라갈것인가 옵션
     const [followEvent, set_followEvent] = useState(true);
 
-    //PDF 인쇄시 사용함
-    const [nowPDFviewInform, set_nowPDFviewInform] = useState(null);
+ 
 
     //전체화면
     const [isfullscreen, set_isfullscreen] = useState(false);
@@ -836,7 +880,8 @@ const PDFresultModal = ({ ...props }) => {
             let prevy = tempIndexRef.current.lastDrawFPOGPoint.y || null;
             // console.log("prevx",prevx,prevy);
             //draw Fixation
-            let fr = cw * 0.01 * chartOption.FPOG_size * 1.5 / 100;
+            let fr = cw * chartOption.FPOG_size * 1.5 / 10000;
+            //medianSaccadeDistance_dividedByWidth
             ctx_fl.clearRect(0, 0, cw, ch);
 
             function findAVGxy(si, ei, f) {
@@ -886,7 +931,7 @@ const PDFresultModal = ({ ...props }) => {
                             if (f.relTime_e <= nowTime) {
                                 //전체 다그려
                                 ctx_f.beginPath();
-                                ctx_f.lineWidth = 0.5;
+                                ctx_f.lineWidth = 1;
                                 if (chartOption.rainBow) {
                                     ctx_f.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
                                     ctx_f.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
@@ -899,6 +944,7 @@ const PDFresultModal = ({ ...props }) => {
 
 
                                 ctx_f.arc((f.x + osx) * cw, (f.y + osy) * ch, fsize, 0, Math.PI * 2);
+                                // ctx_fl.stroke();
                                 ctx_f.fill();
                                 ctx_f.closePath();
                                 tempIndexRef.current.lastDrawFPOGIndex = i;
@@ -910,17 +956,20 @@ const PDFresultModal = ({ ...props }) => {
 
                                 let obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * ratio).toFixed(0) * 1, f);
                                 ctx_fl.beginPath();
-                                ctx_fl.lineWidth = 0.5;
+                                ctx_fl.lineWidth = 1;
 
                                 if (chartOption.rainBow) {
-                                    ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                    ctx_fl.strokeStyle = `black`;
+                                    // ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
                                     ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                    
                                 }
                                 else {
                                     ctx_fl.strokeStyle = 'rgb(0,0,255,0.3)';
                                     ctx_fl.fillStyle = 'rgb(0,0,255,0.3)';
                                 }
                                 ctx_fl.arc((obj.x + osx) * cw, (obj.y + osy) * ch, fsize * ratio, 0, Math.PI * 2);
+                                ctx_fl.stroke();
                                 ctx_fl.fill();
                                 ctx_fl.closePath();
 
@@ -959,14 +1008,16 @@ const PDFresultModal = ({ ...props }) => {
                                         let obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * ratio).toFixed(0) * 1, f);
 
                                         ctx_fl.beginPath();
-                                        ctx_fl.lineWidth = 0.5;
+                                        ctx_fl.lineWidth = 1;
                                         if (chartOption.rainBow) {
-                                            ctx_fl.strokeStyle = 'blue';
-                                            ctx_fl.fillStyle = 'blue';
+                                          
+                                            ctx_fl.strokeStyle = `black`;
+                                            // ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                            ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
                                         }
                                         else {
-                                            ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
-                                            ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                            ctx_fl.strokeStyle = 'blue';
+                                            ctx_fl.fillStyle = 'blue';
                                         }
 
                                         ctx_fl.moveTo((prevx + osx) * cw, (prevy + osy) * ch);

@@ -172,7 +172,11 @@ var ConfigController = function ConfigController(_ref) {
     className: "oneConfig"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
-  }, "\uC2DC\uC120 \uD06C\uAE30"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "\uC2DC\uC120 \uD06C\uAE30\xA0", /*#__PURE__*/_react.default.createElement("span", {
+    style: {
+      fontSize: '7px'
+    }
+  }, ChartOption.RPOG_size)), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data"
   }, /*#__PURE__*/_react.default.createElement("input", {
     type: "range",
@@ -225,7 +229,11 @@ var ConfigController = function ConfigController(_ref) {
     className: "oneConfig"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
-  }, "\uC751\uC2DC \uD06C\uAE30"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "\uC751\uC2DC \uD06C\uAE30\xA0", /*#__PURE__*/_react.default.createElement("span", {
+    style: {
+      fontSize: '7px'
+    }
+  }, ChartOption.FPOG_size)), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data"
   }, /*#__PURE__*/_react.default.createElement("input", {
     type: "range",
