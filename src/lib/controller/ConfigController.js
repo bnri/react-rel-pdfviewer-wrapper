@@ -191,23 +191,7 @@ const ConfigController = ({ ...props }) => {
                     />
                 </div>
             </div>
-            <div
-                className="oneConfig"
-                onClick={() => {
-          
-
-                    ChartOption.rainBow = !ChartOption.rainBow;
-                    resaveConfig();
-                }}
-            >
-                <div className="c_label">응시 무지개</div>
-                <div className="c_data">
-                    <div className="ckbx-style-8">
-                        <input type="checkbox" name="ckbx-style-8" checked={ChartOption.rainBow} onChange={() => { }} />
-                        <label />
-                    </div>
-                </div>
-            </div>
+       
             <div
                 className="oneConfig"
                 onClick={() => {
@@ -227,7 +211,40 @@ const ConfigController = ({ ...props }) => {
                     </div>
                 </div>
             </div>
+            <div
+                className="oneConfig"
+                onClick={() => {
+          
 
+                    ChartOption.rainBow = !ChartOption.rainBow;
+                    resaveConfig();
+                }}
+            >
+                <div className="c_label">응시 무지개</div>
+                <div className="c_data">
+                    <div className="ckbx-style-8">
+                        <input type="checkbox" name="ckbx-style-8" checked={ChartOption.rainBow} onChange={() => { }} />
+                        <label />
+                    </div>
+                </div>
+            </div>
+            <div className="oneConfig">
+                <div className="c_label">응시 투명도&nbsp;<span style={{fontSize:'7px'}}>{ChartOption.FPOG_opacity}</span></div>
+                <div className="c_data">
+                    <input
+                        type="range"
+                        style={{ width: "70%" }}
+                        value={ChartOption.FPOG_opacity}
+                        min={0.01}
+                        step={0.01}
+                        max={1}
+                        onChange={(e) => {
+                            ChartOption.FPOG_opacity = e.target.value * 1;
+                            resaveConfig();
+                        }}
+                    />
+                </div>
+            </div>
             <div
                 className="oneConfig"
                 onClick={() => {

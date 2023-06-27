@@ -64,6 +64,7 @@ const PDFresultModal = ({ ...props }) => {
         FPOG: true,
         FPOG_size: 20,
         FPOG_line: true,
+        FPOG_opacity:0.3,
         FPOG_number: false,
         FPOG_number_size: 1.7,
         rainBow: true,
@@ -356,6 +357,7 @@ const PDFresultModal = ({ ...props }) => {
         return fa;
     }, [data, fminx, fminy]);
 
+
     const saccadeMedianPixelAndVariable = useMemo(()=>{
         if(!fixationData||!nowPDFviewInform){
             return;
@@ -381,7 +383,7 @@ const PDFresultModal = ({ ...props }) => {
         set_chartOption(o=>{
             return {
                 ...o,
-                FPOG_size:20*newval * 33.3333
+                FPOG_size:(20*newval * 33.3333).toFixed(0)
             }
         })
         let obj= {
@@ -390,7 +392,7 @@ const PDFresultModal = ({ ...props }) => {
             FPOG_size_noFix:(20*newval * 33.3333),
             FPOG_size:(20*newval * 33.3333).toFixed(0)
         };
-        console.log("배포확인용",obj);
+        // console.log("배포확인용",obj);
         return obj;
     },[fixationData,nowPDFviewInform])
 
@@ -910,6 +912,7 @@ const PDFresultModal = ({ ...props }) => {
                 // console.log("==================")
                 return obj;
             }
+            const FPOG_opacity = chartOption.FPOG_opacity;
             //    console.log("fixationData",fixationData)
             for (let i = startFixationIndex + 1; (chartOption.FPOG && (i < fixationData.length)); i++) {
 
@@ -933,12 +936,12 @@ const PDFresultModal = ({ ...props }) => {
                                 ctx_f.beginPath();
                                 ctx_f.lineWidth = 1;
                                 if (chartOption.rainBow) {
-                                    ctx_f.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
-                                    ctx_f.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                    ctx_f.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},${FPOG_opacity})`;
+                                    ctx_f.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},${FPOG_opacity})`;
                                 }
                                 else {
-                                    ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
-                                    ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
+                                    ctx_f.strokeStyle = `rgb(0,255,0,${FPOG_opacity})`;
+                                    ctx_f.fillStyle = `rgb(0,255,0,${FPOG_opacity})`;
                                 }
 
 
@@ -961,12 +964,12 @@ const PDFresultModal = ({ ...props }) => {
                                 if (chartOption.rainBow) {
                                     ctx_fl.strokeStyle = `black`;
                                     // ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
-                                    ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                    ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},${FPOG_opacity})`;
                                     
                                 }
                                 else {
-                                    ctx_fl.strokeStyle = 'rgb(0,0,255,0.3)';
-                                    ctx_fl.fillStyle = 'rgb(0,0,255,0.3)';
+                                    ctx_fl.strokeStyle = `rgb(0,0,255,${FPOG_opacity})`;
+                                    ctx_fl.fillStyle = `rgb(0,0,255,${FPOG_opacity})`;
                                 }
                                 ctx_fl.arc((obj.x + osx) * cw, (obj.y + osy) * ch, fsize * ratio, 0, Math.PI * 2);
                                 ctx_fl.stroke();
@@ -988,8 +991,8 @@ const PDFresultModal = ({ ...props }) => {
                                             ctx_f.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
                                         }
                                         else {
-                                            ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
-                                            ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
+                                            ctx_f.strokeStyle = `rgb(0,255,0,${FPOG_opacity})`;
+                                            ctx_f.fillStyle = `rgb(0,255,0,${FPOG_opacity})`;
                                         }
 
                                         ctx_f.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
@@ -1012,8 +1015,7 @@ const PDFresultModal = ({ ...props }) => {
                                         if (chartOption.rainBow) {
                                           
                                             ctx_fl.strokeStyle = `black`;
-                                            // ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
-                                            ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                            ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},${FPOG_opacity}))`;
                                         }
                                         else {
                                             ctx_fl.strokeStyle = 'blue';
@@ -1231,7 +1233,7 @@ const PDFresultModal = ({ ...props }) => {
             // console.log("originViewPercent",originViewPercent)
             pdfviewref.current.reset_viewPerecent(originViewPercent);
             // set_isPlaying((p) =>!p);
-            //#@!
+
             //tempIndexRef.current.isReadyToEventPlay
 
             let a = setInterval(() => {
@@ -1318,6 +1320,19 @@ const PDFresultModal = ({ ...props }) => {
             falseText: "응시"
         }
     );
+
+
+    const [toggleInfo2, setToggleInfo2] = useState(
+        {
+            checked: false,
+            color: "gray", //안보이기 색깔
+            trueText: "일반",
+            falseText: "순서"
+        }
+    );
+
+    
+
     // console.log("fixationData",fixationData)
     //pdf 인쇄
     const handleTryPrint = async () => {
@@ -1752,6 +1767,63 @@ const PDFresultModal = ({ ...props }) => {
                             </div>
 
                             <div className="rightBtnWrap">
+                            <div className="toggleBtn" style={{ width: 70, height: 48 ,marginRight:10 }}
+                                    data-tip="일반 / 순서(무지개) 보기 선택"
+                                >
+                                    <ToggleSwitch
+                                        {...toggleInfo2}
+                                        onClickToggle={() => {
+                                            // console.log("토글");        
+                                            if (toggleInfo2.checked) {
+                                                //#@!
+                                                //무지개(순서)온
+                              
+                                                chartOption.rainBow=true;
+                                         
+                                                chartOption.FPOG = true;
+                                                chartOption.FPOG_size = 20;
+                                                chartOption.FPOG_line = true;
+                                                chartOption.FPOG_number = false;
+                                                chartOption.FPOG_number_size = 1.7;
+                                                chartOption.heatMap = false;
+                                                chartOption.heatMapMax = 40;
+                                                chartOption.heatMapRadius = 40;
+                                                chartOption.heatMapMaxOpacity = 0.7;
+
+                                                resaveConfig();
+                                            }
+                                            else {
+                                                chartOption.rainBow=false;
+
+                                                chartOption.FPOG = true;
+                                                chartOption.FPOG_size = 20;
+                                                chartOption.FPOG_line = true;
+                                                chartOption.FPOG_number = false;
+                                                chartOption.FPOG_number_size = 1.7;
+                                                chartOption.heatMap = false;
+                                                chartOption.heatMapMax = 40;
+                                                chartOption.heatMapRadius = 40;
+                                                chartOption.heatMapMaxOpacity = 0.7;
+                                                
+                                                //일반온
+                                                // chartOption.FPOG = false;
+                                                // chartOption.FPOG_size = 20;
+                                                // chartOption.FPOG_line = false;
+                                                // chartOption.FPOG_number = false;
+                                                // chartOption.FPOG_number_size = 1.7;
+                                                // chartOption.heatMap = true;
+                                                // chartOption.heatMapMax = 40;
+                                                // chartOption.heatMapRadius = 40;
+                                                // chartOption.heatMapMaxOpacity = 0.7;
+                                                resaveConfig();
+                                            }
+                                            setToggleInfo2({ ...toggleInfo2, checked: !toggleInfo2.checked, color: !toggleInfo2.checked ? "#145894" : "gray" });
+
+                                        }}
+                                    />
+
+                                </div>
+
                                 <div className="toggleBtn" style={{ width: 70, height: 48 }}
                                     data-tip="응시 / 히트맵 보기 선택"
                                 >
