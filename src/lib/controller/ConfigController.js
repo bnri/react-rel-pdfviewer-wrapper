@@ -194,6 +194,23 @@ const ConfigController = ({ ...props }) => {
             <div
                 className="oneConfig"
                 onClick={() => {
+          
+
+                    ChartOption.rainBow = !ChartOption.rainBow;
+                    resaveConfig();
+                }}
+            >
+                <div className="c_label">응시 무지개</div>
+                <div className="c_data">
+                    <div className="ckbx-style-8">
+                        <input type="checkbox" name="ckbx-style-8" checked={ChartOption.rainBow} onChange={() => { }} />
+                        <label />
+                    </div>
+                </div>
+            </div>
+            <div
+                className="oneConfig"
+                onClick={() => {
                     if (ChartOption.FPOG && ChartOption.FPOG_number) {
                         ChartOption.FPOG_number = !ChartOption.FPOG_number;
                     }
@@ -324,7 +341,7 @@ const ConfigController = ({ ...props }) => {
                     set_followEvent(f=>!f)
                 }}
             >
-                <div className="c_label">스크롤 따라가기</div>
+                <div className="c_label">측정환경 모방</div>
                 <div className="c_data">
                     <div className="ckbx-style-8">
                         <input type="checkbox" name="ckbx-style-8" checked={followEvent} onChange={() => { }} />

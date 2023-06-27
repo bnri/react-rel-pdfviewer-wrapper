@@ -17,7 +17,7 @@
     "pdf-lib": "^1.17.1",
     "react-color": "^2.19.3",
     "react-draggable": "^4.4.3",
-    "react-rel-pdfviewer": "^1.0.35",
+    "react-rel-pdfviewer": "^1.0.37",
     "react-tooltip": "^4.4.2"
   },
   "scripts": {

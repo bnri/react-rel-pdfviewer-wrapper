@@ -17,9 +17,15 @@ var _util = require("./util");
 var _controller = require("./controller");
 var _svg = require("./svg");
 var h337 = _interopRequireWildcard(require("heatmap.js"));
+var _ToggleSwitch = _interopRequireDefault(require("./component/ToggleSwitch"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator.return && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, catch: function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -65,6 +71,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
   var originViewPercent = (0, _react.useMemo)(function () {
     return viewpercent;
   }, [viewpercent]);
+  var _useState5 = (0, _react.useState)(viewpercent),
+    _useState6 = _slicedToArray(_useState5, 2),
+    tempViewPercent = _useState6[0],
+    set_tempViewPercent = _useState6[1];
   var POG_swapcanvasRef = (0, _react.useRef)();
   var FPOG_swapCanvasRef = (0, _react.useRef)();
   var FPOGcanvasRef_last = (0, _react.useRef)();
@@ -72,17 +82,17 @@ var PDFresultModal = function PDFresultModal(_ref) {
   var tempIndexRef = (0, _react.useRef)();
 
   //리모콘
-  var _useState5 = (0, _react.useState)(false),
-    _useState6 = _slicedToArray(_useState5, 2),
-    hideController = _useState6[0],
-    set_hideController = _useState6[1];
-
-  //차트 옵션. 톱니바퀴
   var _useState7 = (0, _react.useState)(false),
     _useState8 = _slicedToArray(_useState7, 2),
-    showConfig = _useState8[0],
-    set_showConfig = _useState8[1];
-  var _useState9 = (0, _react.useState)({
+    hideController = _useState8[0],
+    set_hideController = _useState8[1];
+
+  //차트 옵션. 톱니바퀴
+  var _useState9 = (0, _react.useState)(false),
+    _useState10 = _slicedToArray(_useState9, 2),
+    showConfig = _useState10[0],
+    set_showConfig = _useState10[1];
+  var _useState11 = (0, _react.useState)({
       heatMap: false,
       heatMapMax: 20,
       heatMapRadius: 40,
@@ -95,6 +105,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
       FPOG_line: true,
       FPOG_number: false,
       FPOG_number_size: 1.7,
+      rainBow: true,
       GazePastRange: 0,
       //0인경우 전체
       ChartPastRange: 20,
@@ -106,9 +117,9 @@ var PDFresultModal = function PDFresultModal(_ref) {
       penColor: pencolor ? pencolor : '#FF0000',
       penWeight: penweight ? penweight : 1 //유저가 PDF에 펜으로 글씨 쓴것.
     }),
-    _useState10 = _slicedToArray(_useState9, 2),
-    chartOption = _useState10[0],
-    set_chartOption = _useState10[1];
+    _useState12 = _slicedToArray(_useState11, 2),
+    chartOption = _useState12[0],
+    set_chartOption = _useState12[1];
   var resaveConfig = function resaveConfig() {
     if (chartOption.heatMap) {
       // console.log("히트맵킴")    
@@ -124,14 +135,14 @@ var PDFresultModal = function PDFresultModal(_ref) {
   };
 
   //문서내의 temp offset
-  var _useState11 = (0, _react.useState)("0.00"),
-    _useState12 = _slicedToArray(_useState11, 2),
-    offsetX = _useState12[0],
-    set_offsetX = _useState12[1];
   var _useState13 = (0, _react.useState)("0.00"),
     _useState14 = _slicedToArray(_useState13, 2),
-    offsetY = _useState14[0],
-    set_offsetY = _useState14[1];
+    offsetX = _useState14[0],
+    set_offsetX = _useState14[1];
+  var _useState15 = (0, _react.useState)("0.00"),
+    _useState16 = _slicedToArray(_useState15, 2),
+    offsetY = _useState16[0],
+    set_offsetY = _useState16[1];
   (0, _react.useEffect)(function () {
     tempIndexRef.current = {
       lastPageIndex: 0,
@@ -156,12 +167,13 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, []);
 
   //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
-  var _useState15 = (0, _react.useState)(1),
-    _useState16 = _slicedToArray(_useState15, 1),
-    fminx = _useState16[0];
   var _useState17 = (0, _react.useState)(1),
     _useState18 = _slicedToArray(_useState17, 1),
-    fminy = _useState18[0];
+    fminx = _useState18[0];
+  var _useState19 = (0, _react.useState)(1),
+    _useState20 = _slicedToArray(_useState19, 1),
+    fminy = _useState20[0];
+
   //fixationData는 darw시에도 사용됨.
   var fixationData = (0, _react.useMemo)(function () {
     var fa = [];
@@ -255,7 +267,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
         prevy = d.pdfy;
       }
     }
-    console.log("fa", fa);
+    // console.log("fa", fa);
     var colorObj = {
       0: {
         r: 255,
@@ -362,9 +374,9 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }
     return fa;
   }, [data, fminx, fminy]);
-  var _useState19 = (0, _react.useState)(3),
-    _useState20 = _slicedToArray(_useState19, 1),
-    minFixationCount = _useState20[0];
+  var _useState21 = (0, _react.useState)(3),
+    _useState22 = _slicedToArray(_useState21, 1),
+    minFixationCount = _useState22[0];
   var fd_inform = (0, _react.useMemo)(function () {
     if (!fixationData) return;
     var sumfd = 0;
@@ -386,50 +398,50 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [fixationData, minFixationCount, endTime]);
 
   //리사이즈시 스케일변수들
-  var _useState21 = (0, _react.useState)(0.5),
-    _useState22 = _slicedToArray(_useState21, 2),
-    innerFrameScale = _useState22[0],
-    set_innerFrameScale = _useState22[1];
-  var _useState23 = (0, _react.useState)(0),
+  var _useState23 = (0, _react.useState)(0.5),
     _useState24 = _slicedToArray(_useState23, 2),
-    innerFrameTop = _useState24[0],
-    set_innerFrameTop = _useState24[1];
+    innerFrameScale = _useState24[0],
+    set_innerFrameScale = _useState24[1];
   var _useState25 = (0, _react.useState)(0),
     _useState26 = _slicedToArray(_useState25, 2),
-    innerFrameLeft = _useState26[0],
-    set_innerFrameLeft = _useState26[1];
+    innerFrameTop = _useState26[0],
+    set_innerFrameTop = _useState26[1];
+  var _useState27 = (0, _react.useState)(0),
+    _useState28 = _slicedToArray(_useState27, 2),
+    innerFrameLeft = _useState28[0],
+    set_innerFrameLeft = _useState28[1];
 
   //재생과 멈춤.
-  var _useState27 = (0, _react.useState)(false),
-    _useState28 = _slicedToArray(_useState27, 2),
-    isPlaying = _useState28[0],
-    set_isPlaying = _useState28[1];
+  var _useState29 = (0, _react.useState)(false),
+    _useState30 = _slicedToArray(_useState29, 2),
+    isPlaying = _useState30[0],
+    set_isPlaying = _useState30[1];
 
   //재생시 스크롤 따라갈것인가 옵션
-  var _useState29 = (0, _react.useState)(true),
-    _useState30 = _slicedToArray(_useState29, 2),
-    followEvent = _useState30[0],
-    set_followEvent = _useState30[1];
+  var _useState31 = (0, _react.useState)(true),
+    _useState32 = _slicedToArray(_useState31, 2),
+    followEvent = _useState32[0],
+    set_followEvent = _useState32[1];
 
   //PDF 인쇄시 사용함
-  var _useState31 = (0, _react.useState)(null),
-    _useState32 = _slicedToArray(_useState31, 2),
-    nowPDFviewInform = _useState32[0],
-    set_nowPDFviewInform = _useState32[1];
+  var _useState33 = (0, _react.useState)(null),
+    _useState34 = _slicedToArray(_useState33, 2),
+    nowPDFviewInform = _useState34[0],
+    set_nowPDFviewInform = _useState34[1];
 
   //전체화면
-  var _useState33 = (0, _react.useState)(false),
-    _useState34 = _slicedToArray(_useState33, 2),
-    isfullscreen = _useState34[0],
-    set_isfullscreen = _useState34[1];
+  var _useState35 = (0, _react.useState)(false),
+    _useState36 = _slicedToArray(_useState35, 2),
+    isfullscreen = _useState36[0],
+    set_isfullscreen = _useState36[1];
 
   //히트맵 인스턴스
   // const [HI, set_HI] = useState();
   // const HIref = useRef();
-  var _useState35 = (0, _react.useState)(),
-    _useState36 = _slicedToArray(_useState35, 2),
-    HI = _useState36[0],
-    set_HI = _useState36[1];
+  var _useState37 = (0, _react.useState)(),
+    _useState38 = _slicedToArray(_useState37, 2),
+    HI = _useState38[0],
+    set_HI = _useState38[1];
 
   //캔버스 래프들 초기화
   (0, _react.useEffect)(function () {
@@ -563,11 +575,6 @@ var PDFresultModal = function PDFresultModal(_ref) {
       window.removeEventListener('resize', resizeInnerFrame);
     };
   }, [resizeInnerFrame]);
-  var handleTogglePlay = function handleTogglePlay() {
-    set_isPlaying(function (p) {
-      return !p;
-    });
-  };
 
   //재생
   (0, _react.useEffect)(function () {
@@ -614,15 +621,16 @@ var PDFresultModal = function PDFresultModal(_ref) {
   });
   (0, _react.useEffect)(function () {
     tempIndexRef.current.needClear = true;
-  }, [data, chartOption, nowPage, offsetX, offsetY, HI]);
+    // console.log("클리어요청")
+  }, [data, chartOption, nowPage, offsetX, offsetY, HI, tempViewPercent]);
 
   //그리기
   var handleDraw = _react.default.useCallback(function () {
     var canvasref = pdfviewref.current.get_canvasRef(); //heatmap 제외 캔버스
+
     if (!canvasref || !canvasref.current) {
       // console.log("오잉?");
       // console.log("canvasref",canvasref);
-      // handleDraw();
       return;
     }
     if (!nowPDFviewInform) {
@@ -641,13 +649,15 @@ var PDFresultModal = function PDFresultModal(_ref) {
     // console.log("============================================")        
     // console.log("handleDraw!! nowP", nowPage);
     var canvas = canvasref.current;
+
     // let rctx = canvas.getContext('2d');
     var rctx = canvas.getContext('2d', {
       willReadFrequently: true
     });
     var cw = nowPDFviewInform.width;
     var ch = nowPDFviewInform.height;
-
+    // console.log("cw",cw);
+    // console.log("ch",ch);
     // let RPOGsize = chartOption.RPOG_size * 2 / 100;
     var RPOG_size = cw * 0.01 * (chartOption.RPOG_size * 2 / 100);
     var gazeData = data.gazeData;
@@ -799,7 +809,6 @@ var PDFresultModal = function PDFresultModal(_ref) {
           y: null
         };
         for (var i = s; i <= e && i < gazeData.length; i++) {
-          //#@!   
           if (gazeData[i].pdfx && gazeData[i].pdfy) {
             obj.sumx += gazeData[i].pdfx;
             obj.sumy += gazeData[i].pdfy;
@@ -836,10 +845,13 @@ var PDFresultModal = function PDFresultModal(_ref) {
                 //전체 다그려
                 ctx_f.beginPath();
                 ctx_f.lineWidth = 0.5;
-                // ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
-                // ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
-                ctx_f.strokeStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
-                ctx_f.fillStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                if (chartOption.rainBow) {
+                  ctx_f.strokeStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                  ctx_f.fillStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                } else {
+                  ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
+                  ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
+                }
                 ctx_f.arc((f.x + osx) * cw, (f.y + osy) * ch, fsize, 0, Math.PI * 2);
                 ctx_f.fill();
                 ctx_f.closePath();
@@ -850,10 +862,13 @@ var PDFresultModal = function PDFresultModal(_ref) {
                 var obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * ratio).toFixed(0) * 1, f);
                 ctx_fl.beginPath();
                 ctx_fl.lineWidth = 0.5;
-                // ctx_fl.strokeStyle = 'rgb(0,0,255,0.3)';
-                // ctx_fl.fillStyle = 'rgb(0,0,255,0.3)';
-                ctx_fl.strokeStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
-                ctx_fl.fillStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                if (chartOption.rainBow) {
+                  ctx_fl.strokeStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                  ctx_fl.fillStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                } else {
+                  ctx_fl.strokeStyle = 'rgb(0,0,255,0.3)';
+                  ctx_fl.fillStyle = 'rgb(0,0,255,0.3)';
+                }
                 ctx_fl.arc((obj.x + osx) * cw, (obj.y + osy) * ch, fsize * ratio, 0, Math.PI * 2);
                 ctx_fl.fill();
                 ctx_fl.closePath();
@@ -866,10 +881,13 @@ var PDFresultModal = function PDFresultModal(_ref) {
                   if (prevx !== null && prevy !== null) {
                     ctx_f.beginPath();
                     ctx_f.lineWidth = 1;
-                    // ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
-                    // ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
-                    ctx_f.strokeStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
-                    ctx_f.fillStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                    if (chartOption.rainBow) {
+                      ctx_f.strokeStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                      ctx_f.fillStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                    } else {
+                      ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
+                      ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
+                    }
                     ctx_f.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
                     ctx_f.lineTo((f.x + osx) * cw, (f.y + osy) * ch);
                     ctx_f.stroke();
@@ -884,10 +902,13 @@ var PDFresultModal = function PDFresultModal(_ref) {
                     var _obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * _ratio).toFixed(0) * 1, f);
                     ctx_fl.beginPath();
                     ctx_fl.lineWidth = 0.5;
-                    // ctx_fl.strokeStyle = 'blue';
-                    // ctx_fl.fillStyle = 'blue';
-                    ctx_fl.strokeStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
-                    ctx_fl.fillStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                    if (chartOption.rainBow) {
+                      ctx_fl.strokeStyle = 'blue';
+                      ctx_fl.fillStyle = 'blue';
+                    } else {
+                      ctx_fl.strokeStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                      ctx_fl.fillStyle = "rgb(".concat(fixationData[i].color.r, ",").concat(fixationData[i].color.g, ",").concat(fixationData[i].color.b, ",0.3)");
+                    }
                     ctx_fl.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
                     ctx_fl.lineTo((_obj.x + osx) * cw, (_obj.y + osy) * ch);
                     ctx_fl.stroke();
@@ -911,7 +932,16 @@ var PDFresultModal = function PDFresultModal(_ref) {
                   ctx_f.closePath();
                 } else {
                   //마지막 fixation의 넘ㄴ버
-                  //#@!
+                  ctx_fl.beginPath();
+                  ctx_fl.strokeStyle = "black";
+                  ctx_fl.fillStyle = "black";
+                  ctx_fl.lineWidth = 1;
+                  ctx_fl.font = cw / 100 * chartOption.FPOG_number_size + "px Arial";
+                  ctx_fl.textAlign = "center";
+                  ctx_fl.textBaseline = "middle";
+                  ctx_fl.fillText(f.fixationNumber, (f.x + osx) * cw, (f.y + osy) * ch);
+                  ctx_fl.stroke();
+                  ctx_fl.closePath();
                 }
               }
             }
@@ -1014,6 +1044,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
 
   //PDF 스크롤과 page 이동기록을 따라가는 함수
   var handlePDFmoveEvent = _react.default.useCallback(function () {
+    //배율이 똑같을경우에만..그래야함..
+
     var gazeData = data.gazeData;
     for (var i = 0; i < gazeData.length; i++) {
       if (gazeData[i].relTime * 1 <= nowTime * 1) {} else {
@@ -1032,14 +1064,46 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }
   }, [handlePDFmoveEvent, followEvent]);
   (0, _react.useEffect)(function () {
+    if (originViewPercent * 1 === tempViewPercent * 1) {
+      tempIndexRef.current.isReadyToEventPlay = true;
+    } else {
+      tempIndexRef.current.isReadyToEventPlay = false;
+    }
+  }, [originViewPercent, tempViewPercent]);
+  var handleTogglePlay = function handleTogglePlay() {
+    if (!isPlaying && followEvent && tempViewPercent * 1 !== originViewPercent * 1) {
+      // console.log("tempViewPercent",tempViewPercent);
+      // console.log("originViewPercent",originViewPercent)
+      pdfviewref.current.reset_viewPerecent(originViewPercent);
+      // set_isPlaying((p) =>!p);
+      //#@!
+      //tempIndexRef.current.isReadyToEventPlay
+
+      var a = setInterval(function () {
+        if (tempIndexRef.current.isReadyToEventPlay) {
+          clearInterval(a);
+          setTimeout(function () {
+            set_isPlaying(function (p) {
+              return !p;
+            });
+          }, 100);
+        }
+      }, 100);
+    } else {
+      set_isPlaying(function (p) {
+        return !p;
+      });
+    }
+  };
+  (0, _react.useEffect)(function () {
     handleDraw();
   }, [handleDraw]);
 
   //PDF writing 할때 쓰는것들임. 분리 필요
-  var _useState37 = (0, _react.useState)(null),
-    _useState38 = _slicedToArray(_useState37, 2),
-    jejuFontArrayBuffer = _useState38[0],
-    set_jejuFontArrayBuffer = _useState38[1];
+  var _useState39 = (0, _react.useState)(null),
+    _useState40 = _slicedToArray(_useState39, 2),
+    jejuFontArrayBuffer = _useState40[0],
+    set_jejuFontArrayBuffer = _useState40[1];
   (0, _react.useEffect)(function () {
     (0, _util.getFileAsArrayBuffer)(_JejuMyeongjo.default).then(function (res_arrbuffer) {
       set_jejuFontArrayBuffer(res_arrbuffer);
@@ -1047,10 +1111,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, []);
 
   //인쇄할 PDF데이터 path값에 따라서 PDFarraybuffer 보관
-  var _useState39 = (0, _react.useState)(null),
-    _useState40 = _slicedToArray(_useState39, 2),
-    pdfArrayBuffer = _useState40[0],
-    set_pdfArrayBuffer = _useState40[1];
+  var _useState41 = (0, _react.useState)(null),
+    _useState42 = _slicedToArray(_useState41, 2),
+    pdfArrayBuffer = _useState42[0],
+    set_pdfArrayBuffer = _useState42[1];
   (0, _react.useEffect)(function () {
     if (!path) return;
     fetch(path).then( /*#__PURE__*/function () {
@@ -1087,10 +1151,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [path]);
 
   //인쇄할 리더스아이로고 데이터
-  var _useState41 = (0, _react.useState)(null),
-    _useState42 = _slicedToArray(_useState41, 2),
-    readersEyeLogoArrayBuffer = _useState42[0],
-    set_readersEyeLogoArrayBuffer = _useState42[1];
+  var _useState43 = (0, _react.useState)(null),
+    _useState44 = _slicedToArray(_useState43, 2),
+    readersEyeLogoArrayBuffer = _useState44[0],
+    set_readersEyeLogoArrayBuffer = _useState44[1];
   (0, _react.useEffect)(function () {
     fetch(_readereyelogo.default).then(function (r) {
       return r.arrayBuffer();
@@ -1110,10 +1174,27 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }
   };
 
+  // useEffect(() => {
+  //     console.log("=======================")
+  //     console.log("tempViewPercent", tempViewPercent)
+  //     console.log("=======================")
+  // }, [tempViewPercent])
+
+  var _useState45 = (0, _react.useState)({
+      checked: false,
+      color: "gray",
+      //안보이기 색깔
+      trueText: "힛맵",
+      falseText: "응시"
+    }),
+    _useState46 = _slicedToArray(_useState45, 2),
+    toggleInfo = _useState46[0],
+    setToggleInfo = _useState46[1];
+  // console.log("fixationData",fixationData)
   //pdf 인쇄
   var handleTryPrint = /*#__PURE__*/function () {
     var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, prevx, prevy, pngImageBytes, pngImage, pngDims, i, osx, osy, gazeData, size, r, _i4, d, fr, _i5, f, fsize, startdrawX, startdrawY, _i6, _d2, pageNum, draw, rgbobj, newPage, fontSize, title, titleFontSize, customFont, textWidth, topMargin, textMarginTop, textMarginLeft, keycount, key, pdfBytes, blob, blobURL, link;
+      var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, prevx, prevy, pngImageBytes, pngImage, pngDims, i, osx, osy, gazeData, size, r, _i4, d, fr, _i5, f, fixationColor, fsize, startdrawX, startdrawY, _i6, _d2, pageNum, draw, rgbobj, newPage, fontSize, title, titleFontSize, customFont, textWidth, topMargin, textMarginTop, textMarginLeft, keycount, key, pdfBytes, blob, blobURL, link;
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
@@ -1233,6 +1314,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
             prevy = null;
             for (_i5 = 0; chartOption.FPOG && _i5 < fixationData.length; _i5++) {
               f = fixationData[_i5];
+              fixationColor = chartOption.rainBow ? (0, _pdfLib.rgb)(fixationData[_i5].color.r / 255, fixationData[_i5].color.g / 255, fixationData[_i5].color.b / 255) : (0, _pdfLib.rgb)(0, 1, 0);
               if (fr) {
                 if (f.count >= minFixationCount) {
                   //선그리기...
@@ -1246,7 +1328,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
                         x: (f.x + osx) * cw,
                         y: height - (f.y + osy) * ch
                       },
-                      color: (0, _pdfLib.rgb)(0, 1, 0),
+                      color: fixationColor,
                       opacity: 0.3,
                       borderOpacity: 0.3,
                       thickness: 1
@@ -1262,10 +1344,11 @@ var PDFresultModal = function PDFresultModal(_ref) {
                     borderWidth: 1,
                     // borderDashArray: [1],
                     // borderDashPhase: 25,
-                    borderColor: (0, _pdfLib.rgb)(0, 1, 0),
+                    borderColor: fixationColor,
                     borderOpacity: 0.3,
                     // fill:rgb(1,0,0)
-                    color: (0, _pdfLib.rgb)(0, 1, 0),
+                    // color: rgb(0, 1, 0),
+                    color: fixationColor,
                     opacity: 0.3
                     // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
                     // borderLineCap: LineCapStyle.Round,
@@ -1437,10 +1520,19 @@ var PDFresultModal = function PDFresultModal(_ref) {
     // console.log("@pdfSizeCallback", d);
     set_nowPDFviewInform(d.PDF);
     // 
-
-    // handleDraw();
   };
 
+  var handleViewPercentCallback = function handleViewPercentCallback(newViewPercent) {
+    if (!tempIndexRef.current) return;
+    if (!tempIndexRef.current.prevViewPercent) {
+      tempIndexRef.current.prevViewPercent = newViewPercent;
+    } else {
+      if (tempIndexRef.current.prevViewPercent !== newViewPercent) {
+        tempIndexRef.current.prevViewPercent = newViewPercent;
+        set_tempViewPercent(newViewPercent);
+      }
+    }
+  };
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "PDFresultModal",
     onClick: function onClick() {
@@ -1486,13 +1578,12 @@ var PDFresultModal = function PDFresultModal(_ref) {
     showConfirmBtn: showConfirmBtn,
     onConfirm: onConfirm,
     onClose: onClose,
-    showViewMode: true
-    // set_viewpercent={() => { }}
-    ,
+    showViewMode: isPlaying && followEvent ? false : true,
     path: path,
-    viewpercent: viewpercent,
+    viewpercent: tempViewPercent,
     pageCallback: handlePageCallback,
-    pdfSizeCallback: handlePDFsizeCallback
+    pdfSizeCallback: handlePDFsizeCallback,
+    viewPercentChangeCallback: handleViewPercentCallback
   })))), /*#__PURE__*/_react.default.createElement("div", {
     className: "playbarWrapper no-drag"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -1524,13 +1615,46 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, "\xA0/\xA0", endTime.toFixed(2)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "rightBtnWrap"
   }, /*#__PURE__*/_react.default.createElement("div", {
-    className: "flex",
+    className: "toggleBtn",
     style: {
       width: 70,
       height: 48
     },
     "data-tip": "\uC751\uC2DC / \uD788\uD2B8\uB9F5 \uBCF4\uAE30 \uC120\uD0DD"
-  }), /*#__PURE__*/_react.default.createElement("button", {
+  }, /*#__PURE__*/_react.default.createElement(_ToggleSwitch.default, _extends({}, toggleInfo, {
+    onClickToggle: function onClickToggle() {
+      // console.log("토글");        
+      if (toggleInfo.checked) {
+        //응시온
+        chartOption.FPOG = true;
+        chartOption.FPOG_size = 20;
+        chartOption.FPOG_line = true;
+        chartOption.FPOG_number = false;
+        chartOption.FPOG_number_size = 1.7;
+        chartOption.heatMap = false;
+        chartOption.heatMapMax = 40;
+        chartOption.heatMapRadius = 40;
+        chartOption.heatMapMaxOpacity = 0.7;
+        resaveConfig();
+      } else {
+        //힛맵온
+        chartOption.FPOG = false;
+        chartOption.FPOG_size = 20;
+        chartOption.FPOG_line = false;
+        chartOption.FPOG_number = false;
+        chartOption.FPOG_number_size = 1.7;
+        chartOption.heatMap = true;
+        chartOption.heatMapMax = 40;
+        chartOption.heatMapRadius = 40;
+        chartOption.heatMapMaxOpacity = 0.7;
+        resaveConfig();
+      }
+      setToggleInfo(_objectSpread(_objectSpread({}, toggleInfo), {}, {
+        checked: !toggleInfo.checked,
+        color: !toggleInfo.checked ? "#145894" : "gray"
+      }));
+    }
+  }))), /*#__PURE__*/_react.default.createElement("button", {
     className: "showControllerBtn ".concat(!hideController && 'selected'),
     "data-tip": "\uC81C\uC5B4\uD310 \uBCF4\uAE30",
     onClick: function onClick() {

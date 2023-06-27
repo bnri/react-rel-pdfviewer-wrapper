@@ -12,6 +12,7 @@ import { closeFullscreen, getFileAsArrayBuffer, hexToRgb, openFullScreen } from 
 import { ConfigController, RemoconController } from "./controller";
 import { RemoconSVG } from "./svg";
 import * as h337 from "heatmap.js";
+import ToggleSwitch from "./component/ToggleSwitch";
 
 const PDFresultModal = ({ ...props }) => {
     const {
@@ -33,7 +34,7 @@ const PDFresultModal = ({ ...props }) => {
     const originViewPercent = useMemo(() => {
         return viewpercent;
     }, [viewpercent]);
-    const [tempViewPercent,set_tempViewPercent]=useState(viewpercent);
+    const [tempViewPercent, set_tempViewPercent] = useState(viewpercent);
 
     const POG_swapcanvasRef = useRef();
     const FPOG_swapCanvasRef = useRef();
@@ -65,6 +66,7 @@ const PDFresultModal = ({ ...props }) => {
         FPOG_line: true,
         FPOG_number: false,
         FPOG_number_size: 1.7,
+        rainBow: true,
 
 
         GazePastRange: 0, //0인경우 전체
@@ -96,9 +98,11 @@ const PDFresultModal = ({ ...props }) => {
         set_chartOption(JSON.parse(JSON.stringify(chartOption)));
     }
 
+
     //문서내의 temp offset
     const [offsetX, set_offsetX] = useState("0.00");
     const [offsetY, set_offsetY] = useState("0.00");
+
 
     useEffect(() => {
         tempIndexRef.current = {
@@ -131,6 +135,8 @@ const PDFresultModal = ({ ...props }) => {
     //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
     const [fminx] = useState(1);
     const [fminy] = useState(1);
+
+
     //fixationData는 darw시에도 사용됨.
     const fixationData = useMemo(() => {
         let fa = [];
@@ -308,15 +314,15 @@ const PDFresultModal = ({ ...props }) => {
             fa[i].ratio = ratio;
             //ratio가 0~0.1 사이  0.1~0.2 사이  0.2~0.3 사이..0.9~1 사이
             //일경우 fa[i].color = 
-            let percent = ratio*100; //0~100 사이에
-            let minKey,maxKey;
+            let percent = ratio * 100; //0~100 사이에
+            let minKey, maxKey;
 
-            for(let j = 0 ; j <colorObjKeyArr.length-1 ; j++){
-                if(percent>=colorObjKeyArr[j]&&percent<=colorObjKeyArr[j+1]){
-                    minKey=colorObjKeyArr[j];
-      
-                    maxKey=colorObjKeyArr[j+1];
-      
+            for (let j = 0; j < colorObjKeyArr.length - 1; j++) {
+                if (percent >= colorObjKeyArr[j] && percent <= colorObjKeyArr[j + 1]) {
+                    minKey = colorObjKeyArr[j];
+
+                    maxKey = colorObjKeyArr[j + 1];
+
                     break;
                 }
             }
@@ -559,13 +565,7 @@ const PDFresultModal = ({ ...props }) => {
         }
     }, [resizeInnerFrame]);
 
-    const handleTogglePlay = () => {
-        set_isPlaying((p) => !p);
-        if(!isPlaying){
-            set_tempViewPercent(originViewPercent);
-        }
 
-    }
 
     //재생
     useEffect(() => {
@@ -622,9 +622,11 @@ const PDFresultModal = ({ ...props }) => {
         ReactTooltip.rebuild();
     });
 
+
     useEffect(() => {
         tempIndexRef.current.needClear = true;
-    }, [data, chartOption, nowPage, offsetX, offsetY, HI,tempViewPercent]);
+        // console.log("클리어요청")
+    }, [data, chartOption, nowPage, offsetX, offsetY, HI, tempViewPercent]);
 
 
     //그리기
@@ -635,7 +637,6 @@ const PDFresultModal = ({ ...props }) => {
         if (!canvasref || !canvasref.current) {
             // console.log("오잉?");
             // console.log("canvasref",canvasref);
-            // handleDraw();
             return;
         }
         if (!nowPDFviewInform) {
@@ -851,7 +852,7 @@ const PDFresultModal = ({ ...props }) => {
                     y: null,
                 }
                 for (let i = s; (i <= e && i < gazeData.length); i++) {
-                    //#@!   
+
                     if (gazeData[i].pdfx && gazeData[i].pdfy) {
                         obj.sumx += gazeData[i].pdfx;
                         obj.sumy += gazeData[i].pdfy;
@@ -886,10 +887,16 @@ const PDFresultModal = ({ ...props }) => {
                                 //전체 다그려
                                 ctx_f.beginPath();
                                 ctx_f.lineWidth = 0.5;
-                                // ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
-                                // ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
-                                ctx_f.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
-                                ctx_f.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                if (chartOption.rainBow) {
+                                    ctx_f.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                    ctx_f.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                }
+                                else {
+                                    ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
+                                    ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
+                                }
+
+
 
                                 ctx_f.arc((f.x + osx) * cw, (f.y + osy) * ch, fsize, 0, Math.PI * 2);
                                 ctx_f.fill();
@@ -904,10 +911,15 @@ const PDFresultModal = ({ ...props }) => {
                                 let obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * ratio).toFixed(0) * 1, f);
                                 ctx_fl.beginPath();
                                 ctx_fl.lineWidth = 0.5;
-                                // ctx_fl.strokeStyle = 'rgb(0,0,255,0.3)';
-                                // ctx_fl.fillStyle = 'rgb(0,0,255,0.3)';
-                                ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
-                                ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+
+                                if (chartOption.rainBow) {
+                                    ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                    ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                }
+                                else {
+                                    ctx_fl.strokeStyle = 'rgb(0,0,255,0.3)';
+                                    ctx_fl.fillStyle = 'rgb(0,0,255,0.3)';
+                                }
                                 ctx_fl.arc((obj.x + osx) * cw, (obj.y + osy) * ch, fsize * ratio, 0, Math.PI * 2);
                                 ctx_fl.fill();
                                 ctx_fl.closePath();
@@ -921,10 +933,16 @@ const PDFresultModal = ({ ...props }) => {
                                     if (prevx !== null && prevy !== null) {
                                         ctx_f.beginPath();
                                         ctx_f.lineWidth = 1;
-                                        // ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
-                                        // ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
-                                        ctx_f.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
-                                        ctx_f.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+
+                                        if (chartOption.rainBow) {
+                                            ctx_f.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                            ctx_f.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                        }
+                                        else {
+                                            ctx_f.strokeStyle = 'rgb(0,255,0,0.3)';
+                                            ctx_f.fillStyle = 'rgb(0,255,0,0.3)';
+                                        }
+
                                         ctx_f.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
                                         ctx_f.lineTo((f.x + osx) * cw, (f.y + osy) * ch);
                                         ctx_f.stroke();
@@ -942,10 +960,15 @@ const PDFresultModal = ({ ...props }) => {
 
                                         ctx_fl.beginPath();
                                         ctx_fl.lineWidth = 0.5;
-                                        // ctx_fl.strokeStyle = 'blue';
-                                        // ctx_fl.fillStyle = 'blue';
-                                        ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
-                                        ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                        if (chartOption.rainBow) {
+                                            ctx_fl.strokeStyle = 'blue';
+                                            ctx_fl.fillStyle = 'blue';
+                                        }
+                                        else {
+                                            ctx_fl.strokeStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                            ctx_fl.fillStyle = `rgb(${fixationData[i].color.r},${fixationData[i].color.g},${fixationData[i].color.b},0.3)`;
+                                        }
+
                                         ctx_fl.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
                                         ctx_fl.lineTo((obj.x + osx) * cw, (obj.y + osy) * ch);
                                         ctx_fl.stroke();
@@ -975,7 +998,16 @@ const PDFresultModal = ({ ...props }) => {
                                 }
                                 else {
                                     //마지막 fixation의 넘ㄴ버
-                                    //#@!
+                                    ctx_fl.beginPath();
+                                    ctx_fl.strokeStyle = "black";
+                                    ctx_fl.fillStyle = "black";
+                                    ctx_fl.lineWidth = 1;
+                                    ctx_fl.font = (cw / 100) * chartOption.FPOG_number_size + "px Arial";
+                                    ctx_fl.textAlign = "center";
+                                    ctx_fl.textBaseline = "middle";
+                                    ctx_fl.fillText(f.fixationNumber, (f.x + osx) * cw, (f.y + osy) * ch);
+                                    ctx_fl.stroke();
+                                    ctx_fl.closePath();
                                 }
 
                             }
@@ -1132,16 +1164,50 @@ const PDFresultModal = ({ ...props }) => {
         }
     }, [handlePDFmoveEvent, followEvent])
 
-    useEffect(()=>{
-        console.log("=======================")
-        console.log("tempViewPercent",tempViewPercent)
-        console.log("=======================")
-    },[tempViewPercent])
+
+    useEffect(() => {
+        if (originViewPercent * 1 === tempViewPercent * 1) {
+            tempIndexRef.current.isReadyToEventPlay = true;
+        }
+        else {
+            tempIndexRef.current.isReadyToEventPlay = false;
+        }
+    }, [originViewPercent, tempViewPercent])
+
+    const handleTogglePlay = () => {
+        if (!isPlaying && followEvent && tempViewPercent * 1 !== originViewPercent * 1) {
+            // console.log("tempViewPercent",tempViewPercent);
+            // console.log("originViewPercent",originViewPercent)
+            pdfviewref.current.reset_viewPerecent(originViewPercent);
+            // set_isPlaying((p) =>!p);
+            //#@!
+            //tempIndexRef.current.isReadyToEventPlay
+
+            let a = setInterval(() => {
+                if (tempIndexRef.current.isReadyToEventPlay) {
+                    clearInterval(a);
+                    setTimeout(function () {
+                        set_isPlaying((p) => !p);
+                    }, 100);
+
+                }
+            }, 100);
+        }
+        else {
+            set_isPlaying((p) => !p);
+        }
+    }
+
+
+
+
 
 
     useEffect(() => {
         handleDraw();
     }, [handleDraw]);
+
+
 
 
     //PDF writing 할때 쓰는것들임. 분리 필요
@@ -1187,6 +1253,21 @@ const PDFresultModal = ({ ...props }) => {
     }
 
 
+    // useEffect(() => {
+    //     console.log("=======================")
+    //     console.log("tempViewPercent", tempViewPercent)
+    //     console.log("=======================")
+    // }, [tempViewPercent])
+
+    const [toggleInfo, setToggleInfo] = useState(
+        {
+            checked: false,
+            color: "gray", //안보이기 색깔
+            trueText: "힛맵",
+            falseText: "응시"
+        }
+    );
+    // console.log("fixationData",fixationData)
     //pdf 인쇄
     const handleTryPrint = async () => {
 
@@ -1323,11 +1404,15 @@ const PDFresultModal = ({ ...props }) => {
 
         for (let i = 0; chartOption.FPOG && (i < fixationData.length); i++) {
             const f = fixationData[i];
+            const fixationColor=chartOption.rainBow?rgb(fixationData[i].color.r/255,fixationData[i].color.g/255,fixationData[i].color.b/255)
+            :rgb(0, 1, 0);
+
             if (fr) {
                 if (f.count >= minFixationCount) {
 
                     //선그리기...
                     if (prevx && prevy) {
+                        
                         pages[f.pageNum_s - 1].drawLine({
                             start: {
                                 x: (prevx + osx) * cw,
@@ -1337,7 +1422,7 @@ const PDFresultModal = ({ ...props }) => {
                                 x: (f.x + osx) * cw,
                                 y: height - (f.y + osy) * ch,
                             },
-                            color: rgb(0, 1, 0),
+                            color: fixationColor,
                             opacity: 0.3,
                             borderOpacity: 0.3,
                             thickness: 1,
@@ -1354,10 +1439,11 @@ const PDFresultModal = ({ ...props }) => {
                         borderWidth: 1,
                         // borderDashArray: [1],
                         // borderDashPhase: 25,
-                        borderColor: rgb(0, 1, 0),
+                        borderColor: fixationColor,
                         borderOpacity: 0.3,
                         // fill:rgb(1,0,0)
-                        color: rgb(0, 1, 0),
+                        // color: rgb(0, 1, 0),
+                        color:fixationColor,
                         opacity: 0.3
                         // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
                         // borderLineCap: LineCapStyle.Round,
@@ -1532,21 +1618,19 @@ const PDFresultModal = ({ ...props }) => {
         // 
 
 
-        // handleDraw();
+
     }
 
 
 
-    const handleViewPercentCallback = (newViewPercent)=>{
-        if(!tempIndexRef.current) return;
-        if(!tempIndexRef.current.prevViewPercent){
-            tempIndexRef.current.prevViewPercent=newViewPercent
+    const handleViewPercentCallback = (newViewPercent) => {
+        if (!tempIndexRef.current) return;
+        if (!tempIndexRef.current.prevViewPercent) {
+            tempIndexRef.current.prevViewPercent = newViewPercent;
         }
-
-        else{
-            if(tempIndexRef.current.prevViewPercent!==newViewPercent){
-                tempIndexRef.current.prevViewPercent=newViewPercent;
-                console.log("콜백 뷰퍼센트",newViewPercent)
+        else {
+            if (tempIndexRef.current.prevViewPercent !== newViewPercent) {
+                tempIndexRef.current.prevViewPercent = newViewPercent;
                 set_tempViewPercent(newViewPercent);
             }
         }
@@ -1586,7 +1670,7 @@ const PDFresultModal = ({ ...props }) => {
                                 showConfirmBtn={showConfirmBtn}
                                 onConfirm={onConfirm}
                                 onClose={onClose}
-                                showViewMode={true}
+                                showViewMode={(isPlaying && followEvent) ? false : true}
 
 
                                 path={path}
@@ -1617,44 +1701,43 @@ const PDFresultModal = ({ ...props }) => {
                             </div>
 
                             <div className="rightBtnWrap">
-                                <div className="flex" style={{ width: 70, height: 48 }}
+                                <div className="toggleBtn" style={{ width: 70, height: 48 }}
                                     data-tip="응시 / 히트맵 보기 선택"
                                 >
-                                    {/* <ToggleSwitch
-                                // className="showattendingcheckbox"
-                                {...toggleInfo}
-                                onClickToggle={() => {
-                                    // console.log("토글");        
-                                    if (toggleInfo.checked) {
-                                        //응시온
-                                        GazeChartOption.FPOG = true;
-                                        GazeChartOption.FPOG_size = 20;
-                                        GazeChartOption.FPOG_line = true;
-                                        GazeChartOption.FPOG_number = false;
-                                        GazeChartOption.FPOG_number_size = 1.7;
-                                        GazeChartOption.heatMap = false;
-                                        GazeChartOption.heatMapMax = 40;
-                                        GazeChartOption.heatMapRadius = 40;
-                                        GazeChartOption.heatMapMaxOpacity = 0.7;
-                                        resaveGazeChartOption();
-                                    }
-                                    else {
-                                        //힛맵온
-                                        GazeChartOption.FPOG = false;
-                                        GazeChartOption.FPOG_size = 20;
-                                        GazeChartOption.FPOG_line = false;
-                                        GazeChartOption.FPOG_number = false;
-                                        GazeChartOption.FPOG_number_size = 1.7;
-                                        GazeChartOption.heatMap = true;
-                                        GazeChartOption.heatMapMax = 40;
-                                        GazeChartOption.heatMapRadius = 40;
-                                        GazeChartOption.heatMapMaxOpacity = 0.7;
-                                        resaveGazeChartOption();
-                                    }
-                                    setToggleInfo({ ...toggleInfo, checked: !toggleInfo.checked, color: !toggleInfo.checked ? "#145894" : "gray" });
+                                    <ToggleSwitch
+                                        {...toggleInfo}
+                                        onClickToggle={() => {
+                                            // console.log("토글");        
+                                            if (toggleInfo.checked) {
+                                                //응시온
+                                                chartOption.FPOG = true;
+                                                chartOption.FPOG_size = 20;
+                                                chartOption.FPOG_line = true;
+                                                chartOption.FPOG_number = false;
+                                                chartOption.FPOG_number_size = 1.7;
+                                                chartOption.heatMap = false;
+                                                chartOption.heatMapMax = 40;
+                                                chartOption.heatMapRadius = 40;
+                                                chartOption.heatMapMaxOpacity = 0.7;
+                                                resaveConfig();
+                                            }
+                                            else {
+                                                //힛맵온
+                                                chartOption.FPOG = false;
+                                                chartOption.FPOG_size = 20;
+                                                chartOption.FPOG_line = false;
+                                                chartOption.FPOG_number = false;
+                                                chartOption.FPOG_number_size = 1.7;
+                                                chartOption.heatMap = true;
+                                                chartOption.heatMapMax = 40;
+                                                chartOption.heatMapRadius = 40;
+                                                chartOption.heatMapMaxOpacity = 0.7;
+                                                resaveConfig();
+                                            }
+                                            setToggleInfo({ ...toggleInfo, checked: !toggleInfo.checked, color: !toggleInfo.checked ? "#145894" : "gray" });
 
-                                }}
-                            /> */}
+                                        }}
+                                    />
 
                                 </div>
 

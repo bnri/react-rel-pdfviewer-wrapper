@@ -256,7 +256,11 @@ $main-border-color-70: #6b94b6;
               // align-items: flex-start;
               box-sizing: border-box;
               outline: none;
-
+              .toggleBtn{
+                display:flex;
+                justify-content: center;
+                align-items: center;
+              }
               .showStatsBtn {
 
                 height: 48px;

@@ -243,6 +243,23 @@ var ConfigController = function ConfigController(_ref) {
   }))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
     onClick: function onClick() {
+      ChartOption.rainBow = !ChartOption.rainBow;
+      resaveConfig();
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC751\uC2DC \uBB34\uC9C0\uAC1C"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "ckbx-style-8"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "checkbox",
+    name: "ckbx-style-8",
+    checked: ChartOption.rainBow,
+    onChange: function onChange() {}
+  }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
       if (ChartOption.FPOG && ChartOption.FPOG_number) {
         ChartOption.FPOG_number = !ChartOption.FPOG_number;
       }
@@ -412,7 +429,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
-  }, "\uC2A4\uD06C\uB864 \uB530\uB77C\uAC00\uAE30"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "\uCE21\uC815\uD658\uACBD \uBAA8\uBC29"), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "ckbx-style-8"
