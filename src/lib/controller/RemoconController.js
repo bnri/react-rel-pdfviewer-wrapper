@@ -83,19 +83,19 @@ const RemoconController = ({ ...props }) => {
                         <div className="kw">
                             <div className="kw-row">
                                 <div></div>
-                                <div data-tip="(단축키-키보드 방향키)">
+                                <div>
                                     <KeyboardLeftArrow style={{ transform: "rotate(90deg)" }} onClick={() => set_offsetY((offsetY * 1 - 0.01).toFixed(2))} />
                                 </div>
                                 <div></div>
                             </div>
                             <div className="kw-row">
-                                <div data-tip="(단축키-키보드 방향키)">
+                                <div>
                                     <KeyboardLeftArrow onClick={() => set_offsetX((offsetX * 1 - 0.01).toFixed(2))} />
                                 </div>
-                                <div data-tip="(단축키-키보드 방향키)">
+                                <div>
                                     <KeyboardLeftArrow style={{ transform: "rotate(270deg)" }} onClick={() => set_offsetY((offsetY * 1 + 0.01).toFixed(2))} />
                                 </div>
-                                <div data-tip="(단축키-키보드 방향키)">
+                                <div>
                                     <KeyboardLeftArrow onClick={() => set_offsetX((offsetX * 1 + 0.01).toFixed(2))} style={{ transform: "rotate(180deg)" }} />
                                 </div>
                             </div>

@@ -219,6 +219,7 @@ const ConfigController = ({ ...props }) => {
                     ChartOption.rainBow = !ChartOption.rainBow;
                     resaveConfig();
                 }}
+                  data-tip="페이지별 응시의 순서에 따라 응시의 색을 무지개순서로 표현"
             >
                 <div className="c_label">응시 무지개</div>
                 <div className="c_data">
@@ -280,13 +281,13 @@ const ConfigController = ({ ...props }) => {
                 </div>
             </div>
             <div className="oneConfig borderBottom">
-                <div className="c_label">응시 순서 크기</div>
+                <div className="c_label">응시 순서 크기&nbsp;<span style={{fontSize:'7px'}}>{ChartOption.FPOG_number_size}</span></div>
                 <div className="c_data">
                     <input
                         type="range"
                         style={{ width: "70%" }}
                         value={ChartOption.FPOG_number_size}
-                        min={0}
+                        min={1}
                         step={0.1}
                         max={5}
                         onChange={(e) => {
@@ -357,6 +358,7 @@ const ConfigController = ({ ...props }) => {
                 onClick={() => {
                     set_followEvent(f=>!f)
                 }}
+                 data-tip="재생 시 PDF Page 및 스크롤을 측정시 환경과 동일하게 재생<br/> 재생시 문서 배율도 측정시 문서배율로 돌아갑니다."
             >
                 <div className="c_label">측정환경 모방</div>
                 <div className="c_data">
