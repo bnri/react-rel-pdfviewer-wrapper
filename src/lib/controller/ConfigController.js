@@ -358,7 +358,7 @@ const ConfigController = ({ ...props }) => {
                 onClick={() => {
                     set_followEvent(f=>!f)
                 }}
-                 data-tip="재생 시 PDF Page 및 스크롤을 측정시 환경과 동일하게 재생<br/> 재생시 문서 배율도 측정시 문서배율로 돌아갑니다."
+                 data-tip="재생 시, 측정당시의 [PDF view Page , 문서배율 , 스크롤 위치]를 측정시 환경과 동일하게 재생"
             >
                 <div className="c_label">측정환경 모방</div>
                 <div className="c_data">
