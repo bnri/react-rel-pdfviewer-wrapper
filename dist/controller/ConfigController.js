@@ -251,23 +251,6 @@ var ConfigController = function ConfigController(_ref) {
   }))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
     onClick: function onClick() {
-      ChartOption.rainBow = !ChartOption.rainBow;
-      resaveConfig();
-    }
-  }, /*#__PURE__*/_react.default.createElement("div", {
-    className: "c_label"
-  }, "\uC751\uC2DC \uBB34\uC9C0\uAC1C"), /*#__PURE__*/_react.default.createElement("div", {
-    className: "c_data"
-  }, /*#__PURE__*/_react.default.createElement("div", {
-    className: "ckbx-style-8"
-  }, /*#__PURE__*/_react.default.createElement("input", {
-    type: "checkbox",
-    name: "ckbx-style-8",
-    checked: ChartOption.rainBow,
-    onChange: function onChange() {}
-  }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
-    className: "oneConfig",
-    onClick: function onClick() {
       if (ChartOption.FPOG && ChartOption.FPOG_number) {
         ChartOption.FPOG_number = !ChartOption.FPOG_number;
       }
@@ -286,6 +269,47 @@ var ConfigController = function ConfigController(_ref) {
     checked: ChartOption.FPOG,
     onChange: function onChange() {}
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      ChartOption.rainBow = !ChartOption.rainBow;
+      resaveConfig();
+    },
+    "data-tip": "\uD398\uC774\uC9C0\uBCC4 \uC751\uC2DC\uC758 \uC21C\uC11C\uC5D0 \uB530\uB77C \uC751\uC2DC\uC758 \uC0C9\uC744 \uBB34\uC9C0\uAC1C\uC21C\uC11C\uB85C \uD45C\uD604"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC751\uC2DC \uBB34\uC9C0\uAC1C"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "ckbx-style-8"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "checkbox",
+    name: "ckbx-style-8",
+    checked: ChartOption.rainBow,
+    onChange: function onChange() {}
+  }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uC751\uC2DC \uD22C\uBA85\uB3C4\xA0", /*#__PURE__*/_react.default.createElement("span", {
+    style: {
+      fontSize: '7px'
+    }
+  }, ChartOption.FPOG_opacity)), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "range",
+    style: {
+      width: "70%"
+    },
+    value: ChartOption.FPOG_opacity,
+    min: 0.01,
+    step: 0.01,
+    max: 1,
+    onChange: function onChange(e) {
+      ChartOption.FPOG_opacity = e.target.value * 1;
+      resaveConfig();
+    }
+  }))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
     onClick: function onClick() {
       ChartOption.FPOG_line = !ChartOption.FPOG_line;
@@ -326,7 +350,11 @@ var ConfigController = function ConfigController(_ref) {
     className: "oneConfig borderBottom"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
-  }, "\uC751\uC2DC \uC21C\uC11C \uD06C\uAE30"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "\uC751\uC2DC \uC21C\uC11C \uD06C\uAE30\xA0", /*#__PURE__*/_react.default.createElement("span", {
+    style: {
+      fontSize: '7px'
+    }
+  }, ChartOption.FPOG_number_size)), /*#__PURE__*/_react.default.createElement("div", {
     className: "c_data"
   }, /*#__PURE__*/_react.default.createElement("input", {
     type: "range",
@@ -334,7 +362,7 @@ var ConfigController = function ConfigController(_ref) {
       width: "70%"
     },
     value: ChartOption.FPOG_number_size,
-    min: 0,
+    min: 1,
     step: 0.1,
     max: 5,
     onChange: function onChange(e) {
@@ -434,7 +462,8 @@ var ConfigController = function ConfigController(_ref) {
       set_followEvent(function (f) {
         return !f;
       });
-    }
+    },
+    "data-tip": "\uC7AC\uC0DD \uC2DC, \uCE21\uC815\uB2F9\uC2DC\uC758 [PDF view Page , \uBB38\uC11C\uBC30\uC728 , \uC2A4\uD06C\uB864 \uC704\uCE58]\uB97C \uCE21\uC815\uC2DC \uD658\uACBD\uACFC \uB3D9\uC77C\uD558\uAC8C \uC7AC\uC0DD"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
   }, "\uCE21\uC815\uD658\uACBD \uBAA8\uBC29"), /*#__PURE__*/_react.default.createElement("div", {

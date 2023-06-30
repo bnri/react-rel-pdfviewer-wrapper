@@ -99,9 +99,7 @@ var RemoconController = function RemoconController(_ref) {
     className: "kw"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "kw-row"
-  }, /*#__PURE__*/_react.default.createElement("div", null), /*#__PURE__*/_react.default.createElement("div", {
-    "data-tip": "(\uB2E8\uCD95\uD0A4-\uD0A4\uBCF4\uB4DC \uBC29\uD5A5\uD0A4)"
-  }, /*#__PURE__*/_react.default.createElement(_svg.KeyboardLeftArrow, {
+  }, /*#__PURE__*/_react.default.createElement("div", null), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_svg.KeyboardLeftArrow, {
     style: {
       transform: "rotate(90deg)"
     },
@@ -110,24 +108,18 @@ var RemoconController = function RemoconController(_ref) {
     }
   })), /*#__PURE__*/_react.default.createElement("div", null)), /*#__PURE__*/_react.default.createElement("div", {
     className: "kw-row"
-  }, /*#__PURE__*/_react.default.createElement("div", {
-    "data-tip": "(\uB2E8\uCD95\uD0A4-\uD0A4\uBCF4\uB4DC \uBC29\uD5A5\uD0A4)"
-  }, /*#__PURE__*/_react.default.createElement(_svg.KeyboardLeftArrow, {
+  }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_svg.KeyboardLeftArrow, {
     onClick: function onClick() {
       return set_offsetX((offsetX * 1 - 0.01).toFixed(2));
     }
-  })), /*#__PURE__*/_react.default.createElement("div", {
-    "data-tip": "(\uB2E8\uCD95\uD0A4-\uD0A4\uBCF4\uB4DC \uBC29\uD5A5\uD0A4)"
-  }, /*#__PURE__*/_react.default.createElement(_svg.KeyboardLeftArrow, {
+  })), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_svg.KeyboardLeftArrow, {
     style: {
       transform: "rotate(270deg)"
     },
     onClick: function onClick() {
       return set_offsetY((offsetY * 1 + 0.01).toFixed(2));
     }
-  })), /*#__PURE__*/_react.default.createElement("div", {
-    "data-tip": "(\uB2E8\uCD95\uD0A4-\uD0A4\uBCF4\uB4DC \uBC29\uD5A5\uD0A4)"
-  }, /*#__PURE__*/_react.default.createElement(_svg.KeyboardLeftArrow, {
+  })), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_svg.KeyboardLeftArrow, {
     onClick: function onClick() {
       return set_offsetX((offsetX * 1 + 0.01).toFixed(2));
     },
