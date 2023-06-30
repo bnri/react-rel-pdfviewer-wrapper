@@ -20,13 +20,13 @@ var MultipleToggle = function MultipleToggle(_ref) {
     }
   }, btnArr.map(function (btn, index) {
     return /*#__PURE__*/_react.default.createElement("button", {
-      className: "btn ".concat(index * 1 === selBtnIndex * 1 ? 'selected' : ''),
+      className: "mtbtn ".concat(index * 1 === selBtnIndex * 1 ? 'selected' : ''),
       onClick: function onClick(e) {
         if (btn.onClick) {
           btn.onClick(e);
         }
       },
-      key: "btn_".concat(index)
+      key: "mtbtn_".concat(index)
     }, btn.Label);
   }));
 };

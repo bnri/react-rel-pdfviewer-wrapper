@@ -1228,6 +1228,7 @@ const PDFresultModal = ({ ...props }) => {
 
 
     }, [data, nowTime]);
+
     useEffect(() => {
         if (followEvent) {
             handlePDFmoveEvent();
@@ -1392,35 +1393,105 @@ const PDFresultModal = ({ ...props }) => {
             let href = pdfviewref.current.get_heatmapRef();
             // console.log("href", href);
             if (href.current) {
-                let canvas = findCanvasInChildren(href.current);
+                let heatmapcanvas = findCanvasInChildren(href.current);
                 // console.log("canvas",canvas)
-                if (canvas) {
+                if (heatmapcanvas) {
 
+
+                    function drawHeatmapTemp(nowPage) {
+                        if(HI){
+                            HI.configure({
+                                maxOpacity: chartOption.heatMapMaxOpacity,
+                                // width: cw,
+                                // height: ch,
+                            });
+                        }
+                        else{
+                            return;
+                        }
+                        const pT = 0;
+                        const heatMapRadius=chartOption.heatMapRadius;
+                        // console.log("드로힛맵")
+                        const gazeData = data.gazeData;
+                        let osx = offsetX * 1;
+                        let osy = offsetY * 1;
+                        // console.log("드로")
+                        let points = [];
+                        const {height_devided_width_ratio} = nowPDFviewInform;
+                        const heatmap_w=1728;
+                        const heatpmap_h=1728*height_devided_width_ratio;
+
+
+                        if (chartOption.heatMap) {
+                            // console.log("1")
+                            for (let i = 0; i < gazeData.length; i++) {
+                                const d = gazeData[i];
+            
+                                if (pT) {
+                                    if (d.relTime < (endTime - pT)) {
+                               
+                                        continue;
+                                    }
+                                }
+                                if (d.relTime <= endTime) {
+                                    if (d.pdfx && d.pdfy) {
+                                        if (nowPage === d.pageNum) {
+                                            let baseobj = {
+                                                x: 0,
+                                                y: 0,
+                                                value: 0,
+                                                radius: heatMapRadius
+                                            };
+                                            let x = Math.floor((d.pdfx + osx) * heatmap_w);
+                                            let y = Math.floor((d.pdfy + osy) * heatpmap_h);
+                                            baseobj.x = x;
+                                            baseobj.y = y;
+                                            baseobj.value = 1;
+                                            points.push(baseobj);
+                                        }
+            
+                                    }
+                                } else {
+                                    break;
+                                }
+                            }
+            
+                        }
+                        // console.log("셋데이타",points.length)
+                        HI.setData({
+                            max: chartOption.heatMapMax,
+                            min: 0,
+                            data: points
+                        });
+                    }
                     //반복문으로 빼내야함.
                     for(let i = 0 ; i<pages.length; i++){
-                        //isrenderDone;
+                        let temppage=i+1;
+                        drawHeatmapTemp(temppage);
+                        const imageArrayBufferHeat = getCanvasImagePngBuffer(heatmapcanvas);
+                        const heatmapBuffer = imageArrayBufferHeat;
+                        const pngImageHeat = await pdfDoc.embedPng(heatmapBuffer); //오리지날 이미지
+                        // console.log("pngImageHeat",pngImageHeat)
+                        const { width: pw
+                            // , height: ph 
+                        } = pngImageHeat;
+                        // console.log("@사진",pw,ph);
+                        // console.log("@PDF",cw,ch);
+    
+                        const pngDimsHeat = pngImageHeat.scale(cw / pw); //스케일된 이미지
+                        pages[i].drawImage(pngImageHeat, {
+                            // x: newpage.getWidth() / 2 - pngDims.width / 2,
+                            // y: newpage.getHeight() / 2 - pngDims.height / 2,
+                            // x: newpage.getWidth()- pngDims.width ,
+                            x: 0,
+                            y: height - pngDimsHeat.height,
+                            width: pngDimsHeat.width,
+                            height: pngDimsHeat.height,
+                        });
 
                     }
-                    const imageArrayBufferHeat = getCanvasImagePngBuffer(canvas);
-                    const heatmapBuffer = imageArrayBufferHeat;
-                    const pngImageHeat = await pdfDoc.embedPng(heatmapBuffer); //오리지날 이미지
-                    // console.log("pngImageHeat",pngImageHeat)
-                    const { width: pw
-                        // , height: ph 
-                    } = pngImageHeat;
-                    // console.log("@사진",pw,ph);
-                    // console.log("@PDF",cw,ch);
-
-                    const pngDimsHeat = pngImageHeat.scale(cw / pw); //스케일된 이미지
-                    pages[0].drawImage(pngImageHeat, {
-                        // x: newpage.getWidth() / 2 - pngDims.width / 2,
-                        // y: newpage.getHeight() / 2 - pngDims.height / 2,
-                        // x: newpage.getWidth()- pngDims.width ,
-                        x: 0,
-                        y: height - pngDimsHeat.height,
-                        width: pngDimsHeat.width,
-                        height: pngDimsHeat.height,
-                    });
+                    tempIndexRef.current.needClear=true;
+                    resaveConfig();
                     // console.log("했어");
                 }
                 else {
@@ -1512,8 +1583,8 @@ const PDFresultModal = ({ ...props }) => {
                                 y: height - (f.y + osy) * ch,
                             },
                             color: fixationColor,
-                            opacity: 0.3,
-                            borderOpacity: 0.3,
+                            opacity: chartOption.FPOG_opacity*1,
+                            borderOpacity: chartOption.FPOG_opacity*1,
                             thickness: 1,
 
                         });
@@ -1529,11 +1600,11 @@ const PDFresultModal = ({ ...props }) => {
                         // borderDashArray: [1],
                         // borderDashPhase: 25,
                         borderColor: fixationColor,
-                        borderOpacity: 0.3,
+                        borderOpacity:chartOption.FPOG_opacity*1,
                         // fill:rgb(1,0,0)
                         // color: rgb(0, 1, 0),
                         color: fixationColor,
-                        opacity: 0.3
+                        opacity: chartOption.FPOG_opacity*1
                         // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
                         // borderLineCap: LineCapStyle.Round,
                     });

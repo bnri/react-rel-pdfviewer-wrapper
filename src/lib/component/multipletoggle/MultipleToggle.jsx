@@ -6,11 +6,11 @@ const MultipleToggle = ({...props})=>{
 
 
     return (<div className="MultipleToggle"style={{display:'flex'}}>{btnArr.map((btn,index)=>{
-        return (<button className={`btn ${index*1===selBtnIndex*1?'selected':''}`}onClick={(e)=>{
+        return (<button className={`mtbtn ${index*1===selBtnIndex*1?'selected':''}`}onClick={(e)=>{
             if(btn.onClick){
                 btn.onClick(e);
             }            
-        }} key={`btn_${index}`}>
+        }} key={`mtbtn_${index}`}>
             {btn.Label}
         </button>)
     })}
