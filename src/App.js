@@ -29,8 +29,8 @@ function App() {
           downloadFileName = "테스트파일이름"
 
           //모달사이즈를 변경가능
-          specialWidth={'1400px'}
-          specialHeight={'800px'}
+          specialWidth={'100%'}
+          specialHeight={'100%'}
 
           data={{
             gazeData: data1,
