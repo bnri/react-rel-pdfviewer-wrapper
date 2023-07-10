@@ -62,7 +62,7 @@ function App() {
           penweight={5}
           penpermit={1}
           hideRemocon={false}
-          
+          // agencyLogoArrayBuffer={}
           isPathwayPlus={true}
         />
 

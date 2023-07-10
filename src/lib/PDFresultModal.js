@@ -6,6 +6,7 @@ import { PDFDocument, rgb } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit'
 import ReactTooltip from 'react-tooltip';
 import readerseyelogo from "./img/readereyelogo.png";
+
 import jeju from './font/JejuMyeongjo.ttf';
 import {
     closeFullscreen, findCanvasInChildren
@@ -17,6 +18,7 @@ import { ConfigController, RemoconController } from "./controller";
 import { RemoconSVG } from "./svg";
 import * as h337 from "heatmap.js";
 import MultipleToggle from "./component/multipletoggle/MultipleToggle";
+
 
 const PDFresultModal = ({ ...props }) => {
     const {
@@ -37,7 +39,8 @@ const PDFresultModal = ({ ...props }) => {
         pencolor,
         penpermit,
         hideRemocon,
-        isPathwayPlus
+        isPathwayPlus,
+        agencyLogoArrayBuffer
     } = props;
 
     const topRef = useRef();
@@ -1431,17 +1434,25 @@ const PDFresultModal = ({ ...props }) => {
 
         //base64를 Bytes 로 변환
         ////////////////////////////////////////////////////////페이지마다 리더스아이로고 박기.
-        const pngLogoImageBytes = readersEyeLogoArrayBuffer;
-        const pngLogoImage = await pdfDoc.embedPng(pngLogoImageBytes)
-        const pngDims = pngLogoImage.scale(0.05)
-        for (let i = 0; i < pages.length; i++) {
-            pages[i].drawImage(pngLogoImage, {
-                x: 5,
-                y: -5 + height - pngDims.height,
-                width: pngDims.width,
-                height: pngDims.height,
-            })
-        }
+        const pngLogoImageBytes = agencyLogoArrayBuffer?agencyLogoArrayBuffer:readersEyeLogoArrayBuffer;
+        const pngLogoImage = await pdfDoc.embedPng(pngLogoImageBytes);
+        
+        // console.dir(pngLogoImage.width);
+        // console.dir(pngLogoImage.height);
+        console.dir(pngLogoImage);
+        const aimHeight=40;
+        const aimScale=(aimHeight/pngLogoImage.height).toFixed(2)*1;
+
+        const pngDims = pngLogoImage.scale(aimScale);
+        console.dir(pngDims);
+        // for (let i = 0; i < pages.length; i++) {
+        //     pages[i].drawImage(pngLogoImage, {
+        //         x: 5,
+        //         y: -5 + height - pngDims.height,
+        //         width: pngDims.width,
+        //         height: pngDims.height,
+        //     })
+        // }
         ////////////////////////////////////////////////////////
 
 

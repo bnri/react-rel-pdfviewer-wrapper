@@ -54,7 +54,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
     pencolor = props.pencolor,
     penpermit = props.penpermit,
     hideRemocon = props.hideRemocon,
-    isPathwayPlus = props.isPathwayPlus;
+    isPathwayPlus = props.isPathwayPlus,
+    agencyLogoArrayBuffer = props.agencyLogoArrayBuffer;
   var topRef = (0, _react.useRef)();
   var pdfviewref = (0, _react.useRef)();
   // const [nowPage, set_nowPage] = useState(1);
@@ -1279,7 +1280,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   //pdf 인쇄
   var handleTryPrint = /*#__PURE__*/function () {
     var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, pngLogoImageBytes, pngLogoImage, pngDims, i, href, heatmapcanvas, drawHeatmapTemp, _i6, temppage, imageArrayBufferHeat, heatmapBuffer, pngImageHeat, pw, pngDimsHeat, prevx, prevy, osx, osy, gazeData, size, r, _i7, d, fr, _i8, f, fixationColor, fsize, startdrawX, startdrawY, _i9, _d2, pageNum, draw, rgbobj, newPage, fontSize, title, titleFontSize, customFont, textWidth, topMargin, textMarginTop, textMarginLeft, keycount, key, pdfBytes, blob, blobURL, link;
+      var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, pngLogoImageBytes, pngLogoImage, aimHeight, aimScale, pngDims, href, heatmapcanvas, drawHeatmapTemp, i, temppage, imageArrayBufferHeat, heatmapBuffer, pngImageHeat, pw, pngDimsHeat, prevx, prevy, osx, osy, gazeData, size, r, _i5, d, fr, _i6, f, fixationColor, fsize, startdrawX, startdrawY, _i7, _d2, pageNum, draw, rgbobj, newPage, fontSize, title, titleFontSize, customFont, textWidth, topMargin, textMarginTop, textMarginLeft, keycount, key, pdfBytes, blob, blobURL, link;
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
@@ -1323,34 +1324,40 @@ var PDFresultModal = function PDFresultModal(_ref) {
             cw = width;
             ch = height; //base64를 Bytes 로 변환
             ////////////////////////////////////////////////////////페이지마다 리더스아이로고 박기.
-            pngLogoImageBytes = readersEyeLogoArrayBuffer;
+            pngLogoImageBytes = agencyLogoArrayBuffer ? agencyLogoArrayBuffer : readersEyeLogoArrayBuffer;
             _context3.next = 19;
             return pdfDoc.embedPng(pngLogoImageBytes);
           case 19:
             pngLogoImage = _context3.sent;
-            pngDims = pngLogoImage.scale(0.05);
-            for (i = 0; i < pages.length; i++) {
-              pages[i].drawImage(pngLogoImage, {
-                x: 5,
-                y: -5 + height - pngDims.height,
-                width: pngDims.width,
-                height: pngDims.height
-              });
-            }
+            // console.dir(pngLogoImage.width);
+            // console.dir(pngLogoImage.height);
+            console.dir(pngLogoImage);
+            aimHeight = 40;
+            aimScale = (aimHeight / pngLogoImage.height).toFixed(2) * 1;
+            pngDims = pngLogoImage.scale(aimScale);
+            console.dir(pngDims);
+            // for (let i = 0; i < pages.length; i++) {
+            //     pages[i].drawImage(pngLogoImage, {
+            //         x: 5,
+            //         y: -5 + height - pngDims.height,
+            //         width: pngDims.width,
+            //         height: pngDims.height,
+            //     })
+            // }
             ////////////////////////////////////////////////////////
             if (!chartOption.heatMap) {
-              _context3.next = 47;
+              _context3.next = 50;
               break;
             }
             //set_pageNumber
             href = pdfviewref.current.get_heatmapRef(); // console.log("href", href);
             if (!href.current) {
-              _context3.next = 47;
+              _context3.next = 50;
               break;
             }
             heatmapcanvas = (0, _util.findCanvasInChildren)(href.current); // console.log("canvas",canvas)
             if (!heatmapcanvas) {
-              _context3.next = 47;
+              _context3.next = 50;
               break;
             }
             drawHeatmapTemp = function drawHeatmapTemp(nowPage) {
@@ -1376,8 +1383,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
               var heatpmap_h = 1728 * height_devided_width_ratio;
               if (chartOption.heatMap) {
                 // console.log("1")
-                for (var _i5 = 0; _i5 < gazeData.length; _i5++) {
-                  var d = gazeData[_i5];
+                for (var i = 0; i < gazeData.length; i++) {
+                  var d = gazeData[i];
                   if (pT) {
                     if (d.relTime < endTime - pT) {
                       continue;
@@ -1412,26 +1419,26 @@ var PDFresultModal = function PDFresultModal(_ref) {
                 data: points
               });
             }; //반복문으로 빼내야함.
-            _i6 = 0;
-          case 29:
-            if (!(_i6 < pages.length)) {
-              _context3.next = 43;
+            i = 0;
+          case 32:
+            if (!(i < pages.length)) {
+              _context3.next = 46;
               break;
             }
-            temppage = _i6 + 1;
+            temppage = i + 1;
             drawHeatmapTemp(temppage);
             imageArrayBufferHeat = (0, _util.getCanvasImagePngBuffer)(heatmapcanvas);
             heatmapBuffer = imageArrayBufferHeat;
-            _context3.next = 36;
+            _context3.next = 39;
             return pdfDoc.embedPng(heatmapBuffer);
-          case 36:
+          case 39:
             pngImageHeat = _context3.sent;
             //오리지날 이미지
             // console.log("pngImageHeat",pngImageHeat)
             pw = pngImageHeat.width; // console.log("@사진",pw,ph);
             // console.log("@PDF",cw,ch);
             pngDimsHeat = pngImageHeat.scale(cw / pw); //스케일된 이미지
-            pages[_i6].drawImage(pngImageHeat, {
+            pages[i].drawImage(pngImageHeat, {
               // x: newpage.getWidth() / 2 - pngDims.width / 2,
               // y: newpage.getHeight() / 2 - pngDims.height / 2,
               // x: newpage.getWidth()- pngDims.width ,
@@ -1440,17 +1447,17 @@ var PDFresultModal = function PDFresultModal(_ref) {
               width: pngDimsHeat.width,
               height: pngDimsHeat.height
             });
-          case 40:
-            _i6++;
-            _context3.next = 29;
-            break;
           case 43:
+            i++;
+            _context3.next = 32;
+            break;
+          case 46:
             tempIndexRef.current.needClear = true;
             resaveConfig();
             // console.log("했어");
-            _context3.next = 47;
+            _context3.next = 50;
             break;
-          case 47:
+          case 50:
             //페이지마다 시선데이터 기록.
             prevx = null;
             prevy = null;
@@ -1459,8 +1466,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
             gazeData = data.gazeData;
             size = chartOption.RPOG_size * 2 / 100;
             r = cw * 0.01 * size; //draw rawData
-            for (_i7 = 0; chartOption.RPOG && _i7 < gazeData.length; _i7++) {
-              d = gazeData[_i7];
+            for (_i5 = 0; chartOption.RPOG && _i5 < gazeData.length; _i5++) {
+              d = gazeData[_i5];
               if (d.pdfx && d.pdfy) {
                 if (r) {
                   if (prevx && prevy) {
@@ -1506,9 +1513,9 @@ var PDFresultModal = function PDFresultModal(_ref) {
             fr = cw * chartOption.FPOG_size * 1.5 / 10000;
             prevx = null;
             prevy = null;
-            for (_i8 = 0; chartOption.FPOG && _i8 < fixationData.length; _i8++) {
-              f = fixationData[_i8];
-              fixationColor = chartOption.rainBow ? (0, _pdfLib.rgb)(fixationData[_i8].color.r / 255, fixationData[_i8].color.g / 255, fixationData[_i8].color.b / 255) : (0, _pdfLib.rgb)(0, 1, 0);
+            for (_i6 = 0; chartOption.FPOG && _i6 < fixationData.length; _i6++) {
+              f = fixationData[_i6];
+              fixationColor = chartOption.rainBow ? (0, _pdfLib.rgb)(fixationData[_i6].color.r / 255, fixationData[_i6].color.g / 255, fixationData[_i6].color.b / 255) : (0, _pdfLib.rgb)(0, 1, 0);
               if (fr) {
                 if (f.count >= minFixationCount) {
                   //선그리기...
@@ -1556,21 +1563,21 @@ var PDFresultModal = function PDFresultModal(_ref) {
               // }
             }
             //draw pencil
-            _i9 = 0;
-          case 60:
-            if (!(chartOption.penPermit && _i9 < gazeData.length)) {
-              _context3.next = 70;
+            _i7 = 0;
+          case 63:
+            if (!(chartOption.penPermit && _i7 < gazeData.length)) {
+              _context3.next = 73;
               break;
             }
-            _d2 = gazeData[_i9];
+            _d2 = gazeData[_i7];
             pageNum = _d2.pageNum;
-            draw = gazeData[_i9].draw;
+            draw = gazeData[_i7].draw;
             if (draw) {
-              _context3.next = 66;
+              _context3.next = 69;
               break;
             }
-            return _context3.abrupt("continue", 67);
-          case 66:
+            return _context3.abrupt("continue", 70);
+          case 69:
             // console.log("t",t);
 
             if (_d2.relTime * 1 <= nowTime * 1) {
@@ -1623,20 +1630,20 @@ var PDFresultModal = function PDFresultModal(_ref) {
                 startdrawY = null;
               }
             }
-          case 67:
-            _i9++;
-            _context3.next = 60;
-            break;
           case 70:
+            _i7++;
+            _context3.next = 63;
+            break;
+          case 73:
             //PDF 맨앞 표지 만들기
             //////새로운패이지 생성
             newPage = pdfDoc.insertPage(0, [width, height]);
             fontSize = 15;
             title = "자유글 읽기 진단 결과";
             titleFontSize = 25;
-            _context3.next = 76;
+            _context3.next = 79;
             return pdfDoc.embedFont(fontBytes);
-          case 76:
+          case 79:
             customFont = _context3.sent;
             textWidth = customFont.widthOfTextAtSize(title, titleFontSize);
             newPage.drawText(title, {
@@ -1670,11 +1677,11 @@ var PDFresultModal = function PDFresultModal(_ref) {
             /////////////PDF 맨앞페이지 생성끝////////
 
             /////////////저장 다운로드/////////////
-            _context3.next = 87;
+            _context3.next = 90;
             return pdfDoc.save({
               updateFieldAppearances: false
             });
-          case 87:
+          case 90:
             pdfBytes = _context3.sent;
             blob = new Blob([pdfBytes], {
               type: 'application/pdf'
@@ -1689,7 +1696,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
             setTimeout(function () {
               return URL.revokeObjectURL(link.href);
             }, 7000);
-          case 97:
+          case 100:
           case "end":
             return _context3.stop();
         }
