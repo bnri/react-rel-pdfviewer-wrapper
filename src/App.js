@@ -14,23 +14,18 @@ function App() {
       <button onClick={e => set_selPathway(true)}>열기</button>
       {selPathway &&
         <PDFresultModal
-          PDFonloadCallback={(pages)=>{
-            // console.log("페이지수?",pages);
-          }}
-
-          printPDFData={{
-            agencyName: '테스트학원이름',
-            testeeClass: 'xx반',
-            testeeName: '홍길동',
-            testeeID: '가나다라마바사',
-            testDate: '1999.04.19',
-            pdfName: '테스트PDF',
-          }}
-          downloadFileName = "테스트파일이름"
-
-          //모달사이즈를 변경가능
-          specialWidth={'100%'}
-          specialHeight={'100%'}
+          onClose={() => {
+            set_selPathway(null);
+          }} //X 눌렀을시
+          showConfirmBtn={false}
+          onConfirm={() => {
+            set_selPathway(null);
+          }} //완료 버튼 눌렀을시
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"} //1번 json
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/18.pdf"} //300번 json
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/95.pdf"} //301번 json
+          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/4.pdf"} //302번 json
+          viewpercent={100} //이건 측정할때의 값인데. 일단은 100 넣어버림.
 
           data={{
             gazeData: data1,
@@ -43,24 +38,32 @@ function App() {
               height: 2443
             }
           }}
+          //모달사이즈를 변경가능
+          specialWidth={'100%'}
+          specialHeight={'100%'}
 
-          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"} //1번 json
-          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/18.pdf"} //300번 json
-          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/95.pdf"} //301번 json
-          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/4.pdf"} //302번 json
-          viewpercent={100} //이건 측정할때의 값인데. 일단은 100 넣어버림.
-     
-          showConfirmBtn={false}
-          onConfirm={() => {
-            set_selPathway(null);
+
+          printPDFData={{
+            agencyName: '테스트학원이름',
+            testeeClass: 'xx반',
+            testeeName: '홍길동',
+            testeeID: '가나다라마바사',
+            testDate: '1999.04.19',
+            pdfName: '테스트PDF',
           }}
-          onClose={() => {
-            set_selPathway(null);
+          downloadFileName="테스트파일이름"
+
+          PDFonloadCallback={(pages) => {
+            // console.log("페이지수?",pages);
           }}
 
-          pencolor={"#0000FF"}
+
+          pencolor={"#0000FF"} //반드시 HEX PDF인쇄시 HEX필요
           penweight={5}
           penpermit={1}
+          hideRemocon={false}
+          
+          isPathwayPlus={true}
         />
 
       }

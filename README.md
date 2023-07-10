@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+- 지금 PDF 인쇄시 리더스아이 마크 뺄것.
+- 마크 외부에서 넣을시 해당 마크 사용 테스트 할것 
+-----------------------------------------------------
+excuted screenshot 
+<img src="./example.png">
+-------------------------------------
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+- how to get measuring data  
+https://www.readerseye.com
+- for use this  
+you need readerseye data 
+- how to use 
+```javascript
+<PDFresultModal
+          onClose={() => {
+            set_selPathway(null);
+          }} //X 눌렀을시  click X btn
+          showConfirmBtn={false} //show confirm btn
+          onConfirm={() => {
+            set_selPathway(null);
+          }} //완료 버튼 눌렀을시  //click Confirm btn
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/25.pdf"} //1번 json
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/18.pdf"} //300번 json
+          // path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/95.pdf"} //301번 json
 
-In the project directory, you can run:
+          //PDFfile URL
+          path={"https://readerseye-pathway.s3.ap-northeast-2.amazonaws.com/4.pdf"} //302번 json
+          viewpercent={100} //이건 측정할때의 값인데. 일단은 100 넣어버림. //pdfviewpercent
 
-### `npm start`
+          data={{
+            gazeData: data1, // readerseye data
+            screenSize: {  //screensize of moment of the measurement
+              width: 1920,
+              height: 1080
+            },
+            pdfSize: { //PDFsize of moment of the measurement
+              width: 1728,
+              height: 2443
+            }
+          }}
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+          specialWidth={'100%'} //you can set modal width height
+          specialHeight={'100%'}
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+          printPDFData={{
+            agencyName: '테스트학원이름',
+            testeeClass: 'xx반',
+            testeeName: '홍길동',
+            testeeID: '가나다라마바사',
+            testDate: '1999.04.19',
+            pdfName: '테스트PDF',
+          }} // PDF download file default information
+          downloadFileName="테스트파일이름" //download file name
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+          PDFonloadCallback={(pages) => {
+            // console.log("페이지수?",pages);
+          }}
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+          pencolor={"#0000FF"} //must HEX PDF인쇄시 HEX필요
+          penweight={5} //pen weight
+          penpermit={1} //show user pen writing permit
+          hideRemocon={false} //default hide remocon controller
+          
+          isPathwayPlus={true} //heatmap rainbow permission
+/>
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

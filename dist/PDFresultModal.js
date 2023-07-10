@@ -40,19 +40,21 @@ function _extends() { _extends = Object.assign ? Object.assign.bind() : function
 var PDFresultModal = function PDFresultModal(_ref) {
   var props = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
   var onClose = props.onClose,
+    onConfirm = props.onConfirm,
+    showConfirmBtn = props.showConfirmBtn,
     path = props.path,
     viewpercent = props.viewpercent,
     data = props.data,
     specialWidth = props.specialWidth,
     specialHeight = props.specialHeight,
-    onConfirm = props.onConfirm,
-    showConfirmBtn = props.showConfirmBtn,
     printPDFData = props.printPDFData,
     downloadFileName = props.downloadFileName,
     PDFonloadCallback = props.PDFonloadCallback,
     penweight = props.penweight,
     pencolor = props.pencolor,
-    penpermit = props.penpermit;
+    penpermit = props.penpermit,
+    hideRemocon = props.hideRemocon,
+    isPathwayPlus = props.isPathwayPlus;
   var topRef = (0, _react.useRef)();
   var pdfviewref = (0, _react.useRef)();
   // const [nowPage, set_nowPage] = useState(1);
@@ -79,7 +81,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   var tempIndexRef = (0, _react.useRef)();
 
   //리모콘
-  var _useState5 = (0, _react.useState)(false),
+  var _useState5 = (0, _react.useState)(hideRemocon !== null ? hideRemocon : false),
     _useState6 = _slicedToArray(_useState5, 2),
     hideController = _useState6[0],
     set_hideController = _useState6[1];
@@ -372,7 +374,6 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }
     justOneTimeSetChartOption.current = true;
     var cw = nowPDFviewInform.width,
-      ch = nowPDFviewInform.height,
       height_devided_width_ratio = nowPDFviewInform.height_devided_width_ratio;
     var saccadeArr = [];
     for (var i = 1; i < fixationData.length; i++) {
@@ -389,33 +390,62 @@ var PDFresultModal = function PDFresultModal(_ref) {
     var a = (0, _util.getMedian)(saccadeArr);
     var newval = (a / cw).toFixed(6) * 1;
     // console.log("------------------------SAF차트옵션셋팅딱한번")
-    set_chartOption({
-      heatMap: true,
-      heatMapMax: 20,
-      heatMapRadius: 40,
-      heatMapMaxOpacity: 0.7,
-      RPOG: false,
-      RPOG_size: 10,
-      RPOG_line: true,
-      FPOG: false,
-      FPOG_size: (20 * newval * 33.3333).toFixed(0),
-      FPOG_line: true,
-      FPOG_opacity: 0.3,
-      FPOG_number: false,
-      FPOG_number_size: 1.7,
-      rainBow: true,
-      GazePastRange: 0,
-      //0인경우 전체
-      ChartPastRange: 20,
-      //0인경우 전체
+    if (isPathwayPlus) {
+      set_chartOption({
+        heatMap: true,
+        heatMapMax: 20,
+        heatMapRadius: 40,
+        heatMapMaxOpacity: 0.7,
+        RPOG: false,
+        RPOG_size: 10,
+        RPOG_line: true,
+        FPOG: false,
+        FPOG_size: (20 * newval * 33.3333).toFixed(0),
+        FPOG_line: true,
+        FPOG_opacity: 0.3,
+        FPOG_number: false,
+        FPOG_number_size: 1.7,
+        rainBow: true,
+        GazePastRange: 0,
+        //0인경우 전체
+        ChartPastRange: 20,
+        //0인경우 전체
 
-      playSpeed: 1,
-      drawFPS: 30,
-      penPermit: penpermit ? penpermit * 1 : 1,
-      penColor: pencolor ? pencolor : '#FF0000',
-      penWeight: penweight ? penweight : 1 //유저가 PDF에 펜으로 글씨 쓴것.
-    });
-  }, [fixationData, nowPDFviewInform, penpermit, pencolor, penweight]);
+        playSpeed: 1,
+        drawFPS: 30,
+        penPermit: penpermit ? penpermit * 1 : 1,
+        penColor: pencolor ? pencolor : '#FF0000',
+        penWeight: penweight ? penweight : 1 //유저가 PDF에 펜으로 글씨 쓴것.
+      });
+    } else {
+      set_chartOption({
+        heatMap: false,
+        heatMapMax: 20,
+        heatMapRadius: 40,
+        heatMapMaxOpacity: 0.7,
+        RPOG: false,
+        RPOG_size: 10,
+        RPOG_line: true,
+        FPOG: true,
+        FPOG_size: (20 * newval * 33.3333).toFixed(0),
+        FPOG_line: true,
+        FPOG_opacity: 0.3,
+        FPOG_number: false,
+        FPOG_number_size: 1.7,
+        rainBow: false,
+        GazePastRange: 0,
+        //0인경우 전체
+        ChartPastRange: 20,
+        //0인경우 전체
+
+        playSpeed: 1,
+        drawFPS: 30,
+        penPermit: penpermit ? penpermit * 1 : 1,
+        penColor: pencolor ? pencolor : '#FF0000',
+        penWeight: penweight ? penweight : 1 //유저가 PDF에 펜으로 글씨 쓴것.
+      });
+    }
+  }, [fixationData, nowPDFviewInform, penpermit, pencolor, penweight, isPathwayPlus]);
   var fd_inform = (0, _react.useMemo)(function () {
     if (!fixationData) return;
     var sumfd = 0;
@@ -525,7 +555,6 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }
     var a;
     var cw = nowPDFviewInform.width,
-      ch = nowPDFviewInform.height,
       height_devided_width_ratio = nowPDFviewInform.height_devided_width_ratio;
     var heatmapref = pdfviewref.current.get_heatmapRef();
     if (heatmapref.current) {
@@ -664,7 +693,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
       return;
     }
     var canvasref = pdfviewref.current.get_canvasRef(); //heatmap 제외 캔버스
-    var heatmapref = pdfviewref.current.get_heatmapRef();
+    // let heatmapref = pdfviewref.current.get_heatmapRef();
     if (!canvasref || !canvasref.current) {
       // console.log("오잉?",canvasref);
       return;
@@ -1707,7 +1736,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
       }
     }
   };
-  var _useState43 = (0, _react.useState)(2),
+  var _useState43 = (0, _react.useState)(isPathwayPlus ? 2 : 0),
     _useState44 = _slicedToArray(_useState43, 2),
     toggleIndex = _useState44[0],
     set_toggleIndex = _useState44[1];
@@ -1813,21 +1842,29 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }, {
       Label: '순서',
       onClick: function onClick() {
-        set_toggleIndex(1);
-        chartOption.RPOG = false;
-        chartOption.heatMap = false;
-        chartOption.FPOG = true;
-        chartOption.rainBow = true;
-        resaveConfig();
+        if (isPathwayPlus) {
+          set_toggleIndex(1);
+          chartOption.RPOG = false;
+          chartOption.heatMap = false;
+          chartOption.FPOG = true;
+          chartOption.rainBow = true;
+          resaveConfig();
+        } else {
+          alert("권한이 없습니다");
+        }
       }
     }, {
       Label: '히트맵',
       onClick: function onClick() {
-        set_toggleIndex(2);
-        chartOption.RPOG = false;
-        chartOption.heatMap = true;
-        chartOption.FPOG = false;
-        resaveConfig();
+        if (isPathwayPlus) {
+          set_toggleIndex(2);
+          chartOption.RPOG = false;
+          chartOption.heatMap = true;
+          chartOption.FPOG = false;
+          resaveConfig();
+        } else {
+          alert("권한이 없습니다");
+        }
       }
     }]
   })), /*#__PURE__*/_react.default.createElement("button", {
@@ -1865,6 +1902,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, /*#__PURE__*/_react.default.createElement("g", null), /*#__PURE__*/_react.default.createElement("g", null, /*#__PURE__*/_react.default.createElement("path", {
     d: "M22.2,14.4L21,13.7c-1.3-0.8-1.3-2.7,0-3.5l1.2-0.7c1-0.6,1.3-1.8,0.7-2.7l-1-1.7c-0.6-1-1.8-1.3-2.7-0.7   L18,5.1c-1.3,0.8-3-0.2-3-1.7V2c0-1.1-0.9-2-2-2h-2C9.9,0,9,0.9,9,2v1.3c0,1.5-1.7,2.5-3,1.7L4.8,4.4c-1-0.6-2.2-0.2-2.7,0.7   l-1,1.7C0.6,7.8,0.9,9,1.8,9.6L3,10.3C4.3,11,4.3,13,3,13.7l-1.2,0.7c-1,0.6-1.3,1.8-0.7,2.7l1,1.7c0.6,1,1.8,1.3,2.7,0.7L6,18.9   c1.3-0.8,3,0.2,3,1.7V22c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2v-1.3c0-1.5,1.7-2.5,3-1.7l1.2,0.7c1,0.6,2.2,0.2,2.7-0.7l1-1.7   C23.4,16.2,23.1,15,22.2,14.4z M12,16c-2.2,0-4-1.8-4-4c0-2.2,1.8-4,4-4s4,1.8,4,4C16,14.2,14.2,16,12,16z"
   })))), chartOption && /*#__PURE__*/_react.default.createElement(_controller.ConfigController, {
+    isPathwayPlus: isPathwayPlus,
     resaveConfig: resaveConfig,
     showConfig: showConfig,
     ChartOption: chartOption,

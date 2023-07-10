@@ -23,7 +23,8 @@ var ConfigController = function ConfigController(_ref) {
     showConfig = props.showConfig,
     ChartOption = props.ChartOption,
     followEvent = props.followEvent,
-    set_followEvent = props.set_followEvent;
+    set_followEvent = props.set_followEvent,
+    isPathwayPlus = props.isPathwayPlus;
   var _useState = (0, _react.useState)(),
     _useState2 = _slicedToArray(_useState, 2),
     forceUpdate = _useState2[1];
@@ -108,8 +109,12 @@ var ConfigController = function ConfigController(_ref) {
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
     onClick: function onClick() {
-      ChartOption.heatMap = !ChartOption.heatMap;
-      resaveConfig();
+      if (isPathwayPlus) {
+        ChartOption.heatMap = !ChartOption.heatMap;
+        resaveConfig();
+      } else {
+        alert("권한이 없습니다");
+      }
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
@@ -271,8 +276,12 @@ var ConfigController = function ConfigController(_ref) {
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
     onClick: function onClick() {
-      ChartOption.rainBow = !ChartOption.rainBow;
-      resaveConfig();
+      if (isPathwayPlus) {
+        ChartOption.rainBow = !ChartOption.rainBow;
+        resaveConfig();
+      } else {
+        alert("권한이 없습니다");
+      }
     },
     "data-tip": "\uD398\uC774\uC9C0\uBCC4 \uC751\uC2DC\uC758 \uC21C\uC11C\uC5D0 \uB530\uB77C \uC751\uC2DC\uC758 \uC0C9\uC744 \uBB34\uC9C0\uAC1C\uC21C\uC11C\uB85C \uD45C\uD604"
   }, /*#__PURE__*/_react.default.createElement("div", {

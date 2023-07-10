@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { CheckSVG, ChevronLeftSVG, ChevronRightSVG } from "../svg";
 
 const ConfigController = ({ ...props }) => {
-    const { resaveConfig, showConfig, ChartOption ,followEvent,set_followEvent } = props;
+    const { resaveConfig, showConfig, ChartOption ,followEvent,set_followEvent ,isPathwayPlus} = props;
     const [, forceUpdate] = useState();
     useEffect(() => {
         forceUpdate({});
@@ -75,8 +75,14 @@ const ConfigController = ({ ...props }) => {
             <div
                 className="oneConfig"
                 onClick={() => {
-                    ChartOption.heatMap = !ChartOption.heatMap;
-                    resaveConfig();
+                    if(isPathwayPlus){
+                        ChartOption.heatMap = !ChartOption.heatMap;
+                        resaveConfig();
+                    }
+                    else{
+                        alert("권한이 없습니다")
+                    }
+
                 }}
             >
                 <div className="c_label">히트맵 보기(H)</div>
@@ -215,9 +221,14 @@ const ConfigController = ({ ...props }) => {
                 className="oneConfig"
                 onClick={() => {
           
+                    if(isPathwayPlus){
+                        ChartOption.rainBow = !ChartOption.rainBow;
+                        resaveConfig();
+                    }
+                    else{
+                        alert("권한이 없습니다");
+                    }
 
-                    ChartOption.rainBow = !ChartOption.rainBow;
-                    resaveConfig();
                 }}
                   data-tip="페이지별 응시의 순서에 따라 응시의 색을 무지개순서로 표현"
             >
