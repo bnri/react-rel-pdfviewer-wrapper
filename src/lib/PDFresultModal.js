@@ -40,7 +40,8 @@ const PDFresultModal = ({ ...props }) => {
         penpermit,
         hideRemocon,
         isPathwayPlus,
-        agencyLogoArrayBuffer
+        agencyLogoArrayBuffer,
+        agencyName
     } = props;
     const [loading,set_loading] = useState(false);
     const topRef = useRef();
@@ -1793,9 +1794,7 @@ const PDFresultModal = ({ ...props }) => {
         // const textWidth = customFont.widthOfTextAtSize(text, textSize)
         // const textHeight = customFont.heightAtSize(textSize)
         for (let key in printPDFData) {
-            if(key==='agencyName'){
-                continue;
-            }
+   
             newPage.drawText(`${key} : ` + printPDFData[key], {
                 x: textMarginLeft,
                 y: -topMargin - textMarginTop * keycount + height - keycount * fontSize,
@@ -1806,10 +1805,10 @@ const PDFresultModal = ({ ...props }) => {
             keycount++;
 
         }
-        const agencyNametextWidth = customFont.widthOfTextAtSize(printPDFData['agencyName'],25);
+        const agencyNametextWidth = customFont.widthOfTextAtSize(agencyName,25);
 
         // console.log("printPDFData['agencyName']",printPDFData['agencyName'])
-        newPage.drawText(`${printPDFData['agencyName']}`, {
+        newPage.drawText(agencyName, {
             x: width / 2 - agencyNametextWidth/2,
             y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount +3) * fontSize,
             size: 25,

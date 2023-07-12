@@ -56,7 +56,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
     penpermit = props.penpermit,
     hideRemocon = props.hideRemocon,
     isPathwayPlus = props.isPathwayPlus,
-    agencyLogoArrayBuffer = props.agencyLogoArrayBuffer;
+    agencyLogoArrayBuffer = props.agencyLogoArrayBuffer,
+    agencyName = props.agencyName;
   var _useState = (0, _react.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     loading = _useState2[0],
@@ -1668,32 +1669,18 @@ var PDFresultModal = function PDFresultModal(_ref) {
             textMarginLeft = 15;
             keycount = 1; // const textWidth = customFont.widthOfTextAtSize(text, textSize)
             // const textHeight = customFont.heightAtSize(textSize)
-            _context3.t0 = _regeneratorRuntime().keys(printPDFData);
-          case 91:
-            if ((_context3.t1 = _context3.t0()).done) {
-              _context3.next = 99;
-              break;
+            for (key in printPDFData) {
+              newPage.drawText("".concat(key, " : ") + printPDFData[key], {
+                x: textMarginLeft,
+                y: -topMargin - textMarginTop * keycount + height - keycount * fontSize,
+                size: fontSize,
+                font: customFont,
+                color: (0, _pdfLib.rgb)(0, 0, 0)
+              });
+              keycount++;
             }
-            key = _context3.t1.value;
-            if (!(key === 'agencyName')) {
-              _context3.next = 95;
-              break;
-            }
-            return _context3.abrupt("continue", 91);
-          case 95:
-            newPage.drawText("".concat(key, " : ") + printPDFData[key], {
-              x: textMarginLeft,
-              y: -topMargin - textMarginTop * keycount + height - keycount * fontSize,
-              size: fontSize,
-              font: customFont,
-              color: (0, _pdfLib.rgb)(0, 0, 0)
-            });
-            keycount++;
-            _context3.next = 91;
-            break;
-          case 99:
-            agencyNametextWidth = customFont.widthOfTextAtSize(printPDFData['agencyName'], 25); // console.log("printPDFData['agencyName']",printPDFData['agencyName'])
-            newPage.drawText("".concat(printPDFData['agencyName']), {
+            agencyNametextWidth = customFont.widthOfTextAtSize(agencyName, 25); // console.log("printPDFData['agencyName']",printPDFData['agencyName'])
+            newPage.drawText(agencyName, {
               x: width / 2 - agencyNametextWidth / 2,
               y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount + 3) * fontSize,
               size: 25,
@@ -1709,11 +1696,11 @@ var PDFresultModal = function PDFresultModal(_ref) {
             /////////////PDF 맨앞페이지 생성끝////////
 
             /////////////저장 다운로드/////////////
-            _context3.next = 104;
+            _context3.next = 96;
             return pdfDoc.save({
               updateFieldAppearances: false
             });
-          case 104:
+          case 96:
             pdfBytes = _context3.sent;
             blob = new Blob([pdfBytes], {
               type: 'application/pdf'
@@ -1729,7 +1716,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
             setTimeout(function () {
               return URL.revokeObjectURL(link.href);
             }, 7000);
-          case 115:
+          case 107:
           case "end":
             return _context3.stop();
         }

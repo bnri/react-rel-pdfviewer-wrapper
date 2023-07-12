@@ -41,10 +41,8 @@ function App() {
           //모달사이즈를 변경가능
           specialWidth={'100%'}
           specialHeight={'100%'}
-
-
+          agencyName={'테스트학원이름'}
           printPDFData={{
-            agencyName: '테스트학원이름',
             testeeClass: 'xx반',
             testeeName: '홍길동',
             testeeID: '가나다라마바사',
