@@ -12,6 +12,7 @@ var _pdfLib = require("pdf-lib");
 var _fontkit = _interopRequireDefault(require("@pdf-lib/fontkit"));
 var _reactTooltip = _interopRequireDefault(require("react-tooltip"));
 var _readereyelogo = _interopRequireDefault(require("./img/readereyelogo.png"));
+var _reactSpinnersCss = require("react-spinners-css");
 var _JejuMyeongjo = _interopRequireDefault(require("./font/JejuMyeongjo.ttf"));
 var _util = require("./util");
 var _controller = require("./controller");
@@ -56,13 +57,17 @@ var PDFresultModal = function PDFresultModal(_ref) {
     hideRemocon = props.hideRemocon,
     isPathwayPlus = props.isPathwayPlus,
     agencyLogoArrayBuffer = props.agencyLogoArrayBuffer;
+  var _useState = (0, _react.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    loading = _useState2[0],
+    set_loading = _useState2[1];
   var topRef = (0, _react.useRef)();
   var pdfviewref = (0, _react.useRef)();
   // const [nowPage, set_nowPage] = useState(1);
-  var _useState = (0, _react.useState)(data.gazeData[data.gazeData.length - 1].relTime),
-    _useState2 = _slicedToArray(_useState, 2),
-    nowTime = _useState2[0],
-    set_nowTime = _useState2[1];
+  var _useState3 = (0, _react.useState)(data.gazeData[data.gazeData.length - 1].relTime),
+    _useState4 = _slicedToArray(_useState3, 2),
+    nowTime = _useState4[0],
+    set_nowTime = _useState4[1];
   var endTime = (0, _react.useMemo)(function () {
     var lastTime = data.gazeData[data.gazeData.length - 1].relTime;
     // set_nowTime(lastTime);
@@ -71,10 +76,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
   var originViewPercent = (0, _react.useMemo)(function () {
     return viewpercent;
   }, [viewpercent]);
-  var _useState3 = (0, _react.useState)(viewpercent),
-    _useState4 = _slicedToArray(_useState3, 2),
-    tempViewPercent = _useState4[0],
-    set_tempViewPercent = _useState4[1];
+  var _useState5 = (0, _react.useState)(viewpercent),
+    _useState6 = _slicedToArray(_useState5, 2),
+    tempViewPercent = _useState6[0],
+    set_tempViewPercent = _useState6[1];
   var POG_swapcanvasRef = (0, _react.useRef)();
   var FPOG_swapCanvasRef = (0, _react.useRef)();
   var FPOGcanvasRef_last = (0, _react.useRef)();
@@ -82,33 +87,33 @@ var PDFresultModal = function PDFresultModal(_ref) {
   var tempIndexRef = (0, _react.useRef)();
 
   //리모콘
-  var _useState5 = (0, _react.useState)(hideRemocon !== null ? hideRemocon : false),
-    _useState6 = _slicedToArray(_useState5, 2),
-    hideController = _useState6[0],
-    set_hideController = _useState6[1];
+  var _useState7 = (0, _react.useState)(hideRemocon !== null ? hideRemocon : false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    hideController = _useState8[0],
+    set_hideController = _useState8[1];
 
   //차트 옵션. 톱니바퀴
-  var _useState7 = (0, _react.useState)(false),
-    _useState8 = _slicedToArray(_useState7, 2),
-    showConfig = _useState8[0],
-    set_showConfig = _useState8[1];
-  var _useState9 = (0, _react.useState)(null),
+  var _useState9 = (0, _react.useState)(false),
     _useState10 = _slicedToArray(_useState9, 2),
-    chartOption = _useState10[0],
-    set_chartOption = _useState10[1];
+    showConfig = _useState10[0],
+    set_showConfig = _useState10[1];
+  var _useState11 = (0, _react.useState)(null),
+    _useState12 = _slicedToArray(_useState11, 2),
+    chartOption = _useState12[0],
+    set_chartOption = _useState12[1];
   var resaveConfig = function resaveConfig() {
     set_chartOption(JSON.parse(JSON.stringify(chartOption)));
   };
 
   //문서내의 temp offset
-  var _useState11 = (0, _react.useState)("0.00"),
-    _useState12 = _slicedToArray(_useState11, 2),
-    offsetX = _useState12[0],
-    set_offsetX = _useState12[1];
   var _useState13 = (0, _react.useState)("0.00"),
     _useState14 = _slicedToArray(_useState13, 2),
-    offsetY = _useState14[0],
-    set_offsetY = _useState14[1];
+    offsetX = _useState14[0],
+    set_offsetX = _useState14[1];
+  var _useState15 = (0, _react.useState)("0.00"),
+    _useState16 = _slicedToArray(_useState15, 2),
+    offsetY = _useState16[0],
+    set_offsetY = _useState16[1];
   (0, _react.useEffect)(function () {
     tempIndexRef.current = {
       lastPageIndex: 0,
@@ -133,21 +138,21 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, []);
 
   //PDF 사이즈 필요함
-  var _useState15 = (0, _react.useState)(null),
-    _useState16 = _slicedToArray(_useState15, 2),
-    nowPDFviewInform = _useState16[0],
-    set_nowPDFviewInform = _useState16[1];
+  var _useState17 = (0, _react.useState)(null),
+    _useState18 = _slicedToArray(_useState17, 2),
+    nowPDFviewInform = _useState18[0],
+    set_nowPDFviewInform = _useState18[1];
 
   //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
-  var _useState17 = (0, _react.useState)(1),
-    _useState18 = _slicedToArray(_useState17, 1),
-    fminx = _useState18[0];
   var _useState19 = (0, _react.useState)(1),
     _useState20 = _slicedToArray(_useState19, 1),
-    fminy = _useState20[0];
-  var _useState21 = (0, _react.useState)(3),
+    fminx = _useState20[0];
+  var _useState21 = (0, _react.useState)(1),
     _useState22 = _slicedToArray(_useState21, 1),
-    minFixationCount = _useState22[0];
+    fminy = _useState22[0];
+  var _useState23 = (0, _react.useState)(3),
+    _useState24 = _slicedToArray(_useState23, 1),
+    minFixationCount = _useState24[0];
   //fixationData는 darw시에도 사용됨.
   var fixationData = (0, _react.useMemo)(function () {
     var fa = [];
@@ -468,43 +473,43 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [fixationData, minFixationCount, endTime]);
 
   //리사이즈시 스케일변수들
-  var _useState23 = (0, _react.useState)(0.5),
-    _useState24 = _slicedToArray(_useState23, 2),
-    innerFrameScale = _useState24[0],
-    set_innerFrameScale = _useState24[1];
-  var _useState25 = (0, _react.useState)(0),
+  var _useState25 = (0, _react.useState)(0.5),
     _useState26 = _slicedToArray(_useState25, 2),
-    innerFrameTop = _useState26[0],
-    set_innerFrameTop = _useState26[1];
+    innerFrameScale = _useState26[0],
+    set_innerFrameScale = _useState26[1];
   var _useState27 = (0, _react.useState)(0),
     _useState28 = _slicedToArray(_useState27, 2),
-    innerFrameLeft = _useState28[0],
-    set_innerFrameLeft = _useState28[1];
+    innerFrameTop = _useState28[0],
+    set_innerFrameTop = _useState28[1];
+  var _useState29 = (0, _react.useState)(0),
+    _useState30 = _slicedToArray(_useState29, 2),
+    innerFrameLeft = _useState30[0],
+    set_innerFrameLeft = _useState30[1];
 
   //재생과 멈춤.
-  var _useState29 = (0, _react.useState)(false),
-    _useState30 = _slicedToArray(_useState29, 2),
-    isPlaying = _useState30[0],
-    set_isPlaying = _useState30[1];
+  var _useState31 = (0, _react.useState)(false),
+    _useState32 = _slicedToArray(_useState31, 2),
+    isPlaying = _useState32[0],
+    set_isPlaying = _useState32[1];
 
   //재생시 스크롤 따라갈것인가 옵션
-  var _useState31 = (0, _react.useState)(true),
-    _useState32 = _slicedToArray(_useState31, 2),
-    followEvent = _useState32[0],
-    set_followEvent = _useState32[1];
+  var _useState33 = (0, _react.useState)(true),
+    _useState34 = _slicedToArray(_useState33, 2),
+    followEvent = _useState34[0],
+    set_followEvent = _useState34[1];
 
   //전체화면
-  var _useState33 = (0, _react.useState)(false),
-    _useState34 = _slicedToArray(_useState33, 2),
-    isfullscreen = _useState34[0],
-    set_isfullscreen = _useState34[1];
+  var _useState35 = (0, _react.useState)(false),
+    _useState36 = _slicedToArray(_useState35, 2),
+    isfullscreen = _useState36[0],
+    set_isfullscreen = _useState36[1];
 
   //히트맵 인스턴스
 
-  var _useState35 = (0, _react.useState)(),
-    _useState36 = _slicedToArray(_useState35, 2),
-    HI = _useState36[0],
-    set_HI = _useState36[1];
+  var _useState37 = (0, _react.useState)(),
+    _useState38 = _slicedToArray(_useState37, 2),
+    HI = _useState38[0],
+    set_HI = _useState38[1];
 
   //캔버스 래프들 초기화
   (0, _react.useEffect)(function () {
@@ -1202,10 +1207,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [handleDraw]);
 
   //PDF writing 할때 쓰는것들임. 분리 필요
-  var _useState37 = (0, _react.useState)(null),
-    _useState38 = _slicedToArray(_useState37, 2),
-    jejuFontArrayBuffer = _useState38[0],
-    set_jejuFontArrayBuffer = _useState38[1];
+  var _useState39 = (0, _react.useState)(null),
+    _useState40 = _slicedToArray(_useState39, 2),
+    jejuFontArrayBuffer = _useState40[0],
+    set_jejuFontArrayBuffer = _useState40[1];
   (0, _react.useEffect)(function () {
     (0, _util.getFileAsArrayBuffer)(_JejuMyeongjo.default).then(function (res_arrbuffer) {
       set_jejuFontArrayBuffer(res_arrbuffer);
@@ -1213,10 +1218,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, []);
 
   //인쇄할 PDF데이터 path값에 따라서 PDFarraybuffer 보관
-  var _useState39 = (0, _react.useState)(null),
-    _useState40 = _slicedToArray(_useState39, 2),
-    pdfArrayBuffer = _useState40[0],
-    set_pdfArrayBuffer = _useState40[1];
+  var _useState41 = (0, _react.useState)(null),
+    _useState42 = _slicedToArray(_useState41, 2),
+    pdfArrayBuffer = _useState42[0],
+    set_pdfArrayBuffer = _useState42[1];
   (0, _react.useEffect)(function () {
     if (!path) return;
     fetch(path).then( /*#__PURE__*/function () {
@@ -1253,10 +1258,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [path]);
 
   //인쇄할 리더스아이로고 데이터
-  var _useState41 = (0, _react.useState)(null),
-    _useState42 = _slicedToArray(_useState41, 2),
-    readersEyeLogoArrayBuffer = _useState42[0],
-    set_readersEyeLogoArrayBuffer = _useState42[1];
+  var _useState43 = (0, _react.useState)(null),
+    _useState44 = _slicedToArray(_useState43, 2),
+    readersEyeLogoArrayBuffer = _useState44[0],
+    set_readersEyeLogoArrayBuffer = _useState44[1];
   (0, _react.useEffect)(function () {
     fetch(_readereyelogo.default).then(function (r) {
       return r.arrayBuffer();
@@ -1280,7 +1285,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   //pdf 인쇄
   var handleTryPrint = /*#__PURE__*/function () {
     var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, pngLogoImageBytes, pngLogoImage, aimHeight, aimScale, pngDims, href, heatmapcanvas, drawHeatmapTemp, i, temppage, imageArrayBufferHeat, heatmapBuffer, pngImageHeat, pw, pngDimsHeat, prevx, prevy, osx, osy, gazeData, size, r, _i5, d, fr, _i6, f, fixationColor, fsize, startdrawX, startdrawY, _i7, _d2, pageNum, draw, rgbobj, newPage, fontSize, title, titleFontSize, customFont, textWidth, topMargin, textMarginTop, textMarginLeft, keycount, key, pdfBytes, blob, blobURL, link;
+      var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, pngLogoImageBytes, pngLogoImage, aimHeight, aimScale, pngDims, href, heatmapcanvas, drawHeatmapTemp, i, temppage, imageArrayBufferHeat, heatmapBuffer, pngImageHeat, pw, pngDimsHeat, prevx, prevy, osx, osy, gazeData, size, r, _i5, d, fr, _i6, f, fixationColor, fsize, startdrawX, startdrawY, _i7, _d2, pageNum, draw, rgbobj, newPage, fontSize, title, titleFontSize, customFont, textWidth, topMargin, textMarginTop, textMarginLeft, keycount, key, agencyNametextWidth, pdfBytes, blob, blobURL, link;
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
@@ -1290,14 +1295,18 @@ var PDFresultModal = function PDFresultModal(_ref) {
             }
             return _context3.abrupt("return");
           case 2:
+            set_loading(true);
+            _context3.next = 5;
+            return (0, _util.mydelay)(100);
+          case 5:
             //폰트파일 할당
             fontBytes = jejuFontArrayBuffer; // let pdfDoc;
             existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
-            _context3.next = 6;
+            _context3.next = 9;
             return _pdfLib.PDFDocument.load(existingPdfBytes, {
               ignoreEncryption: true
             });
-          case 6:
+          case 9:
             pdfDoc = _context3.sent;
             // console.log("registerFontkit");
             pdfDoc.registerFontkit(_fontkit.default);
@@ -1311,12 +1320,13 @@ var PDFresultModal = function PDFresultModal(_ref) {
             // const pageIndices = pdfDoc.getPageIndices();
             // console.log("pageIndices",pageIndices);
             if (!pdfDoc.isEncrypted) {
-              _context3.next = 11;
+              _context3.next = 15;
               break;
             }
+            set_loading(false);
             alert("수정금지된 PDF 파일이라 다운로드할 수 없습니다. 수정금지 해제 후 재등록해 주시기 바랍니다. 수정금지 해지하기 (https://smallpdf.com/unlock-pdf).");
             return _context3.abrupt("return");
-          case 11:
+          case 15:
             /////PDF 오리지날 페이지의 사이즈 구하기
             pages = pdfDoc.getPages();
             firstPage = pages[0]; // Get the width and height of the first page
@@ -1325,9 +1335,9 @@ var PDFresultModal = function PDFresultModal(_ref) {
             ch = height; //base64를 Bytes 로 변환
             ////////////////////////////////////////////////////////페이지마다 리더스아이로고 박기.
             pngLogoImageBytes = agencyLogoArrayBuffer ? agencyLogoArrayBuffer : readersEyeLogoArrayBuffer;
-            _context3.next = 19;
+            _context3.next = 23;
             return pdfDoc.embedPng(pngLogoImageBytes);
-          case 19:
+          case 23:
             pngLogoImage = _context3.sent;
             // console.dir(pngLogoImage.width);
             // console.dir(pngLogoImage.height);
@@ -1346,18 +1356,18 @@ var PDFresultModal = function PDFresultModal(_ref) {
             // }
             ////////////////////////////////////////////////////////
             if (!chartOption.heatMap) {
-              _context3.next = 50;
+              _context3.next = 54;
               break;
             }
             //set_pageNumber
             href = pdfviewref.current.get_heatmapRef(); // console.log("href", href);
             if (!href.current) {
-              _context3.next = 50;
+              _context3.next = 54;
               break;
             }
             heatmapcanvas = (0, _util.findCanvasInChildren)(href.current); // console.log("canvas",canvas)
             if (!heatmapcanvas) {
-              _context3.next = 50;
+              _context3.next = 54;
               break;
             }
             drawHeatmapTemp = function drawHeatmapTemp(nowPage) {
@@ -1420,18 +1430,18 @@ var PDFresultModal = function PDFresultModal(_ref) {
               });
             }; //반복문으로 빼내야함.
             i = 0;
-          case 32:
+          case 36:
             if (!(i < pages.length)) {
-              _context3.next = 46;
+              _context3.next = 50;
               break;
             }
             temppage = i + 1;
             drawHeatmapTemp(temppage);
             imageArrayBufferHeat = (0, _util.getCanvasImagePngBuffer)(heatmapcanvas);
             heatmapBuffer = imageArrayBufferHeat;
-            _context3.next = 39;
+            _context3.next = 43;
             return pdfDoc.embedPng(heatmapBuffer);
-          case 39:
+          case 43:
             pngImageHeat = _context3.sent;
             //오리지날 이미지
             // console.log("pngImageHeat",pngImageHeat)
@@ -1447,17 +1457,17 @@ var PDFresultModal = function PDFresultModal(_ref) {
               width: pngDimsHeat.width,
               height: pngDimsHeat.height
             });
-          case 43:
+          case 47:
             i++;
-            _context3.next = 32;
+            _context3.next = 36;
             break;
-          case 46:
+          case 50:
             tempIndexRef.current.needClear = true;
             resaveConfig();
             // console.log("했어");
-            _context3.next = 50;
+            _context3.next = 54;
             break;
-          case 50:
+          case 54:
             //페이지마다 시선데이터 기록.
             prevx = null;
             prevy = null;
@@ -1564,20 +1574,20 @@ var PDFresultModal = function PDFresultModal(_ref) {
             }
             //draw pencil
             _i7 = 0;
-          case 63:
+          case 67:
             if (!(chartOption.penPermit && _i7 < gazeData.length)) {
-              _context3.next = 73;
+              _context3.next = 77;
               break;
             }
             _d2 = gazeData[_i7];
             pageNum = _d2.pageNum;
             draw = gazeData[_i7].draw;
             if (draw) {
-              _context3.next = 69;
+              _context3.next = 73;
               break;
             }
-            return _context3.abrupt("continue", 70);
-          case 69:
+            return _context3.abrupt("continue", 74);
+          case 73:
             // console.log("t",t);
 
             if (_d2.relTime * 1 <= nowTime * 1) {
@@ -1630,20 +1640,20 @@ var PDFresultModal = function PDFresultModal(_ref) {
                 startdrawY = null;
               }
             }
-          case 70:
+          case 74:
             _i7++;
-            _context3.next = 63;
+            _context3.next = 67;
             break;
-          case 73:
+          case 77:
             //PDF 맨앞 표지 만들기
             //////새로운패이지 생성
             newPage = pdfDoc.insertPage(0, [width, height]);
             fontSize = 15;
             title = "자유글 읽기 진단 결과";
             titleFontSize = 25;
-            _context3.next = 79;
+            _context3.next = 83;
             return pdfDoc.embedFont(fontBytes);
-          case 79:
+          case 83:
             customFont = _context3.sent;
             textWidth = customFont.widthOfTextAtSize(title, titleFontSize);
             newPage.drawText(title, {
@@ -1658,30 +1668,52 @@ var PDFresultModal = function PDFresultModal(_ref) {
             textMarginLeft = 15;
             keycount = 1; // const textWidth = customFont.widthOfTextAtSize(text, textSize)
             // const textHeight = customFont.heightAtSize(textSize)
-            for (key in printPDFData) {
-              newPage.drawText("".concat(key, " : ") + printPDFData[key], {
-                x: textMarginLeft,
-                y: -topMargin - textMarginTop * keycount + height - keycount * fontSize,
-                size: fontSize,
-                font: customFont,
-                color: (0, _pdfLib.rgb)(0, 0, 0)
-              });
-              keycount++;
+            _context3.t0 = _regeneratorRuntime().keys(printPDFData);
+          case 91:
+            if ((_context3.t1 = _context3.t0()).done) {
+              _context3.next = 99;
+              break;
             }
+            key = _context3.t1.value;
+            if (!(key === 'agencyName')) {
+              _context3.next = 95;
+              break;
+            }
+            return _context3.abrupt("continue", 91);
+          case 95:
+            newPage.drawText("".concat(key, " : ") + printPDFData[key], {
+              x: textMarginLeft,
+              y: -topMargin - textMarginTop * keycount + height - keycount * fontSize,
+              size: fontSize,
+              font: customFont,
+              color: (0, _pdfLib.rgb)(0, 0, 0)
+            });
+            keycount++;
+            _context3.next = 91;
+            break;
+          case 99:
+            agencyNametextWidth = customFont.widthOfTextAtSize(printPDFData['agencyName'], 25); // console.log("printPDFData['agencyName']",printPDFData['agencyName'])
+            newPage.drawText("".concat(printPDFData['agencyName']), {
+              x: width / 2 - agencyNametextWidth / 2,
+              y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount + 3) * fontSize,
+              size: 25,
+              font: customFont,
+              color: (0, _pdfLib.rgb)(0, 0, 0)
+            });
             newPage.drawImage(pngLogoImage, {
               x: width / 2 - pngDims.width / 2,
-              y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount + 3) * fontSize,
+              y: -textMarginTop * (keycount + 3) + height * 3 / 8 - keycount * fontSize,
               width: pngDims.width,
               height: pngDims.height
             });
             /////////////PDF 맨앞페이지 생성끝////////
 
             /////////////저장 다운로드/////////////
-            _context3.next = 90;
+            _context3.next = 104;
             return pdfDoc.save({
               updateFieldAppearances: false
             });
-          case 90:
+          case 104:
             pdfBytes = _context3.sent;
             blob = new Blob([pdfBytes], {
               type: 'application/pdf'
@@ -1692,11 +1724,12 @@ var PDFresultModal = function PDFresultModal(_ref) {
             link.download = downloadFileName;
             document.body.append(link);
             link.click();
+            set_loading(false);
             link.remove();
             setTimeout(function () {
               return URL.revokeObjectURL(link.href);
             }, 7000);
-          case 100:
+          case 115:
           case "end":
             return _context3.stop();
         }
@@ -1743,10 +1776,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
       }
     }
   };
-  var _useState43 = (0, _react.useState)(isPathwayPlus ? 2 : 0),
-    _useState44 = _slicedToArray(_useState43, 2),
-    toggleIndex = _useState44[0],
-    set_toggleIndex = _useState44[1];
+  var _useState45 = (0, _react.useState)(isPathwayPlus ? 2 : 0),
+    _useState46 = _slicedToArray(_useState45, 2),
+    toggleIndex = _useState46[0],
+    set_toggleIndex = _useState46[1];
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "PDFresultModal",
     onClick: function onClick() {
@@ -1943,7 +1976,23 @@ var PDFresultModal = function PDFresultModal(_ref) {
     d: "m 24,24 -4,0 0,2 L 26,26 l 0,-6 -2,0 0,4 0,0 z"
   })), /*#__PURE__*/_react.default.createElement("g", null, /*#__PURE__*/_react.default.createElement("path", {
     d: "M 12,20 10,20 10,26 l 6,0 0,-2 -4,0 0,-4 0,0 z"
-  })))))))))), /*#__PURE__*/_react.default.createElement(_reactTooltip.default, {
+  })))))))))), loading === true && /*#__PURE__*/_react.default.createElement("div", {
+    id: "loadingWrapper",
+    style: {
+      position: "fixed",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(0,0,0,0.7)",
+      top: 0,
+      left: 0,
+      zIndex: "20000"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_reactSpinnersCss.Ring, {
+    color: "#145894"
+  })), /*#__PURE__*/_react.default.createElement(_reactTooltip.default, {
     className: "highz",
     borderClass: "custom-tooltip-design",
     effect: "solid"

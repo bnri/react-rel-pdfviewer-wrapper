@@ -16,6 +16,13 @@ export const  getCanvasImageArrayBuffer=(canvas)=> {
     height
   };
 }
+export const mydelay =(ms)=>{
+  return new Promise(function(resolve){
+    setTimeout(function(){
+      resolve(true);
+    },ms)
+  })
+}
 
 export const getCanvasImagePngBuffer=(canvas)=> {
   const dataUrl = canvas.toDataURL('image/png'); // 캔버스를 PNG 데이터 URL로 변환

@@ -6,10 +6,10 @@ import { PDFDocument, rgb } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit'
 import ReactTooltip from 'react-tooltip';
 import readerseyelogo from "./img/readereyelogo.png";
-
+import { Ring } from "react-spinners-css";
 import jeju from './font/JejuMyeongjo.ttf';
 import {
-    closeFullscreen, findCanvasInChildren
+    closeFullscreen, mydelay, findCanvasInChildren
     // , getCanvasImageArrayBuffer
     , getCanvasImagePngBuffer, getFileAsArrayBuffer, getMedian, hexToRgb, openFullScreen
 } from "./util";
@@ -42,7 +42,7 @@ const PDFresultModal = ({ ...props }) => {
         isPathwayPlus,
         agencyLogoArrayBuffer
     } = props;
-
+    const [loading,set_loading] = useState(false);
     const topRef = useRef();
     const pdfviewref = useRef();
     // const [nowPage, set_nowPage] = useState(1);
@@ -1391,6 +1391,9 @@ const PDFresultModal = ({ ...props }) => {
             return;
         }
 
+        set_loading(true);
+        
+        await mydelay(100);
 
 
         //폰트파일 할당
@@ -1417,6 +1420,7 @@ const PDFresultModal = ({ ...props }) => {
         // const pageIndices = pdfDoc.getPageIndices();
         // console.log("pageIndices",pageIndices);
         if (pdfDoc.isEncrypted) {
+            set_loading(false);
             alert("수정금지된 PDF 파일이라 다운로드할 수 없습니다. 수정금지 해제 후 재등록해 주시기 바랍니다. 수정금지 해지하기 (https://smallpdf.com/unlock-pdf).");
             return;
         }
@@ -1789,6 +1793,9 @@ const PDFresultModal = ({ ...props }) => {
         // const textWidth = customFont.widthOfTextAtSize(text, textSize)
         // const textHeight = customFont.heightAtSize(textSize)
         for (let key in printPDFData) {
+            if(key==='agencyName'){
+                continue;
+            }
             newPage.drawText(`${key} : ` + printPDFData[key], {
                 x: textMarginLeft,
                 y: -topMargin - textMarginTop * keycount + height - keycount * fontSize,
@@ -1799,9 +1806,20 @@ const PDFresultModal = ({ ...props }) => {
             keycount++;
 
         }
+        const agencyNametextWidth = customFont.widthOfTextAtSize(printPDFData['agencyName'],25);
+
+        // console.log("printPDFData['agencyName']",printPDFData['agencyName'])
+        newPage.drawText(`${printPDFData['agencyName']}`, {
+            x: width / 2 - agencyNametextWidth/2,
+            y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount +3) * fontSize,
+            size: 25,
+            font: customFont,
+            color: rgb(0, 0, 0),
+        });
+
         newPage.drawImage(pngLogoImage, {
-            x: width / 2 - pngDims.width / 2,
-            y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount + 3) * fontSize,
+            x: width / 2 - pngDims.width / 2 ,
+            y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount ) * fontSize,
             width: pngDims.width,
             height: pngDims.height,
         });
@@ -1817,6 +1835,7 @@ const PDFresultModal = ({ ...props }) => {
         link.download = downloadFileName;
         document.body.append(link);
         link.click();
+        set_loading(false);
         link.remove();
         setTimeout(() => URL.revokeObjectURL(link.href), 7000);
     }
@@ -2077,7 +2096,25 @@ const PDFresultModal = ({ ...props }) => {
             </div>
 
         </div>
-
+        {loading === true && (
+              <div
+                id="loadingWrapper"
+                style={{
+                  position: "fixed",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "rgba(0,0,0,0.7)",
+                  top: 0,
+                  left: 0,
+                  zIndex: "20000",
+                }}
+              >
+                <Ring color="#145894" />
+              </div>
+            )}
         <ReactTooltip className="highz"
             borderClass="custom-tooltip-design"
 

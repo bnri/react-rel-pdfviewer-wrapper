@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.openFullScreen = exports.hexToRgb = exports.getMedian = exports.getFileAsArrayBuffer = exports.getCanvasImagePngBuffer = exports.getCanvasImageArrayBuffer = exports.findCanvasInChildren = exports.closeFullscreen = void 0;
+exports.openFullScreen = exports.mydelay = exports.hexToRgb = exports.getMedian = exports.getFileAsArrayBuffer = exports.getCanvasImagePngBuffer = exports.getCanvasImageArrayBuffer = exports.findCanvasInChildren = exports.closeFullscreen = void 0;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -31,6 +31,14 @@ var getCanvasImageArrayBuffer = function getCanvasImageArrayBuffer(canvas) {
   };
 };
 exports.getCanvasImageArrayBuffer = getCanvasImageArrayBuffer;
+var mydelay = function mydelay(ms) {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      resolve(true);
+    }, ms);
+  });
+};
+exports.mydelay = mydelay;
 var getCanvasImagePngBuffer = function getCanvasImagePngBuffer(canvas) {
   var dataUrl = canvas.toDataURL('image/png'); // 캔버스를 PNG 데이터 URL로 변환
   var base64Data = dataUrl.split(',')[1]; // 데이터 URL에서 base64 인코딩된 이미지 데이터 부분 추출

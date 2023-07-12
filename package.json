@@ -18,6 +18,7 @@
     "react-color": "^2.19.3",
     "react-draggable": "^4.4.3",
     "react-rel-pdfviewer": "^1.0.39",
+    "react-spinners-css": "^2.0.1",
     "react-tooltip": "^4.4.2"
   },
   "scripts": {
