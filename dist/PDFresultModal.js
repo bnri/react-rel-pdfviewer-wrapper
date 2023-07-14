@@ -1296,18 +1296,25 @@ var PDFresultModal = function PDFresultModal(_ref) {
             }
             return _context3.abrupt("return");
           case 2:
-            set_loading(true);
-            _context3.next = 5;
-            return (0, _util.mydelay)(100);
+            if (!(!jejuFontArrayBuffer || !pdfArrayBuffer || !readersEyeLogoArrayBuffer)) {
+              _context3.next = 5;
+              break;
+            }
+            alert("준비중입니다 잠시만 기다려주세요");
+            return _context3.abrupt("return");
           case 5:
+            set_loading(true);
+            _context3.next = 8;
+            return (0, _util.mydelay)(100);
+          case 8:
             //폰트파일 할당
             fontBytes = jejuFontArrayBuffer; // let pdfDoc;
             existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
-            _context3.next = 9;
+            _context3.next = 12;
             return _pdfLib.PDFDocument.load(existingPdfBytes, {
               ignoreEncryption: true
             });
-          case 9:
+          case 12:
             pdfDoc = _context3.sent;
             // console.log("registerFontkit");
             pdfDoc.registerFontkit(_fontkit.default);
@@ -1321,13 +1328,13 @@ var PDFresultModal = function PDFresultModal(_ref) {
             // const pageIndices = pdfDoc.getPageIndices();
             // console.log("pageIndices",pageIndices);
             if (!pdfDoc.isEncrypted) {
-              _context3.next = 15;
+              _context3.next = 18;
               break;
             }
             set_loading(false);
             alert("수정금지된 PDF 파일이라 다운로드할 수 없습니다. 수정금지 해제 후 재등록해 주시기 바랍니다. 수정금지 해지하기 (https://smallpdf.com/unlock-pdf).");
             return _context3.abrupt("return");
-          case 15:
+          case 18:
             /////PDF 오리지날 페이지의 사이즈 구하기
             pages = pdfDoc.getPages();
             firstPage = pages[0]; // Get the width and height of the first page
@@ -1336,9 +1343,9 @@ var PDFresultModal = function PDFresultModal(_ref) {
             ch = height; //base64를 Bytes 로 변환
             ////////////////////////////////////////////////////////페이지마다 리더스아이로고 박기.
             pngLogoImageBytes = agencyLogoArrayBuffer ? agencyLogoArrayBuffer : readersEyeLogoArrayBuffer;
-            _context3.next = 23;
+            _context3.next = 26;
             return pdfDoc.embedPng(pngLogoImageBytes);
-          case 23:
+          case 26:
             pngLogoImage = _context3.sent;
             // console.dir(pngLogoImage.width);
             // console.dir(pngLogoImage.height);
@@ -1357,18 +1364,18 @@ var PDFresultModal = function PDFresultModal(_ref) {
             // }
             ////////////////////////////////////////////////////////
             if (!chartOption.heatMap) {
-              _context3.next = 54;
+              _context3.next = 57;
               break;
             }
             //set_pageNumber
             href = pdfviewref.current.get_heatmapRef(); // console.log("href", href);
             if (!href.current) {
-              _context3.next = 54;
+              _context3.next = 57;
               break;
             }
             heatmapcanvas = (0, _util.findCanvasInChildren)(href.current); // console.log("canvas",canvas)
             if (!heatmapcanvas) {
-              _context3.next = 54;
+              _context3.next = 57;
               break;
             }
             drawHeatmapTemp = function drawHeatmapTemp(nowPage) {
@@ -1431,18 +1438,18 @@ var PDFresultModal = function PDFresultModal(_ref) {
               });
             }; //반복문으로 빼내야함.
             i = 0;
-          case 36:
+          case 39:
             if (!(i < pages.length)) {
-              _context3.next = 50;
+              _context3.next = 53;
               break;
             }
             temppage = i + 1;
             drawHeatmapTemp(temppage);
             imageArrayBufferHeat = (0, _util.getCanvasImagePngBuffer)(heatmapcanvas);
             heatmapBuffer = imageArrayBufferHeat;
-            _context3.next = 43;
+            _context3.next = 46;
             return pdfDoc.embedPng(heatmapBuffer);
-          case 43:
+          case 46:
             pngImageHeat = _context3.sent;
             //오리지날 이미지
             // console.log("pngImageHeat",pngImageHeat)
@@ -1458,17 +1465,17 @@ var PDFresultModal = function PDFresultModal(_ref) {
               width: pngDimsHeat.width,
               height: pngDimsHeat.height
             });
-          case 47:
-            i++;
-            _context3.next = 36;
-            break;
           case 50:
+            i++;
+            _context3.next = 39;
+            break;
+          case 53:
             tempIndexRef.current.needClear = true;
             resaveConfig();
             // console.log("했어");
-            _context3.next = 54;
+            _context3.next = 57;
             break;
-          case 54:
+          case 57:
             //페이지마다 시선데이터 기록.
             prevx = null;
             prevy = null;
@@ -1575,20 +1582,20 @@ var PDFresultModal = function PDFresultModal(_ref) {
             }
             //draw pencil
             _i7 = 0;
-          case 67:
+          case 70:
             if (!(chartOption.penPermit && _i7 < gazeData.length)) {
-              _context3.next = 77;
+              _context3.next = 80;
               break;
             }
             _d2 = gazeData[_i7];
             pageNum = _d2.pageNum;
             draw = gazeData[_i7].draw;
             if (draw) {
-              _context3.next = 73;
+              _context3.next = 76;
               break;
             }
-            return _context3.abrupt("continue", 74);
-          case 73:
+            return _context3.abrupt("continue", 77);
+          case 76:
             // console.log("t",t);
 
             if (_d2.relTime * 1 <= nowTime * 1) {
@@ -1641,20 +1648,20 @@ var PDFresultModal = function PDFresultModal(_ref) {
                 startdrawY = null;
               }
             }
-          case 74:
-            _i7++;
-            _context3.next = 67;
-            break;
           case 77:
+            _i7++;
+            _context3.next = 70;
+            break;
+          case 80:
             //PDF 맨앞 표지 만들기
             //////새로운패이지 생성
             newPage = pdfDoc.insertPage(0, [width, height]);
             fontSize = 15;
             title = "자유글 읽기 진단 결과";
             titleFontSize = 25;
-            _context3.next = 83;
+            _context3.next = 86;
             return pdfDoc.embedFont(fontBytes);
-          case 83:
+          case 86:
             customFont = _context3.sent;
             textWidth = customFont.widthOfTextAtSize(title, titleFontSize);
             newPage.drawText(title, {
@@ -1696,11 +1703,11 @@ var PDFresultModal = function PDFresultModal(_ref) {
             /////////////PDF 맨앞페이지 생성끝////////
 
             /////////////저장 다운로드/////////////
-            _context3.next = 96;
+            _context3.next = 99;
             return pdfDoc.save({
               updateFieldAppearances: false
             });
-          case 96:
+          case 99:
             pdfBytes = _context3.sent;
             blob = new Blob([pdfBytes], {
               type: 'application/pdf'
@@ -1716,7 +1723,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
             setTimeout(function () {
               return URL.revokeObjectURL(link.href);
             }, 7000);
-          case 107:
+          case 110:
           case "end":
             return _context3.stop();
         }
@@ -1767,6 +1774,18 @@ var PDFresultModal = function PDFresultModal(_ref) {
     _useState46 = _slicedToArray(_useState45, 2),
     toggleIndex = _useState46[0],
     set_toggleIndex = _useState46[1];
+  var isPossiblePDFDownload = (0, _react.useMemo)(function () {
+    if (!jejuFontArrayBuffer || !pdfArrayBuffer || !readersEyeLogoArrayBuffer) {
+      // console.log("확인@@@");
+      // console.log(jejuFontArrayBuffer);
+      // console.log(pdfArrayBuffer);
+      // console.log(readersEyeLogoArrayBuffer);
+
+      return false;
+    } else {
+      return true;
+    }
+  }, [jejuFontArrayBuffer, pdfArrayBuffer, readersEyeLogoArrayBuffer]);
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "PDFresultModal",
     onClick: function onClick() {
@@ -1784,6 +1803,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, /*#__PURE__*/_react.default.createElement(_controller.RemoconController, {
     fd_inform: fd_inform,
     handleTryPrint: handleTryPrint,
+    isPossiblePDFDownload: isPossiblePDFDownload,
     offsetX: offsetX,
     offsetY: offsetY,
     hideController: hideController,

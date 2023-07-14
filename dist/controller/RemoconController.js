@@ -28,7 +28,8 @@ var RemoconController = function RemoconController(_ref) {
     offsetY = props.offsetY,
     set_offsetX = props.set_offsetX,
     set_offsetY = props.set_offsetY,
-    originViewPercent = props.originViewPercent;
+    originViewPercent = props.originViewPercent,
+    isPossiblePDFDownload = props.isPossiblePDFDownload;
   var _useState = (0, _react.useState)('visible'),
     _useState2 = _slicedToArray(_useState, 2),
     visibility = _useState2[0],
@@ -87,7 +88,15 @@ var RemoconController = function RemoconController(_ref) {
     className: "c_data"
   }, originViewPercent, "%")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig downloadpdf",
-    onClick: handleTryPrint,
+    style: {
+      background: isPossiblePDFDownload ? '' : 'gray',
+      cursor: 'not-allowed'
+    },
+    onClick: function onClick() {
+      if (isPossiblePDFDownload) {
+        handleTryPrint();
+      }
+    },
     "data-tip": "\uC2DC\uC120\uC774\uB3D9\uC774 \uD45C\uD604\uB41C PDF\uB97C \uB2E4\uC6B4\uB85C\uB4DC \uD569\uB2C8\uB2E4."
   }, /*#__PURE__*/_react.default.createElement(_svg.PDFSVG, null), "\xA0\xA0PDF\uB2E4\uC6B4\uB85C\uB4DC")), /*#__PURE__*/_react.default.createElement("div", {
     className: "GC-fixoffsetWrapper no-drag"

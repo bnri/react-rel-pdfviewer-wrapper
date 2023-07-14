@@ -1391,7 +1391,10 @@ const PDFresultModal = ({ ...props }) => {
         if (!data) {
             return;
         }
-
+        if(!jejuFontArrayBuffer||!pdfArrayBuffer||!readersEyeLogoArrayBuffer){
+            alert("준비중입니다 잠시만 기다려주세요")
+            return;
+        }
         set_loading(true);
         
         await mydelay(100);
@@ -1886,6 +1889,20 @@ const PDFresultModal = ({ ...props }) => {
 
     const [toggleIndex, set_toggleIndex] = useState(isPathwayPlus?2:0);
 
+    const isPossiblePDFDownload= useMemo(()=>{
+        if(!jejuFontArrayBuffer||!pdfArrayBuffer||!readersEyeLogoArrayBuffer){
+            // console.log("확인@@@");
+            // console.log(jejuFontArrayBuffer);
+            // console.log(pdfArrayBuffer);
+            // console.log(readersEyeLogoArrayBuffer);
+
+            return false;
+        }
+        else{
+            return true;
+        }
+    },[jejuFontArrayBuffer,pdfArrayBuffer,readersEyeLogoArrayBuffer])
+
 
     return (<div className="PDFresultModal" onClick={() => {
         set_showConfig(false);
@@ -1897,6 +1914,8 @@ const PDFresultModal = ({ ...props }) => {
         }}>
             <div className="marginWrap">
                 <RemoconController fd_inform={fd_inform} handleTryPrint={handleTryPrint}
+                isPossiblePDFDownload={isPossiblePDFDownload}
+
                     offsetX={offsetX} offsetY={offsetY}
                     hideController={hideController}
                     set_offsetX={set_offsetX} set_offsetY={set_offsetY} originViewPercent={originViewPercent}
