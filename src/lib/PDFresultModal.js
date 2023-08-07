@@ -65,6 +65,8 @@ const PDFresultModal = ({ ...props }) => {
     const PENcanvasRef = useRef();
     const tempIndexRef = useRef();
 
+    const [autoReplay,set_autoReplay] = useState(false);
+
 
 
     //리모콘
@@ -684,13 +686,21 @@ const PDFresultModal = ({ ...props }) => {
             let now = Date.now();
             let elapsed = now - then;
             // console.log("fps", 1000 / elapsed);
+       
+
             if (elapsed > fpsInterval) {
                 then = now - (elapsed % fpsInterval);
                 set_nowTime((nt) => {
                     if (nt * 1 > endTime) {
-                        set_isPlaying(false);
-                        nt = endTime;
-                        return nt;
+                        if (autoReplay === true) {
+                            return 0;
+                        }
+                        else{
+                            set_isPlaying(false);
+                            nt = endTime;
+                            return nt;
+                        }
+
                     }
                     else if (nt * 1 === endTime) {
                         return 0;
@@ -715,7 +725,7 @@ const PDFresultModal = ({ ...props }) => {
             window.cancelAnimationFrame(myrequest);
         }
 
-    }, [isPlaying, endTime, chartOption]);
+    }, [isPlaying, endTime, chartOption,autoReplay]);
 
 
     //툴팁
@@ -2065,6 +2075,8 @@ const PDFresultModal = ({ ...props }) => {
                                             ChartOption={chartOption}
                                             set_followEvent={set_followEvent}
                                             followEvent={followEvent}
+                                            autoReplay={autoReplay}
+                                            set_autoReplay={set_autoReplay}
                                         />
                                     }
 

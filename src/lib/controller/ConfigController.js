@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { CheckSVG, ChevronLeftSVG, ChevronRightSVG } from "../svg";
 
 const ConfigController = ({ ...props }) => {
-    const { resaveConfig, showConfig, ChartOption ,followEvent,set_followEvent ,isPathwayPlus} = props;
+    const { resaveConfig, showConfig, ChartOption ,followEvent,set_followEvent ,isPathwayPlus,autoReplay
+    ,set_autoReplay} = props;
     const [, forceUpdate] = useState();
     useEffect(() => {
         forceUpdate({});
@@ -379,7 +380,21 @@ const ConfigController = ({ ...props }) => {
                     </div>
                 </div>
             </div>
-            
+            <div
+                className="oneConfig"
+                onClick={() => {
+                    set_autoReplay(f=>!f)
+                }}
+                 data-tip="반복재생"
+            >
+                <div className="c_label">반복재생</div>
+                <div className="c_data">
+                    <div className="ckbx-style-8">
+                        <input type="checkbox" name="ckbx-style-8" checked={autoReplay} onChange={() => { }} />
+                        <label />
+                    </div>
+                </div>
+            </div>
 
 
         </div>

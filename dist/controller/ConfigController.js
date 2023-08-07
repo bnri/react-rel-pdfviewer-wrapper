@@ -24,7 +24,9 @@ var ConfigController = function ConfigController(_ref) {
     ChartOption = props.ChartOption,
     followEvent = props.followEvent,
     set_followEvent = props.set_followEvent,
-    isPathwayPlus = props.isPathwayPlus;
+    isPathwayPlus = props.isPathwayPlus,
+    autoReplay = props.autoReplay,
+    set_autoReplay = props.set_autoReplay;
   var _useState = (0, _react.useState)(),
     _useState2 = _slicedToArray(_useState, 2),
     forceUpdate = _useState2[1];
@@ -483,6 +485,25 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: followEvent,
+    onChange: function onChange() {}
+  }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "oneConfig",
+    onClick: function onClick() {
+      set_autoReplay(function (f) {
+        return !f;
+      });
+    },
+    "data-tip": "\uBC18\uBCF5\uC7AC\uC0DD"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_label"
+  }, "\uBC18\uBCF5\uC7AC\uC0DD"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "c_data"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "ckbx-style-8"
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "checkbox",
+    name: "ckbx-style-8",
+    checked: autoReplay,
     onChange: function onChange() {}
   }), /*#__PURE__*/_react.default.createElement("label", null))))), /*#__PURE__*/_react.default.createElement("div", {
     className: "subConfig1",
