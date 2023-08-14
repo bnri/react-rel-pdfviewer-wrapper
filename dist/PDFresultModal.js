@@ -1108,6 +1108,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
               ctx_p.moveTo(draw.x * cw, draw.y * ch);
               // testdata.push(draw);
             } else if (draw.type === 'draw') {
+              // console.log("그려",i);
               if (startdrawX && startdrawY) {
                 ctx_p.lineTo(draw.x * cw, draw.y * ch);
                 ctx_p.stroke();
@@ -1120,9 +1121,17 @@ var PDFresultModal = function PDFresultModal(_ref) {
               }
             } else if (draw.type === 'stopDrawing') {
               ctx_p.closePath();
+              // console.log("그리끝");
+              startdrawX = null;
+              startdrawY = null;
+            } else {
+              ctx_p.closePath();
+              startdrawX = null;
+              startdrawY = null;
             }
             tempIndexRef.current.lastDrawPenIndex = i;
           } else {
+            ctx_p.closePath();
             startdrawX = null;
             startdrawY = null;
           }
