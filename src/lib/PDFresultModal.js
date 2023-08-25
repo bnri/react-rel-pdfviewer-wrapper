@@ -1868,7 +1868,9 @@ const PDFresultModal = ({ ...props }) => {
         // console.log("@PDFonloadCallback", pageNum)
         if (PDFonloadCallback) {
             PDFonloadCallback(pageNum);
+
         }
+        set_pdfrenderDone(true);
     }
 
     const handlePageCallback = (p) => {
@@ -1910,19 +1912,22 @@ const PDFresultModal = ({ ...props }) => {
 
     const [toggleIndex, set_toggleIndex] = useState(isPathwayPlus?2:0);
 
+    const [pdfRenderDone,set_pdfrenderDone] =useState(false);
+
+
     const isPossiblePDFDownload= useMemo(()=>{
-        if(!jejuFontArrayBuffer||!pdfArrayBuffer||!readersEyeLogoArrayBuffer){
+        if(!jejuFontArrayBuffer||!pdfArrayBuffer||!readersEyeLogoArrayBuffer || !pdfRenderDone ||!chartOption){
             // console.log("확인@@@");
             // console.log(jejuFontArrayBuffer);
             // console.log(pdfArrayBuffer);
             // console.log(readersEyeLogoArrayBuffer);
-
+            //#@!
             return false;
         }
         else{
             return true;
         }
-    },[jejuFontArrayBuffer,pdfArrayBuffer,readersEyeLogoArrayBuffer])
+    },[jejuFontArrayBuffer,pdfArrayBuffer,readersEyeLogoArrayBuffer,pdfRenderDone,chartOption])
 
 
     return (<div className="PDFresultModal" onClick={() => {

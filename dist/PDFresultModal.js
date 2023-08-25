@@ -1756,6 +1756,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
     if (PDFonloadCallback) {
       PDFonloadCallback(pageNum);
     }
+    set_pdfrenderDone(true);
   };
   var handlePageCallback = function handlePageCallback(p) {
     // console.log("@pageCallback", p);
@@ -1792,18 +1793,22 @@ var PDFresultModal = function PDFresultModal(_ref) {
     _useState48 = _slicedToArray(_useState47, 2),
     toggleIndex = _useState48[0],
     set_toggleIndex = _useState48[1];
+  var _useState49 = (0, _react.useState)(false),
+    _useState50 = _slicedToArray(_useState49, 2),
+    pdfRenderDone = _useState50[0],
+    set_pdfrenderDone = _useState50[1];
   var isPossiblePDFDownload = (0, _react.useMemo)(function () {
-    if (!jejuFontArrayBuffer || !pdfArrayBuffer || !readersEyeLogoArrayBuffer) {
+    if (!jejuFontArrayBuffer || !pdfArrayBuffer || !readersEyeLogoArrayBuffer || !pdfRenderDone || !chartOption) {
       // console.log("확인@@@");
       // console.log(jejuFontArrayBuffer);
       // console.log(pdfArrayBuffer);
       // console.log(readersEyeLogoArrayBuffer);
-
+      //#@!
       return false;
     } else {
       return true;
     }
-  }, [jejuFontArrayBuffer, pdfArrayBuffer, readersEyeLogoArrayBuffer]);
+  }, [jejuFontArrayBuffer, pdfArrayBuffer, readersEyeLogoArrayBuffer, pdfRenderDone, chartOption]);
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "PDFresultModal",
     onClick: function onClick() {

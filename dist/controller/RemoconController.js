@@ -89,8 +89,8 @@ var RemoconController = function RemoconController(_ref) {
   }, originViewPercent, "%")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig downloadpdf",
     style: {
-      background: isPossiblePDFDownload ? '' : 'gray',
-      cursor: 'not-allowed'
+      background: isPossiblePDFDownload ? 'transparent' : 'gray',
+      cursor: isPossiblePDFDownload ? 'pointer' : 'not-allowed'
     },
     onClick: function onClick() {
       if (isPossiblePDFDownload) {

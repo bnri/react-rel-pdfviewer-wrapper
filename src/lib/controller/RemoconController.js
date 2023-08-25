@@ -30,7 +30,6 @@ const RemoconController = ({ ...props }) => {
 
 
 
-    
 
     return (<Draggable
         bounds=".topVacancy"
@@ -77,8 +76,8 @@ const RemoconController = ({ ...props }) => {
 
                     <div className="oneConfig downloadpdf" 
                             style={{
-                                background:isPossiblePDFDownload?'':'gray',
-                                cursor:'not-allowed'
+                                background:isPossiblePDFDownload?'transparent':'gray',
+                                cursor:isPossiblePDFDownload?'pointer':'not-allowed'
                             }}
                     onClick={()=>{
                         if(isPossiblePDFDownload){
