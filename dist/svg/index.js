@@ -5,37 +5,37 @@ Object.defineProperty(exports, "__esModule", {
 });
 Object.defineProperty(exports, "CheckSVG", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _CheckSVG.default;
   }
 });
 Object.defineProperty(exports, "ChevronLeftSVG", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _ChevronLeftSVG.default;
   }
 });
 Object.defineProperty(exports, "ChevronRightSVG", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _ChevronRightSVG.default;
   }
 });
 Object.defineProperty(exports, "KeyboardLeftArrow", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _KeyboardLeftArrow.default;
   }
 });
 Object.defineProperty(exports, "PDFSVG", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _PDFSVG.default;
   }
 });
 Object.defineProperty(exports, "RemoconSVG", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _RemoconSVG.default;
   }
 });

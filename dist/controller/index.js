@@ -5,13 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 Object.defineProperty(exports, "ConfigController", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _ConfigController.default;
   }
 });
 Object.defineProperty(exports, "RemoconController", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _RemoconController.default;
   }
 });

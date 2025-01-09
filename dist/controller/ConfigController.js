@@ -1,80 +1,43 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 var _react = _interopRequireWildcard(require("react"));
 var _svg = require("../svg");
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure " + obj); }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-var ConfigController = function ConfigController(_ref) {
-  var props = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
-  var resaveConfig = props.resaveConfig,
-    showConfig = props.showConfig,
-    ChartOption = props.ChartOption,
-    followEvent = props.followEvent,
-    set_followEvent = props.set_followEvent,
-    isPathwayPlus = props.isPathwayPlus,
-    autoReplay = props.autoReplay,
-    set_autoReplay = props.set_autoReplay;
-  var _useState = (0, _react.useState)(),
-    _useState2 = _slicedToArray(_useState, 2),
-    forceUpdate = _useState2[1];
-  (0, _react.useEffect)(function () {
+const ConfigController = _ref => {
+  let props = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
+  const {
+    resaveConfig,
+    showConfig,
+    ChartOption,
+    followEvent,
+    set_followEvent,
+    isPathwayPlus,
+    autoReplay,
+    set_autoReplay
+  } = props;
+  const [, forceUpdate] = (0, _react.useState)();
+  (0, _react.useEffect)(() => {
     forceUpdate({});
   }, [ChartOption]);
-  var _useState3 = (0, _react.useState)("250px"),
-    _useState4 = _slicedToArray(_useState3, 2),
-    mainConfigWidth = _useState4[0],
-    set_mainConfigWidth = _useState4[1];
-  var _useState5 = (0, _react.useState)("950px"),
-    _useState6 = _slicedToArray(_useState5, 2),
-    mainConfigHegiht = _useState6[0],
-    set_mainConfigHeight = _useState6[1];
-  var _useState7 = (0, _react.useState)("0"),
-    _useState8 = _slicedToArray(_useState7, 2),
-    subConfig1Width = _useState8[0],
-    set_subConfig1Width = _useState8[1];
-  var _useState9 = (0, _react.useState)("0"),
-    _useState10 = _slicedToArray(_useState9, 2),
-    subConfig1Hegiht = _useState10[0],
-    set_subConfig1Height = _useState10[1];
-  var _useState11 = (0, _react.useState)("0"),
-    _useState12 = _slicedToArray(_useState11, 2),
-    subConfig3Width = _useState12[0],
-    set_subConfig3Width = _useState12[1];
-  var _useState13 = (0, _react.useState)("0"),
-    _useState14 = _slicedToArray(_useState13, 2),
-    subConfig3Hegiht = _useState14[0],
-    set_subConfig3Height = _useState14[1];
-  var _useState15 = (0, _react.useState)("0"),
-    _useState16 = _slicedToArray(_useState15, 2),
-    subConfig4Width = _useState16[0],
-    set_subConfig4Width = _useState16[1];
-  var _useState17 = (0, _react.useState)("0"),
-    _useState18 = _slicedToArray(_useState17, 2),
-    subConfig4Hegiht = _useState18[0],
-    set_subConfig4Height = _useState18[1];
-  var _useState19 = (0, _react.useState)("0"),
-    _useState20 = _slicedToArray(_useState19, 2),
-    subConfig6Width = _useState20[0],
-    set_subConfig6Width = _useState20[1];
-  var _useState21 = (0, _react.useState)("0"),
-    _useState22 = _slicedToArray(_useState21, 2),
-    subConfig6Hegiht = _useState22[0],
-    set_subConfig6Height = _useState22[1];
-  (0, _react.useEffect)(function () {
-    var a;
+  const [mainConfigWidth, set_mainConfigWidth] = (0, _react.useState)("250px");
+  const [mainConfigHegiht, set_mainConfigHeight] = (0, _react.useState)("950px");
+  const [subConfig1Width, set_subConfig1Width] = (0, _react.useState)("0");
+  const [subConfig1Hegiht, set_subConfig1Height] = (0, _react.useState)("0");
+  const [subConfig3Width, set_subConfig3Width] = (0, _react.useState)("0");
+  const [subConfig3Hegiht, set_subConfig3Height] = (0, _react.useState)("0");
+  const [subConfig4Width, set_subConfig4Width] = (0, _react.useState)("0");
+  const [subConfig4Hegiht, set_subConfig4Height] = (0, _react.useState)("0");
+  const [subConfig6Width, set_subConfig6Width] = (0, _react.useState)("0");
+  const [subConfig6Hegiht, set_subConfig6Height] = (0, _react.useState)("0");
+  (0, _react.useEffect)(() => {
+    let a;
     if (!showConfig) {
       a = setTimeout(function () {
         set_mainConfigWidth('250px');
@@ -89,7 +52,7 @@ var ConfigController = function ConfigController(_ref) {
         set_subConfig6Height("0");
       }, 300);
     }
-    return function () {
+    return () => {
       clearTimeout(a);
     };
   }, [showConfig]);
@@ -99,7 +62,7 @@ var ConfigController = function ConfigController(_ref) {
       opacity: showConfig ? "1" : "0",
       visibility: showConfig ? "visible" : "hidden"
     },
-    onClick: function onClick(e) {
+    onClick: e => {
       e.stopPropagation();
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -110,7 +73,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       if (isPathwayPlus) {
         ChartOption.heatMap = !ChartOption.heatMap;
         resaveConfig();
@@ -128,10 +91,10 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: ChartOption.heatMap,
-    onChange: function onChange() {}
+    onChange: () => {}
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig borderBottom",
-    onClick: function onClick() {
+    onClick: () => {
       //여기 팝
       set_mainConfigWidth(0);
       set_mainConfigHeight(0);
@@ -160,7 +123,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement(_svg.ChevronRightSVG, null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig borderBottom",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.penPermit = !ChartOption.penPermit;
       resaveConfig();
     }
@@ -174,7 +137,7 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: ChartOption.penPermit,
-    onChange: function onChange() {}
+    onChange: () => {}
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -194,13 +157,13 @@ var ConfigController = function ConfigController(_ref) {
     min: 1,
     step: 0.1,
     max: 80,
-    onChange: function onChange(e) {
+    onChange: e => {
       ChartOption.RPOG_size = e.target.value * 1;
       resaveConfig();
     }
   }))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.RPOG = !ChartOption.RPOG;
       resaveConfig();
     }
@@ -214,10 +177,10 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: ChartOption.RPOG,
-    onChange: function onChange() {}
+    onChange: () => {}
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig borderBottom",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.RPOG_line = !ChartOption.RPOG_line;
       resaveConfig();
     }
@@ -231,7 +194,7 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: ChartOption.RPOG_line,
-    onChange: function onChange() {}
+    onChange: () => {}
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -251,13 +214,13 @@ var ConfigController = function ConfigController(_ref) {
     min: 0,
     step: 0.1,
     max: 100,
-    onChange: function onChange(e) {
+    onChange: e => {
       ChartOption.FPOG_size = e.target.value * 1;
       resaveConfig();
     }
   }))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       if (ChartOption.FPOG && ChartOption.FPOG_number) {
         ChartOption.FPOG_number = !ChartOption.FPOG_number;
       }
@@ -274,10 +237,10 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: ChartOption.FPOG,
-    onChange: function onChange() {}
+    onChange: () => {}
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       if (isPathwayPlus) {
         ChartOption.rainBow = !ChartOption.rainBow;
         resaveConfig();
@@ -296,7 +259,7 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: ChartOption.rainBow,
-    onChange: function onChange() {}
+    onChange: () => {}
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -316,13 +279,13 @@ var ConfigController = function ConfigController(_ref) {
     min: 0.01,
     step: 0.01,
     max: 1,
-    onChange: function onChange(e) {
+    onChange: e => {
       ChartOption.FPOG_opacity = e.target.value * 1;
       resaveConfig();
     }
   }))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.FPOG_line = !ChartOption.FPOG_line;
       resaveConfig();
     }
@@ -336,10 +299,10 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: ChartOption.FPOG_line,
-    onChange: function onChange() {}
+    onChange: () => {}
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       if (!ChartOption.FPOG_number && !ChartOption.FPOG) {
         ChartOption.FPOG = !ChartOption.FPOG;
       }
@@ -356,7 +319,7 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: ChartOption.FPOG_number,
-    onChange: function onChange() {}
+    onChange: () => {}
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig borderBottom"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -376,13 +339,13 @@ var ConfigController = function ConfigController(_ref) {
     min: 1,
     step: 0.1,
     max: 5,
-    onChange: function onChange(e) {
+    onChange: e => {
       ChartOption.FPOG_number_size = e.target.value * 1;
       resaveConfig();
     }
   }))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       //subConfig1로
       set_mainConfigWidth(0);
       set_mainConfigHeight(0);
@@ -411,7 +374,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement(_svg.ChevronRightSVG, null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       //subConfig1로
       set_mainConfigWidth(0);
       set_mainConfigHeight(0);
@@ -440,7 +403,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement(_svg.ChevronRightSVG, null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       //subConfig1로
       set_mainConfigWidth(0);
       set_mainConfigHeight(0);
@@ -469,10 +432,8 @@ var ConfigController = function ConfigController(_ref) {
     }
   }, /*#__PURE__*/_react.default.createElement(_svg.ChevronRightSVG, null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
-      set_followEvent(function (f) {
-        return !f;
-      });
+    onClick: () => {
+      set_followEvent(f => !f);
     },
     "data-tip": "\uC7AC\uC0DD \uC2DC, \uCE21\uC815\uB2F9\uC2DC\uC758 [PDF view Page , \uBB38\uC11C\uBC30\uC728 , \uC2A4\uD06C\uB864 \uC704\uCE58]\uB97C \uCE21\uC815\uC2DC \uD658\uACBD\uACFC \uB3D9\uC77C\uD558\uAC8C \uC7AC\uC0DD"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -485,13 +446,11 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: followEvent,
-    onChange: function onChange() {}
+    onChange: () => {}
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
-      set_autoReplay(function (f) {
-        return !f;
-      });
+    onClick: () => {
+      set_autoReplay(f => !f);
     },
     "data-tip": "\uBC18\uBCF5\uC7AC\uC0DD"
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -504,7 +463,7 @@ var ConfigController = function ConfigController(_ref) {
     type: "checkbox",
     name: "ckbx-style-8",
     checked: autoReplay,
-    onChange: function onChange() {}
+    onChange: () => {}
   }), /*#__PURE__*/_react.default.createElement("label", null))))), /*#__PURE__*/_react.default.createElement("div", {
     className: "subConfig1",
     style: {
@@ -516,7 +475,7 @@ var ConfigController = function ConfigController(_ref) {
     style: {
       borderBottom: "1px solid #fff"
     },
-    onClick: function onClick() {
+    onClick: () => {
       //다시 mainConfig으로
       set_mainConfigWidth("250px");
       set_mainConfigHeight("950px");
@@ -535,7 +494,7 @@ var ConfigController = function ConfigController(_ref) {
     }
   })), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.GazePastRange = 0;
       resaveConfig();
     }
@@ -545,7 +504,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "\uC804\uCCB4")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.GazePastRange = 0.5;
       resaveConfig();
     }
@@ -555,7 +514,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "0.5\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.GazePastRange = 1;
       resaveConfig();
     }
@@ -565,7 +524,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "1\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.GazePastRange = 2;
       resaveConfig();
     }
@@ -575,7 +534,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "2\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.GazePastRange = 5;
       resaveConfig();
     }
@@ -585,7 +544,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "5\uCD08")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.GazePastRange = 10;
       resaveConfig();
     }
@@ -604,7 +563,7 @@ var ConfigController = function ConfigController(_ref) {
     style: {
       borderBottom: "1px solid #fff"
     },
-    onClick: function onClick() {
+    onClick: () => {
       //다시 mainConfig으로
       set_mainConfigWidth("250px");
       set_mainConfigHeight("950px");
@@ -617,7 +576,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "c_data"
   })), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.playSpeed = 0.1;
       resaveConfig();
     }
@@ -627,7 +586,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "x0.1")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.playSpeed = 0.5;
       resaveConfig();
     }
@@ -637,7 +596,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "x0.5")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.playSpeed = 1;
       resaveConfig();
     }
@@ -647,7 +606,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "x1")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.playSpeed = 2;
       resaveConfig();
     }
@@ -657,7 +616,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "x2")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.playSpeed = 3;
       resaveConfig();
     }
@@ -667,7 +626,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "x3")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.playSpeed = 5;
       resaveConfig();
     }
@@ -686,7 +645,7 @@ var ConfigController = function ConfigController(_ref) {
     style: {
       borderBottom: "1px solid #fff"
     },
-    onClick: function onClick() {
+    onClick: () => {
       //다시 mainConfig으로
       set_mainConfigWidth("250px");
       set_mainConfigHeight("950px");
@@ -699,7 +658,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "c_data"
   })), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.drawFPS = 10;
       resaveConfig();
     }
@@ -709,7 +668,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "10FPS")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.drawFPS = 20;
       resaveConfig();
     }
@@ -719,7 +678,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "20FPS")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.drawFPS = 30;
       resaveConfig();
     }
@@ -729,7 +688,7 @@ var ConfigController = function ConfigController(_ref) {
     className: "sub_labelzone"
   }, "30FPS")), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
-    onClick: function onClick() {
+    onClick: () => {
       ChartOption.drawFPS = 60;
       resaveConfig();
     }
@@ -748,7 +707,7 @@ var ConfigController = function ConfigController(_ref) {
     style: {
       borderBottom: "1px solid #fff"
     },
-    onClick: function onClick() {
+    onClick: () => {
       //다시 mainConfig으로
       set_mainConfigWidth("250px");
       set_mainConfigHeight("950px");
@@ -780,7 +739,7 @@ var ConfigController = function ConfigController(_ref) {
     min: 1,
     step: 1,
     max: 420,
-    onChange: function onChange(e) {
+    onChange: e => {
       ChartOption.heatMapMax = e.target.value * 1;
       resaveConfig();
     }
@@ -799,7 +758,7 @@ var ConfigController = function ConfigController(_ref) {
     min: 1,
     step: 1,
     max: 180,
-    onChange: function onChange(e) {
+    onChange: e => {
       ChartOption.heatMapRadius = e.target.value * 1;
       resaveConfig();
     }
@@ -818,11 +777,10 @@ var ConfigController = function ConfigController(_ref) {
     min: 0,
     step: 0.01,
     max: 1,
-    onChange: function onChange(e) {
+    onChange: e => {
       ChartOption.heatMapMaxOpacity = e.target.value * 1;
       resaveConfig();
     }
   })))));
 };
-var _default = ConfigController;
-exports.default = _default;
+var _default = exports.default = ConfigController;

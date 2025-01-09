@@ -1,6 +1,5 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -20,107 +19,73 @@ var _svg = require("./svg");
 var h337 = _interopRequireWildcard(require("heatmap.js"));
 var _MultipleToggle = _interopRequireDefault(require("./component/multipletoggle/MultipleToggle"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator.return && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, catch: function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure " + obj); }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } // import readerseyelogo from "./img/readereyelogo.png";
 // import { ReactComponent as RemoconSVG } from "./img/remotecontroller.svg";
-var PDFresultModal = function PDFresultModal(_ref) {
-  var props = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
-  var onClose = props.onClose,
-    onConfirm = props.onConfirm,
-    showConfirmBtn = props.showConfirmBtn,
-    path = props.path,
-    viewpercent = props.viewpercent,
-    data = props.data,
-    specialWidth = props.specialWidth,
-    specialHeight = props.specialHeight,
-    printPDFData = props.printPDFData,
-    downloadFileName = props.downloadFileName,
-    PDFonloadCallback = props.PDFonloadCallback,
-    penweight = props.penweight,
-    pencolor = props.pencolor,
-    penpermit = props.penpermit,
-    hideRemocon = props.hideRemocon,
-    isPathwayPlus = props.isPathwayPlus,
-    agencyLogoArrayBuffer = props.agencyLogoArrayBuffer,
-    agencyName = props.agencyName;
-  var _useState = (0, _react.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    loading = _useState2[0],
-    set_loading = _useState2[1];
-  var topRef = (0, _react.useRef)();
-  var pdfviewref = (0, _react.useRef)();
+const PDFresultModal = _ref => {
+  let props = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
+  const {
+    onClose,
+    onConfirm,
+    showConfirmBtn,
+    path,
+    viewpercent,
+    data,
+    specialWidth,
+    specialHeight,
+    printPDFData,
+    downloadFileName,
+    PDFonloadCallback,
+    penweight,
+    pencolor,
+    penpermit,
+    hideRemocon,
+    isPathwayPlus,
+    agencyLogoArrayBuffer,
+    agencyName
+  } = props;
+  const [loading, set_loading] = (0, _react.useState)(false);
+  const topRef = (0, _react.useRef)();
+  const pdfviewref = (0, _react.useRef)();
   // const [nowPage, set_nowPage] = useState(1);
-  var _useState3 = (0, _react.useState)(data.gazeData[data.gazeData.length - 1].relTime),
-    _useState4 = _slicedToArray(_useState3, 2),
-    nowTime = _useState4[0],
-    set_nowTime = _useState4[1];
-  var endTime = (0, _react.useMemo)(function () {
-    var lastTime = data.gazeData[data.gazeData.length - 1].relTime;
+  const [nowTime, set_nowTime] = (0, _react.useState)(data.gazeData[data.gazeData.length - 1].relTime);
+  const endTime = (0, _react.useMemo)(() => {
+    let lastTime = data.gazeData[data.gazeData.length - 1].relTime;
     // set_nowTime(lastTime);
     return lastTime;
   }, [data]);
-  var originViewPercent = (0, _react.useMemo)(function () {
+  const originViewPercent = (0, _react.useMemo)(() => {
     return viewpercent;
   }, [viewpercent]);
-  var _useState5 = (0, _react.useState)(viewpercent),
-    _useState6 = _slicedToArray(_useState5, 2),
-    tempViewPercent = _useState6[0],
-    set_tempViewPercent = _useState6[1];
-  var POG_swapcanvasRef = (0, _react.useRef)();
-  var FPOG_swapCanvasRef = (0, _react.useRef)();
-  var FPOGcanvasRef_last = (0, _react.useRef)();
-  var PENcanvasRef = (0, _react.useRef)();
-  var tempIndexRef = (0, _react.useRef)();
-  var _useState7 = (0, _react.useState)(false),
-    _useState8 = _slicedToArray(_useState7, 2),
-    autoReplay = _useState8[0],
-    set_autoReplay = _useState8[1];
+  const [tempViewPercent, set_tempViewPercent] = (0, _react.useState)(viewpercent);
+  const POG_swapcanvasRef = (0, _react.useRef)();
+  const FPOG_swapCanvasRef = (0, _react.useRef)();
+  const FPOGcanvasRef_last = (0, _react.useRef)();
+  const PENcanvasRef = (0, _react.useRef)();
+  const tempIndexRef = (0, _react.useRef)();
+  const [autoReplay, set_autoReplay] = (0, _react.useState)(false);
 
   //리모콘
-  var _useState9 = (0, _react.useState)(hideRemocon !== null ? hideRemocon : false),
-    _useState10 = _slicedToArray(_useState9, 2),
-    hideController = _useState10[0],
-    set_hideController = _useState10[1];
+  const [hideController, set_hideController] = (0, _react.useState)(hideRemocon !== null ? hideRemocon : false);
 
   //차트 옵션. 톱니바퀴
-  var _useState11 = (0, _react.useState)(false),
-    _useState12 = _slicedToArray(_useState11, 2),
-    showConfig = _useState12[0],
-    set_showConfig = _useState12[1];
-  var _useState13 = (0, _react.useState)(null),
-    _useState14 = _slicedToArray(_useState13, 2),
-    chartOption = _useState14[0],
-    set_chartOption = _useState14[1];
-  var resaveConfig = function resaveConfig() {
+  const [showConfig, set_showConfig] = (0, _react.useState)(false);
+  const [chartOption, set_chartOption] = (0, _react.useState)(null);
+  const resaveConfig = () => {
     set_chartOption(JSON.parse(JSON.stringify(chartOption)));
   };
 
   //문서내의 temp offset
-  var _useState15 = (0, _react.useState)("0.00"),
-    _useState16 = _slicedToArray(_useState15, 2),
-    offsetX = _useState16[0],
-    set_offsetX = _useState16[1];
-  var _useState17 = (0, _react.useState)("0.00"),
-    _useState18 = _slicedToArray(_useState17, 2),
-    offsetY = _useState18[0],
-    set_offsetY = _useState18[1];
-  (0, _react.useEffect)(function () {
+  const [offsetX, set_offsetX] = (0, _react.useState)("0.00");
+  const [offsetY, set_offsetY] = (0, _react.useState)("0.00");
+  (0, _react.useEffect)(() => {
     tempIndexRef.current = {
       lastPageIndex: 0,
       lastDrawRawGazeIndex: 0,
@@ -144,41 +109,32 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, []);
 
   //PDF 사이즈 필요함
-  var _useState19 = (0, _react.useState)(null),
-    _useState20 = _slicedToArray(_useState19, 2),
-    nowPDFviewInform = _useState20[0],
-    set_nowPDFviewInform = _useState20[1];
+  const [nowPDFviewInform, set_nowPDFviewInform] = (0, _react.useState)(null);
 
   //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
-  var _useState21 = (0, _react.useState)(1),
-    _useState22 = _slicedToArray(_useState21, 1),
-    fminx = _useState22[0];
-  var _useState23 = (0, _react.useState)(1),
-    _useState24 = _slicedToArray(_useState23, 1),
-    fminy = _useState24[0];
-  var _useState25 = (0, _react.useState)(3),
-    _useState26 = _slicedToArray(_useState25, 1),
-    minFixationCount = _useState26[0];
+  const [fminx] = (0, _react.useState)(1);
+  const [fminy] = (0, _react.useState)(1);
+  const [minFixationCount] = (0, _react.useState)(3);
   //fixationData는 darw시에도 사용됨.
-  var fixationData = (0, _react.useMemo)(function () {
-    var fa = [];
-    var sumPDF_x = 0;
-    var sumPDF_y = 0;
+  const fixationData = (0, _react.useMemo)(() => {
+    let fa = [];
+    let sumPDF_x = 0;
+    let sumPDF_y = 0;
     // console.log("data", data);
-    var rawGaze = data.gazeData;
-    var heightmul = data.pdfSize.height / data.screenSize.height;
+    const rawGaze = data.gazeData;
+    let heightmul = data.pdfSize.height / data.screenSize.height;
     if (heightmul <= 1) heightmul = 1;
-    var fixationNumber = 0;
-    var fixationStart = false;
-    var fixationObj = {};
-    var prevx = null;
-    var prevy = null;
-    var xdiff_f = fminx / 100;
-    var ydiff_f = fminy / 100 * heightmul;
+    let fixationNumber = 0;
+    let fixationStart = false;
+    let fixationObj = {};
+    let prevx = null;
+    let prevy = null;
+    const xdiff_f = fminx / 100;
+    const ydiff_f = fminy / 100 * heightmul;
     //거리기준 
-    for (var i = 0; i < rawGaze.length; i++) {
+    for (let i = 0; i < rawGaze.length; i++) {
       //거리가 가까운 PDF 를 찾아야하는데..
-      var d = rawGaze[i];
+      let d = rawGaze[i];
       d.rawGazeindex = i;
       if (fixationStart === false) {
         if (!d.pdfx || !d.pdfy) {
@@ -200,8 +156,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
           pageNum_s: d.pageNum
         };
       } else {
-        var xdiff = Math.abs(d.pdfx - prevx);
-        var ydiff = Math.abs(d.pdfy - prevy);
+        let xdiff = Math.abs(d.pdfx - prevx);
+        let ydiff = Math.abs(d.pdfy - prevy);
         if (!d.pdfx || !d.pdfy) {
           //예외처리 없는
           continue;
@@ -255,7 +211,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
 
     //fixationColor 설정
     // console.log("fa", fa);
-    var colorObj = {
+    let colorObj = {
       0: {
         r: 255,
         g: 0,
@@ -310,29 +266,28 @@ var PDFresultModal = function PDFresultModal(_ref) {
         b: 255
       }
     };
-    var colorObjKeyArr = Object.keys(colorObj);
-    var pagePerFixationCount = {};
-    for (var _i2 = 0; _i2 < fa.length; _i2++) {
-      if (!pagePerFixationCount[fa[_i2].pageNum_s]) {
-        pagePerFixationCount[fa[_i2].pageNum_s] = {
+    const colorObjKeyArr = Object.keys(colorObj);
+    let pagePerFixationCount = {};
+    for (let i = 0; i < fa.length; i++) {
+      if (!pagePerFixationCount[fa[i].pageNum_s]) {
+        pagePerFixationCount[fa[i].pageNum_s] = {
           count: 1
         };
-        fa[_i2].pageFixationCount = pagePerFixationCount[fa[_i2].pageNum_s].count;
+        fa[i].pageFixationCount = pagePerFixationCount[fa[i].pageNum_s].count;
       } else {
-        pagePerFixationCount[fa[_i2].pageNum_s].count++;
-        fa[_i2].pageFixationCount = pagePerFixationCount[fa[_i2].pageNum_s].count;
+        pagePerFixationCount[fa[i].pageNum_s].count++;
+        fa[i].pageFixationCount = pagePerFixationCount[fa[i].pageNum_s].count;
       }
     }
-    for (var _i3 = 0; _i3 < fa.length; _i3++) {
-      var targetPageTotalFixationCount = pagePerFixationCount[fa[_i3].pageNum_s].count;
-      var ratio = fa[_i3].pageFixationCount / targetPageTotalFixationCount;
-      fa[_i3].ratio = ratio;
+    for (let i = 0; i < fa.length; i++) {
+      let targetPageTotalFixationCount = pagePerFixationCount[fa[i].pageNum_s].count;
+      let ratio = fa[i].pageFixationCount / targetPageTotalFixationCount;
+      fa[i].ratio = ratio;
       //ratio가 0~0.1 사이  0.1~0.2 사이  0.2~0.3 사이..0.9~1 사이
       //일경우 fa[i].color = 
-      var percent = ratio * 100; //0~100 사이에
-      var minKey = void 0,
-        maxKey = void 0;
-      for (var j = 0; j < colorObjKeyArr.length - 1; j++) {
+      let percent = ratio * 100; //0~100 사이에
+      let minKey, maxKey;
+      for (let j = 0; j < colorObjKeyArr.length - 1; j++) {
         if (percent >= colorObjKeyArr[j] && percent <= colorObjKeyArr[j + 1]) {
           minKey = colorObjKeyArr[j];
           maxKey = colorObjKeyArr[j + 1];
@@ -341,19 +296,19 @@ var PDFresultModal = function PDFresultModal(_ref) {
       }
       // console.log("minmaxKey",minKey,maxKey);
 
-      var lowerColor = colorObj[minKey];
-      var upperColor = colorObj[maxKey];
-      var t = (percent - minKey) / (maxKey - minKey);
+      let lowerColor = colorObj[minKey];
+      let upperColor = colorObj[maxKey];
+      let t = (percent - minKey) / (maxKey - minKey);
       // console.log("구간ratio",t);
 
-      var r = Math.round(lowerColor.r + (upperColor.r - lowerColor.r) * t);
-      var g = Math.round(lowerColor.g + (upperColor.g - lowerColor.g) * t);
-      var b = Math.round(lowerColor.b + (upperColor.b - lowerColor.b) * t);
+      let r = Math.round(lowerColor.r + (upperColor.r - lowerColor.r) * t);
+      let g = Math.round(lowerColor.g + (upperColor.g - lowerColor.g) * t);
+      let b = Math.round(lowerColor.b + (upperColor.b - lowerColor.b) * t);
       //percent 에 따라서
       //colorObjKeyArr 사이값을 interpolation
       //예를 들어서 10percent 의 경우에는
       //colorObj[0] 과 colorObj[11] rgb 값의  10/11 값을 할당하고 싶음.
-      fa[_i3].color = {
+      fa[i].color = {
         r: r,
         g: g,
         b: b
@@ -362,13 +317,13 @@ var PDFresultModal = function PDFresultModal(_ref) {
     //////////////
 
     //Fixation Re Numbering
-    var renumber = 1;
-    for (var _i4 = 0; _i4 < fa.length; _i4++) {
-      if (fa[_i4].count >= minFixationCount) {
-        fa[_i4].fixationNumber = renumber;
+    let renumber = 1;
+    for (let i = 0; i < fa.length; i++) {
+      if (fa[i].count >= minFixationCount) {
+        fa[i].fixationNumber = renumber;
         renumber++;
       } else {
-        fa[_i4].fixationNumber = null;
+        fa[i].fixationNumber = null;
       }
     }
     // console.log("fa",fa)
@@ -376,8 +331,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [data, fminx, fminy, minFixationCount]);
 
   //딱한번만..default차트옵션을 할당...
-  var justOneTimeSetChartOption = (0, _react.useRef)();
-  (0, _react.useEffect)(function () {
+  const justOneTimeSetChartOption = (0, _react.useRef)();
+  (0, _react.useEffect)(() => {
     if (justOneTimeSetChartOption.current) {
       return;
     }
@@ -385,12 +340,15 @@ var PDFresultModal = function PDFresultModal(_ref) {
       return;
     }
     justOneTimeSetChartOption.current = true;
-    var cw = nowPDFviewInform.width,
-      height_devided_width_ratio = nowPDFviewInform.height_devided_width_ratio;
-    var saccadeArr = [];
-    for (var i = 1; i < fixationData.length; i++) {
-      var s = fixationData[i - 1];
-      var e = fixationData[i];
+    const {
+      width: cw,
+      // height: ch,
+      height_devided_width_ratio
+    } = nowPDFviewInform;
+    const saccadeArr = [];
+    for (let i = 1; i < fixationData.length; i++) {
+      let s = fixationData[i - 1];
+      let e = fixationData[i];
       var dx = (s.x - e.x) * 1728;
       var dy = (s.y - e.y) * 1728 * height_devided_width_ratio;
       var distance = Math.sqrt(dx * dx + dy * dy);
@@ -399,8 +357,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
       // saccadeArr2.push(distance2);
     }
     // console.log("saccadeArr",saccadeArr);
-    var a = (0, _util.getMedian)(saccadeArr);
-    var newval = (a / cw).toFixed(6) * 1;
+    let a = (0, _util.getMedian)(saccadeArr);
+    let newval = (a / cw).toFixed(6) * 1;
     // console.log("------------------------SAF차트옵션셋팅딱한번")
     if (isPathwayPlus) {
       set_chartOption({
@@ -458,20 +416,20 @@ var PDFresultModal = function PDFresultModal(_ref) {
       });
     }
   }, [fixationData, nowPDFviewInform, penpermit, pencolor, penweight, isPathwayPlus]);
-  var fd_inform = (0, _react.useMemo)(function () {
+  const fd_inform = (0, _react.useMemo)(() => {
     if (!fixationData) return;
-    var sumfd = 0;
-    var fc = 0;
-    for (var i = 0; i < fixationData.length; i++) {
+    let sumfd = 0;
+    let fc = 0;
+    for (let i = 0; i < fixationData.length; i++) {
       if (minFixationCount <= fixationData[i].count) {
         fc++;
         sumfd += fixationData[i].fd;
       }
     }
-    var ad = fc ? sumfd / fc * 1000 : 0;
+    let ad = fc ? sumfd / fc * 1000 : 0;
     // console.log("ad",ad);
 
-    var obj = {
+    let obj = {
       avgDuration: ad,
       fixationRatio: sumfd / endTime * 100
     };
@@ -479,46 +437,25 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [fixationData, minFixationCount, endTime]);
 
   //리사이즈시 스케일변수들
-  var _useState27 = (0, _react.useState)(0.5),
-    _useState28 = _slicedToArray(_useState27, 2),
-    innerFrameScale = _useState28[0],
-    set_innerFrameScale = _useState28[1];
-  var _useState29 = (0, _react.useState)(0),
-    _useState30 = _slicedToArray(_useState29, 2),
-    innerFrameTop = _useState30[0],
-    set_innerFrameTop = _useState30[1];
-  var _useState31 = (0, _react.useState)(0),
-    _useState32 = _slicedToArray(_useState31, 2),
-    innerFrameLeft = _useState32[0],
-    set_innerFrameLeft = _useState32[1];
+  const [innerFrameScale, set_innerFrameScale] = (0, _react.useState)(0.5);
+  const [innerFrameTop, set_innerFrameTop] = (0, _react.useState)(0);
+  const [innerFrameLeft, set_innerFrameLeft] = (0, _react.useState)(0);
 
   //재생과 멈춤.
-  var _useState33 = (0, _react.useState)(false),
-    _useState34 = _slicedToArray(_useState33, 2),
-    isPlaying = _useState34[0],
-    set_isPlaying = _useState34[1];
+  const [isPlaying, set_isPlaying] = (0, _react.useState)(false);
 
   //재생시 스크롤 따라갈것인가 옵션
-  var _useState35 = (0, _react.useState)(true),
-    _useState36 = _slicedToArray(_useState35, 2),
-    followEvent = _useState36[0],
-    set_followEvent = _useState36[1];
+  const [followEvent, set_followEvent] = (0, _react.useState)(true);
 
   //전체화면
-  var _useState37 = (0, _react.useState)(false),
-    _useState38 = _slicedToArray(_useState37, 2),
-    isfullscreen = _useState38[0],
-    set_isfullscreen = _useState38[1];
+  const [isfullscreen, set_isfullscreen] = (0, _react.useState)(false);
 
   //히트맵 인스턴스
 
-  var _useState39 = (0, _react.useState)(),
-    _useState40 = _slicedToArray(_useState39, 2),
-    HI = _useState40[0],
-    set_HI = _useState40[1];
+  const [HI, set_HI] = (0, _react.useState)();
 
   //캔버스 래프들 초기화
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     // if (!data) return;
     if (FPOG_swapCanvasRef && FPOG_swapCanvasRef.current) return;
     if (POG_swapcanvasRef && POG_swapcanvasRef.current) return;
@@ -531,10 +468,12 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }
     // console.log("캔버스 사이즈는 고정으로 가져간다.");
 
-    var w = nowPDFviewInform.width,
-      h = nowPDFviewInform.height;
-    var canvasWidth = 1728;
-    var canvasHeight = 1728 * h / w;
+    const {
+      width: w,
+      height: h
+    } = nowPDFviewInform;
+    const canvasWidth = 1728;
+    const canvasHeight = 1728 * h / w;
     var canvas = document.createElement('canvas');
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -555,7 +494,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [nowPDFviewInform]);
 
   //히트맵 인스턴스 생성부분.
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     if (!chartOption) {
       return;
     }
@@ -565,10 +504,13 @@ var PDFresultModal = function PDFresultModal(_ref) {
     if (!nowPDFviewInform) {
       return;
     }
-    var a;
-    var cw = nowPDFviewInform.width,
-      height_devided_width_ratio = nowPDFviewInform.height_devided_width_ratio;
-    var heatmapref = pdfviewref.current.get_heatmapRef();
+    let a;
+    const {
+      width: cw,
+      // height: ch,
+      height_devided_width_ratio
+    } = nowPDFviewInform;
+    let heatmapref = pdfviewref.current.get_heatmapRef();
     if (heatmapref.current) {
       clearInterval(a);
       var heatmapInstance = h337.create({
@@ -598,10 +540,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [nowPDFviewInform, chartOption, HI]);
 
   //리사이즈이벤트
-  var resizeInnerFrame = _react.default.useCallback(function () {
+  const resizeInnerFrame = _react.default.useCallback(() => {
     if (!topRef.current) return;
     setTimeout(function () {
-      var max = (window.screen.height / window.devicePixelRatio).toFixed(0) * 1;
+      let max = (window.screen.height / window.devicePixelRatio).toFixed(0) * 1;
 
       // console.log("max:" + max);
       // console.log("window.innerHeight:" + window.innerHeight);
@@ -612,55 +554,57 @@ var PDFresultModal = function PDFresultModal(_ref) {
         }
       }
     }, 150);
-    var pastScreenW = data.screenSize.width;
-    var pastScreenH = data.screenSize.height;
-    var pastRatio = pastScreenH / pastScreenW;
-    var width = topRef.current.clientWidth;
-    var height = topRef.current.clientHeight;
-    var nowRatio = height / width;
+    const pastScreenW = data.screenSize.width;
+    const pastScreenH = data.screenSize.height;
+    let pastRatio = pastScreenH / pastScreenW;
+    const width = topRef.current.clientWidth;
+    const height = topRef.current.clientHeight;
+    let nowRatio = height / width;
     if (nowRatio >= pastRatio) {
       // console.log("지금세로가 더크다 - 가로기준 셋팅");
       set_innerFrameScale(width / pastScreenW);
-      var newheight = pastScreenH * (width / pastScreenW);
+      let newheight = pastScreenH * (width / pastScreenW);
       set_innerFrameTop((height - newheight) / 2);
       set_innerFrameLeft(0);
     } else {
       // console.log("지금 가로가 더 크다 (지금비율이 더 작다)-높이기준셋팅");
       set_innerFrameScale(height / pastScreenH);
-      var newwidth = pastScreenW * (height / pastScreenH);
+      let newwidth = pastScreenW * (height / pastScreenH);
       set_innerFrameTop(0);
       set_innerFrameLeft((width - newwidth) / 2);
     }
   }, [data, isfullscreen]);
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     resizeInnerFrame();
     window.addEventListener('resize', resizeInnerFrame);
-    return function () {
+    return () => {
       //console.log("소멸자");
       window.removeEventListener('resize', resizeInnerFrame);
     };
   }, [resizeInnerFrame]);
 
   //재생
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     if (!chartOption) {
       return;
     }
-    var playSpeed = chartOption.playSpeed,
-      drawFPS = chartOption.drawFPS;
-    var fpsInterval = 1000 / drawFPS;
-    var myrequest;
-    var startTime = Date.now();
-    var then = startTime;
+    const {
+      playSpeed,
+      drawFPS
+    } = chartOption;
+    const fpsInterval = 1000 / drawFPS;
+    let myrequest;
+    let startTime = Date.now();
+    let then = startTime;
     function timeUpdate() {
       myrequest = window.requestAnimationFrame(timeUpdate);
-      var now = Date.now();
-      var elapsed = now - then;
+      let now = Date.now();
+      let elapsed = now - then;
       // console.log("fps", 1000 / elapsed);
 
       if (elapsed > fpsInterval) {
         then = now - elapsed % fpsInterval;
-        set_nowTime(function (nt) {
+        set_nowTime(nt => {
           if (nt * 1 > endTime) {
             if (autoReplay === true) {
               return 0;
@@ -683,22 +627,22 @@ var PDFresultModal = function PDFresultModal(_ref) {
     } else {
       window.cancelAnimationFrame(myrequest);
     }
-    return function () {
+    return () => {
       window.cancelAnimationFrame(myrequest);
     };
   }, [isPlaying, endTime, chartOption, autoReplay]);
 
   //툴팁
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     _reactTooltip.default.rebuild();
   });
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     tempIndexRef.current.needClear = true;
     // console.log("@@@@@@@@@@@@@@클리어요청", nowPage, HI, tempViewPercent)
   }, [data, chartOption, nowPDFviewInform, offsetX, offsetY, HI, tempViewPercent]);
 
   //그리기
-  var handleDraw = _react.default.useCallback(function () {
+  const handleDraw = _react.default.useCallback(() => {
     if (!chartOption) {
       return;
     }
@@ -709,17 +653,20 @@ var PDFresultModal = function PDFresultModal(_ref) {
       // console.log("PDFviewInform이 없음")
       return;
     }
-    var canvasref = pdfviewref.current.get_canvasRef(); //heatmap 제외 캔버스
+    const canvasref = pdfviewref.current.get_canvasRef(); //heatmap 제외 캔버스
     // let heatmapref = pdfviewref.current.get_heatmapRef();
     if (!canvasref || !canvasref.current) {
       // console.log("오잉?",canvasref);
       return;
     }
     //width height은 pdf의 사이즈임. 캔버스의 사이즈가 아님.
-    var nowPage = nowPDFviewInform.nowPage,
-      height_devided_width_ratio = nowPDFviewInform.height_devided_width_ratio;
-    var cw = 1728;
-    var ch = 1728 * height_devided_width_ratio;
+    const {
+      // width:cwreal,height:chreal,
+      nowPage,
+      height_devided_width_ratio
+    } = nowPDFviewInform;
+    const cw = 1728;
+    const ch = 1728 * height_devided_width_ratio;
 
     // console.log("nowPDFviewInform",nowPDFviewInform)
 
@@ -734,47 +681,47 @@ var PDFresultModal = function PDFresultModal(_ref) {
     // console.log("============================================")
     // console.log("tempIndexRef.current.needClear", JSON.stringify(tempIndexRef.current.needClear));
 
-    var canvas = canvasref.current; // 히트맵제외 랜더캔버스임.
-    var rctx = canvas.getContext('2d', {
+    const canvas = canvasref.current; // 히트맵제외 랜더캔버스임.
+    const rctx = canvas.getContext('2d', {
       willReadFrequently: true
     });
-    var RPOG_size = cw * 0.01 * (chartOption.RPOG_size * 2 / 100);
-    var gazeData = data.gazeData;
-    var pT = chartOption.GazePastRange * 1;
-    var heatMapRadius = chartOption.heatMapRadius;
-    var osx = offsetX * 1;
-    var osy = offsetY * 1;
-    var needClear = tempIndexRef.current.needClear;
+    const RPOG_size = cw * 0.01 * (chartOption.RPOG_size * 2 / 100);
+    const gazeData = data.gazeData;
+    const pT = chartOption.GazePastRange * 1;
+    const heatMapRadius = chartOption.heatMapRadius;
+    let osx = offsetX * 1;
+    let osy = offsetY * 1;
+    let needClear = tempIndexRef.current.needClear;
 
     // const canvas_HI=HI._renderer.canvas;
     // canvas_HI.width=cw;
     // canvas_HI.height=ch;
-    var canvas_pog = POG_swapcanvasRef.current;
-    var ctx_pog = canvas_pog.getContext("2d", {
+    const canvas_pog = POG_swapcanvasRef.current;
+    const ctx_pog = canvas_pog.getContext("2d", {
       willReadFrequently: true
     });
     // if(canvas_pog.width!==cw){
     //     canvas_pog.width = cw;
     //     canvas_pog.height = ch;
     // }
-    var canvas_f = FPOG_swapCanvasRef.current;
-    var ctx_f = canvas_f.getContext("2d", {
+    const canvas_f = FPOG_swapCanvasRef.current;
+    const ctx_f = canvas_f.getContext("2d", {
       willReadFrequently: true
     });
     // if(canvas_f.width!==cw){
     //     canvas_f.width = cw;
     //     canvas_f.height = ch;
     // }
-    var canvas_fl = FPOGcanvasRef_last.current;
-    var ctx_fl = canvas_fl.getContext("2d", {
+    const canvas_fl = FPOGcanvasRef_last.current;
+    const ctx_fl = canvas_fl.getContext("2d", {
       willReadFrequently: true
     });
     // if(canvas_fl.width!==cw){
     //     canvas_fl.width = cw;
     //     canvas_fl.height = ch;
     // }
-    var canvas_p = PENcanvasRef.current;
-    var ctx_p = canvas_p.getContext("2d", {
+    const canvas_p = PENcanvasRef.current;
+    const ctx_p = canvas_p.getContext("2d", {
       willReadFrequently: true
     });
     // if(canvas_p.width!==cw){
@@ -822,11 +769,11 @@ var PDFresultModal = function PDFresultModal(_ref) {
       // console.log("드로힛맵")
 
       // console.log("드로")
-      var points = [];
+      let points = [];
       if (chartOption.heatMap) {
         // console.log("1")
-        for (var i = 0; i < gazeData.length; i++) {
-          var d = gazeData[i];
+        for (let i = 0; i < gazeData.length; i++) {
+          const d = gazeData[i];
           if (pT) {
             if (d.relTime < nowTime - pT) {
               continue;
@@ -835,14 +782,14 @@ var PDFresultModal = function PDFresultModal(_ref) {
           if (d.relTime <= nowTime) {
             if (d.pdfx && d.pdfy) {
               if (nowPage === d.pageNum) {
-                var baseobj = {
+                let baseobj = {
                   x: 0,
                   y: 0,
                   value: 0,
                   radius: heatMapRadius
                 };
-                var x = Math.floor((d.pdfx + osx) * cw);
-                var y = Math.floor((d.pdfy + osy) * ch);
+                let x = Math.floor((d.pdfx + osx) * cw);
+                let y = Math.floor((d.pdfy + osy) * ch);
                 baseobj.x = x;
                 baseobj.y = y;
                 baseobj.value = 1;
@@ -863,11 +810,11 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }
     function drawRPOG() {
       //draw rawdata
-      var startIndex = tempIndexRef.current.lastDrawRawGazeIndex + 1;
-      var prevx = tempIndexRef.current.lastDrawRawGazePoint.x;
-      var prevy = tempIndexRef.current.lastDrawRawGazePoint.y;
-      for (var i = startIndex; chartOption.RPOG && i < gazeData.length; i++) {
-        var d = gazeData[i];
+      let startIndex = tempIndexRef.current.lastDrawRawGazeIndex + 1;
+      let prevx = tempIndexRef.current.lastDrawRawGazePoint.x;
+      let prevy = tempIndexRef.current.lastDrawRawGazePoint.y;
+      for (let i = startIndex; chartOption.RPOG && i < gazeData.length; i++) {
+        let d = gazeData[i];
         if (pT) {
           if (d.relTime < nowTime - pT) {
             continue;
@@ -910,27 +857,27 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }
     function drawFixation() {
       // console.log("fixationData",fixationData)
-      var startFixationIndex = tempIndexRef.current.lastDrawFPOGIndex;
-      var prevx = tempIndexRef.current.lastDrawFPOGPoint.x || null;
-      var prevy = tempIndexRef.current.lastDrawFPOGPoint.y || null;
+      let startFixationIndex = tempIndexRef.current.lastDrawFPOGIndex;
+      let prevx = tempIndexRef.current.lastDrawFPOGPoint.x || null;
+      let prevy = tempIndexRef.current.lastDrawFPOGPoint.y || null;
       // console.log("prevx",prevx,prevy);
       //draw Fixation
-      var fr = cw * chartOption.FPOG_size * 1.5 / 10000;
+      let fr = cw * chartOption.FPOG_size * 1.5 / 10000;
       //medianSaccadeDistance_dividedByWidth
       ctx_fl.clearRect(0, 0, cw, ch);
       function findAVGxy(si, ei, f) {
-        var s = si;
-        var e = ei < si ? si : ei;
+        let s = si;
+        let e = ei < si ? si : ei;
         // console.log("==================")
         // console.log("sef",s,e,f)
-        var obj = {
+        let obj = {
           sumx: 0,
           sumy: 0,
           count: 0,
           x: null,
           y: null
         };
-        for (var i = s; i <= e && i < gazeData.length; i++) {
+        for (let i = s; i <= e && i < gazeData.length; i++) {
           if (gazeData[i].pdfx && gazeData[i].pdfy) {
             obj.sumx += gazeData[i].pdfx;
             obj.sumy += gazeData[i].pdfy;
@@ -943,10 +890,10 @@ var PDFresultModal = function PDFresultModal(_ref) {
         // console.log("==================")
         return obj;
       }
-      var FPOG_opacity = chartOption.FPOG_opacity;
+      const FPOG_opacity = chartOption.FPOG_opacity;
       //    console.log("fixationData",fixationData)
-      for (var i = startFixationIndex + 1; chartOption.FPOG && i < fixationData.length; i++) {
-        var f = fixationData[i];
+      for (let i = startFixationIndex + 1; chartOption.FPOG && i < fixationData.length; i++) {
+        const f = fixationData[i];
         if (pT) {
           //과거시간까지만 재생. pT가0이면 전체시간
           if (f.relTime_e < nowTime - pT) {
@@ -964,7 +911,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
               //f.relTime_e <= nowTime
 
               //원그리기 fixation
-              var fsize = fr * Math.sqrt(f.count);
+              let fsize = fr * Math.sqrt(f.count);
               if (f.relTime_e <= nowTime) {
                 //전체 다그려
                 ctx_f.beginPath();
@@ -983,8 +930,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
                 tempIndexRef.current.lastDrawFPOGIndex = i;
               } else {
                 // 작게 그려 fixation의 중간녀석임.
-                var ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
-                var obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * ratio).toFixed(0) * 1, f);
+                let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
+                let obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * ratio).toFixed(0) * 1, f);
                 ctx_fl.beginPath();
                 ctx_fl.lineWidth = 1;
                 if (chartOption.rainBow) {
@@ -1025,8 +972,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
                 } else {
                   //마지막 고정되지 않은 사카드 방향. 위치가 계속 바뀌어야함.
                   if (prevx !== null && prevy !== null) {
-                    var _ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
-                    var _obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * _ratio).toFixed(0) * 1, f);
+                    let ratio = (nowTime - f.relTime_s) / (f.relTime_e - f.relTime_s);
+                    let obj = findAVGxy(f.f_startData.rawGazeindex, (f.f_startData.rawGazeindex + (f.f_endData.rawGazeindex - f.f_startData.rawGazeindex) * ratio).toFixed(0) * 1, f);
                     ctx_fl.beginPath();
                     ctx_fl.lineWidth = 1;
                     if (chartOption.rainBow) {
@@ -1037,7 +984,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
                       ctx_fl.fillStyle = 'blue';
                     }
                     ctx_fl.moveTo((prevx + osx) * cw, (prevy + osy) * ch);
-                    ctx_fl.lineTo((_obj.x + osx) * cw, (_obj.y + osy) * ch);
+                    ctx_fl.lineTo((obj.x + osx) * cw, (obj.y + osy) * ch);
                     ctx_fl.stroke();
                     ctx_fl.closePath();
                   }
@@ -1085,13 +1032,15 @@ var PDFresultModal = function PDFresultModal(_ref) {
     }
     function drawPencil() {
       //draw pencil
-      var startdrawX = tempIndexRef.current.lastDrawPenPoint.x,
+      let startdrawX = tempIndexRef.current.lastDrawPenPoint.x,
         startdrawY = tempIndexRef.current.lastDrawPenPoint.y;
       // console.log("chartOption.penPermit",chartOption.penPermit)
-      for (var i = tempIndexRef.current.lastDrawPenIndex + 1; chartOption.penPermit * 1 && i < gazeData.length; i++) {
-        var d = gazeData[i];
-        var pageNum = d.pageNum;
-        var draw = gazeData[i].draw;
+      for (let i = tempIndexRef.current.lastDrawPenIndex + 1; chartOption.penPermit * 1 && i < gazeData.length; i++) {
+        let d = gazeData[i];
+        const {
+          pageNum
+        } = d;
+        const draw = gazeData[i].draw;
         if (!draw) {
           continue;
         }
@@ -1173,14 +1122,14 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [data, nowTime, chartOption, nowPDFviewInform, fixationData, minFixationCount, offsetX, offsetY, HI]);
 
   //PDF 스크롤과 page 이동기록을 따라가는 함수
-  var handlePDFmoveEvent = _react.default.useCallback(function () {
+  const handlePDFmoveEvent = _react.default.useCallback(() => {
     //배율이 똑같을경우에만..그래야함..
 
-    var gazeData = data.gazeData;
-    for (var i = 0; i < gazeData.length; i++) {
+    let gazeData = data.gazeData;
+    for (let i = 0; i < gazeData.length; i++) {
       if (gazeData[i].relTime * 1 <= nowTime * 1) {} else {
         if (i > 0) {
-          var lastd = gazeData[i - 1];
+          let lastd = gazeData[i - 1];
           pdfviewref.current.set_pageNumber(lastd.pageNum);
           pdfviewref.current.set_scrollTop(lastd.scrollTop);
         }
@@ -1188,112 +1137,71 @@ var PDFresultModal = function PDFresultModal(_ref) {
       }
     }
   }, [data, nowTime]);
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     if (followEvent) {
       handlePDFmoveEvent();
     }
   }, [handlePDFmoveEvent, followEvent]);
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     if (originViewPercent * 1 === tempViewPercent * 1) {
       tempIndexRef.current.isReadyToEventPlay = true;
     } else {
       tempIndexRef.current.isReadyToEventPlay = false;
     }
   }, [originViewPercent, tempViewPercent]);
-  var handleTogglePlay = function handleTogglePlay() {
+  const handleTogglePlay = () => {
     if (!isPlaying && followEvent && tempViewPercent * 1 !== originViewPercent * 1) {
       // console.log("tempViewPercent",tempViewPercent);
       // console.log("originViewPercent",originViewPercent)
       pdfviewref.current.reset_viewPerecent(originViewPercent);
       // set_isPlaying((p) =>!p);
-      var a = setInterval(function () {
+      let a = setInterval(() => {
         if (tempIndexRef.current.isReadyToEventPlay) {
           clearInterval(a);
           setTimeout(function () {
-            set_isPlaying(function (p) {
-              return !p;
-            });
+            set_isPlaying(p => !p);
           }, 100);
         }
       }, 100);
     } else {
-      set_isPlaying(function (p) {
-        return !p;
-      });
+      set_isPlaying(p => !p);
     }
   };
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     handleDraw();
   }, [handleDraw]);
 
   //PDF writing 할때 쓰는것들임. 분리 필요
-  var _useState41 = (0, _react.useState)(null),
-    _useState42 = _slicedToArray(_useState41, 2),
-    jejuFontArrayBuffer = _useState42[0],
-    set_jejuFontArrayBuffer = _useState42[1];
-  (0, _react.useEffect)(function () {
-    (0, _util.getFileAsArrayBuffer)(_JejuMyeongjo.default).then(function (res_arrbuffer) {
+  const [jejuFontArrayBuffer, set_jejuFontArrayBuffer] = (0, _react.useState)(null);
+  (0, _react.useEffect)(() => {
+    (0, _util.getFileAsArrayBuffer)(_JejuMyeongjo.default).then(res_arrbuffer => {
       set_jejuFontArrayBuffer(res_arrbuffer);
     });
   }, []);
 
   //인쇄할 PDF데이터 path값에 따라서 PDFarraybuffer 보관
-  var _useState43 = (0, _react.useState)(null),
-    _useState44 = _slicedToArray(_useState43, 2),
-    pdfArrayBuffer = _useState44[0],
-    set_pdfArrayBuffer = _useState44[1];
-  (0, _react.useEffect)(function () {
+  const [pdfArrayBuffer, set_pdfArrayBuffer] = (0, _react.useState)(null);
+  (0, _react.useEffect)(() => {
     if (!path) return;
-    fetch(path).then( /*#__PURE__*/function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(res) {
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              return _context.abrupt("return", res.arrayBuffer());
-            case 1:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee);
-      }));
-      return function (_x2) {
-        return _ref2.apply(this, arguments);
-      };
-    }()).then( /*#__PURE__*/function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(buffer) {
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              set_pdfArrayBuffer(buffer);
-            case 1:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2);
-      }));
-      return function (_x3) {
-        return _ref3.apply(this, arguments);
-      };
-    }());
+    fetch(path).then(async res => {
+      return res.arrayBuffer();
+    }).then(async buffer => {
+      set_pdfArrayBuffer(buffer);
+    });
   }, [path]);
 
   //인쇄할 리더스아이로고 데이터
-  var _useState45 = (0, _react.useState)(null),
-    _useState46 = _slicedToArray(_useState45, 2),
-    readersEyeLogoArrayBuffer = _useState46[0],
-    set_readersEyeLogoArrayBuffer = _useState46[1];
-  (0, _react.useEffect)(function () {
-    fetch(_baselogo.default).then(function (r) {
-      return r.arrayBuffer();
-    }).then(function (buf) {
+  const [readersEyeLogoArrayBuffer, set_readersEyeLogoArrayBuffer] = (0, _react.useState)(null);
+  (0, _react.useEffect)(() => {
+    fetch(_baselogo.default).then(r => r.arrayBuffer()).then(buf => {
       set_readersEyeLogoArrayBuffer(buf);
     });
   }, []);
-  var handleFullScreen = function handleFullScreen() {
+  const handleFullScreen = () => {
     if (isfullscreen) {
       (0, _util.closeFullscreen)();
     } else {
-      var max = (window.screen.height / window.devicePixelRatio).toFixed(0) * 1;
+      let max = (window.screen.height / window.devicePixelRatio).toFixed(0) * 1;
       if (max !== window.innerHeight) {
         (0, _util.openFullScreen)();
         set_isfullscreen(true);
@@ -1303,102 +1211,87 @@ var PDFresultModal = function PDFresultModal(_ref) {
 
   // console.log("fixationData",fixationData)
   //pdf 인쇄
-  var handleTryPrint = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      var fontBytes, existingPdfBytes, pdfDoc, pages, firstPage, _firstPage$getSize, width, height, cw, ch, pngLogoImageBytes, pngLogoImage, aimHeight, aimScale, pngDims, href, heatmapcanvas, drawHeatmapTemp, i, temppage, imageArrayBufferHeat, heatmapBuffer, pngImageHeat, pw, pngDimsHeat, prevx, prevy, osx, osy, gazeData, size, r, _i5, d, fr, _i6, f, fixationColor, fsize, startdrawX, startdrawY, _i7, _d2, pageNum, draw, rgbobj, newPage, fontSize, title, titleFontSize, customFont, textWidth, topMargin, textMarginTop, textMarginLeft, keycount, key, agencyNametextWidth, pdfBytes, blob, blobURL, link;
-      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
-          case 0:
-            if (data) {
-              _context3.next = 2;
-              break;
-            }
-            return _context3.abrupt("return");
-          case 2:
-            if (!(!jejuFontArrayBuffer || !pdfArrayBuffer || !readersEyeLogoArrayBuffer)) {
-              _context3.next = 5;
-              break;
-            }
-            alert("준비중입니다 잠시만 기다려주세요");
-            return _context3.abrupt("return");
-          case 5:
-            set_loading(true);
-            _context3.next = 8;
-            return (0, _util.mydelay)(100);
-          case 8:
-            //폰트파일 할당
-            fontBytes = jejuFontArrayBuffer; // let pdfDoc;
-            existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
-            _context3.next = 12;
-            return _pdfLib.PDFDocument.load(existingPdfBytes, {
-              ignoreEncryption: true
-            });
-          case 12:
-            pdfDoc = _context3.sent;
-            // console.log("registerFontkit");
-            pdfDoc.registerFontkit(_fontkit.default);
-            // console.log("registerFontkitend");
+  const handleTryPrint = async () => {
+    if (!data) {
+      return;
+    }
+    if (!jejuFontArrayBuffer || !pdfArrayBuffer || !readersEyeLogoArrayBuffer) {
+      alert("준비중입니다 잠시만 기다려주세요");
+      return;
+    }
+    set_loading(true);
+    await (0, _util.mydelay)(100);
 
-            // Embed the Helvetica font
-            // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
-            // Get the first page of the document
-            // console.log("pdfDoc", pdfDoc);
+    //폰트파일 할당
+    const fontBytes = jejuFontArrayBuffer;
 
-            // const pageIndices = pdfDoc.getPageIndices();
-            // console.log("pageIndices",pageIndices);
-            if (!pdfDoc.isEncrypted) {
-              _context3.next = 18;
-              break;
-            }
-            set_loading(false);
-            alert("수정금지된 PDF 파일이라 다운로드할 수 없습니다. 수정금지 해제 후 재등록해 주시기 바랍니다. 수정금지 해지하기 (https://smallpdf.com/unlock-pdf).");
-            return _context3.abrupt("return");
-          case 18:
-            _context3.prev = 18;
-            /////PDF 오리지날 페이지의 사이즈 구하기
-            pages = pdfDoc.getPages();
-            firstPage = pages[0]; // Get the width and height of the first page
-            _firstPage$getSize = firstPage.getSize(), width = _firstPage$getSize.width, height = _firstPage$getSize.height;
-            cw = width;
-            ch = height; //base64를 Bytes 로 변환
-            ////////////////////////////////////////////////////////페이지마다 리더스아이로고 박기.
-            pngLogoImageBytes = agencyLogoArrayBuffer ? agencyLogoArrayBuffer : readersEyeLogoArrayBuffer;
-            _context3.next = 27;
-            return pdfDoc.embedPng(pngLogoImageBytes);
-          case 27:
-            pngLogoImage = _context3.sent;
-            // console.dir(pngLogoImage.width);
-            // console.dir(pngLogoImage.height);
-            console.dir(pngLogoImage);
-            aimHeight = 40;
-            aimScale = (aimHeight / pngLogoImage.height).toFixed(2) * 1;
-            pngDims = pngLogoImage.scale(aimScale);
-            console.dir(pngDims);
-            // for (let i = 0; i < pages.length; i++) {
-            //     pages[i].drawImage(pngLogoImage, {
-            //         x: 5,
-            //         y: -5 + height - pngDims.height,
-            //         width: pngDims.width,
-            //         height: pngDims.height,
-            //     })
-            // }
-            ////////////////////////////////////////////////////////
-            if (!chartOption.heatMap) {
-              _context3.next = 58;
-              break;
-            }
-            //set_pageNumber
-            href = pdfviewref.current.get_heatmapRef(); // console.log("href", href);
-            if (!href.current) {
-              _context3.next = 58;
-              break;
-            }
-            heatmapcanvas = (0, _util.findCanvasInChildren)(href.current); // console.log("canvas",canvas)
-            if (!heatmapcanvas) {
-              _context3.next = 58;
-              break;
-            }
-            drawHeatmapTemp = function drawHeatmapTemp(nowPage) {
+    // let pdfDoc;
+    const existingPdfBytes = pdfArrayBuffer; //PDF 버퍼
+
+    const pdfDoc = await _pdfLib.PDFDocument.load(existingPdfBytes, {
+      ignoreEncryption: true
+    });
+
+    // console.log("registerFontkit");
+    pdfDoc.registerFontkit(_fontkit.default);
+    // console.log("registerFontkitend");
+
+    // Embed the Helvetica font
+    // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+    // Get the first page of the document
+    // console.log("pdfDoc", pdfDoc);
+
+    // const pageIndices = pdfDoc.getPageIndices();
+    // console.log("pageIndices",pageIndices);
+    if (pdfDoc.isEncrypted) {
+      set_loading(false);
+      alert("수정금지된 PDF 파일이라 다운로드할 수 없습니다. 수정금지 해제 후 재등록해 주시기 바랍니다. 수정금지 해지하기 (https://smallpdf.com/unlock-pdf).");
+      return;
+    }
+    try {
+      /////PDF 오리지날 페이지의 사이즈 구하기
+      const pages = pdfDoc.getPages();
+      const firstPage = pages[0];
+      // Get the width and height of the first page
+      const {
+        width,
+        height
+      } = firstPage.getSize();
+      const cw = width;
+      const ch = height;
+
+      //base64를 Bytes 로 변환
+      ////////////////////////////////////////////////////////페이지마다 리더스아이로고 박기.
+      const pngLogoImageBytes = agencyLogoArrayBuffer ? agencyLogoArrayBuffer : readersEyeLogoArrayBuffer;
+      const pngLogoImage = await pdfDoc.embedPng(pngLogoImageBytes);
+
+      // console.dir(pngLogoImage.width);
+      // console.dir(pngLogoImage.height);
+      console.dir(pngLogoImage);
+      const aimHeight = 40;
+      const aimScale = (aimHeight / pngLogoImage.height).toFixed(2) * 1;
+      const pngDims = pngLogoImage.scale(aimScale);
+      console.dir(pngDims);
+      // for (let i = 0; i < pages.length; i++) {
+      //     pages[i].drawImage(pngLogoImage, {
+      //         x: 5,
+      //         y: -5 + height - pngDims.height,
+      //         width: pngDims.width,
+      //         height: pngDims.height,
+      //     })
+      // }
+      ////////////////////////////////////////////////////////
+
+      if (chartOption.heatMap) {
+        //set_pageNumber
+
+        let href = pdfviewref.current.get_heatmapRef();
+        // console.log("href", href);
+        if (href.current) {
+          let heatmapcanvas = (0, _util.findCanvasInChildren)(href.current);
+          // console.log("canvas",canvas)
+          if (heatmapcanvas) {
+            function drawHeatmapTemp(nowPage) {
               if (HI) {
                 HI.configure({
                   maxOpacity: chartOption.heatMapMaxOpacity
@@ -1408,21 +1301,23 @@ var PDFresultModal = function PDFresultModal(_ref) {
               } else {
                 return;
               }
-              var pT = 0;
-              var heatMapRadius = chartOption.heatMapRadius;
+              const pT = 0;
+              const heatMapRadius = chartOption.heatMapRadius;
               // console.log("드로힛맵")
-              var gazeData = data.gazeData;
-              var osx = offsetX * 1;
-              var osy = offsetY * 1;
+              const gazeData = data.gazeData;
+              let osx = offsetX * 1;
+              let osy = offsetY * 1;
               // console.log("드로")
-              var points = [];
-              var height_devided_width_ratio = nowPDFviewInform.height_devided_width_ratio;
-              var heatmap_w = 1728;
-              var heatpmap_h = 1728 * height_devided_width_ratio;
+              let points = [];
+              const {
+                height_devided_width_ratio
+              } = nowPDFviewInform;
+              const heatmap_w = 1728;
+              const heatpmap_h = 1728 * height_devided_width_ratio;
               if (chartOption.heatMap) {
                 // console.log("1")
-                for (var i = 0; i < gazeData.length; i++) {
-                  var d = gazeData[i];
+                for (let i = 0; i < gazeData.length; i++) {
+                  const d = gazeData[i];
                   if (pT) {
                     if (d.relTime < endTime - pT) {
                       continue;
@@ -1431,14 +1326,14 @@ var PDFresultModal = function PDFresultModal(_ref) {
                   if (d.relTime <= endTime) {
                     if (d.pdfx && d.pdfy) {
                       if (nowPage === d.pageNum) {
-                        var baseobj = {
+                        let baseobj = {
                           x: 0,
                           y: 0,
                           value: 0,
                           radius: heatMapRadius
                         };
-                        var x = Math.floor((d.pdfx + osx) * heatmap_w);
-                        var y = Math.floor((d.pdfy + osy) * heatpmap_h);
+                        let x = Math.floor((d.pdfx + osx) * heatmap_w);
+                        let y = Math.floor((d.pdfy + osy) * heatpmap_h);
                         baseobj.x = x;
                         baseobj.y = y;
                         baseobj.value = 1;
@@ -1456,318 +1351,291 @@ var PDFresultModal = function PDFresultModal(_ref) {
                 min: 0,
                 data: points
               });
-            }; //반복문으로 빼내야함.
-            i = 0;
-          case 40:
-            if (!(i < pages.length)) {
-              _context3.next = 54;
-              break;
             }
-            temppage = i + 1;
-            drawHeatmapTemp(temppage);
-            imageArrayBufferHeat = (0, _util.getCanvasImagePngBuffer)(heatmapcanvas);
-            heatmapBuffer = imageArrayBufferHeat;
-            _context3.next = 47;
-            return pdfDoc.embedPng(heatmapBuffer);
-          case 47:
-            pngImageHeat = _context3.sent;
-            //오리지날 이미지
-            // console.log("pngImageHeat",pngImageHeat)
-            pw = pngImageHeat.width; // console.log("@사진",pw,ph);
-            // console.log("@PDF",cw,ch);
-            pngDimsHeat = pngImageHeat.scale(cw / pw); //스케일된 이미지
-            pages[i].drawImage(pngImageHeat, {
-              // x: newpage.getWidth() / 2 - pngDims.width / 2,
-              // y: newpage.getHeight() / 2 - pngDims.height / 2,
-              // x: newpage.getWidth()- pngDims.width ,
-              x: 0,
-              y: height - pngDimsHeat.height,
-              width: pngDimsHeat.width,
-              height: pngDimsHeat.height
-            });
-          case 51:
-            i++;
-            _context3.next = 40;
-            break;
-          case 54:
+            //반복문으로 빼내야함.
+            for (let i = 0; i < pages.length; i++) {
+              let temppage = i + 1;
+              drawHeatmapTemp(temppage);
+              const imageArrayBufferHeat = (0, _util.getCanvasImagePngBuffer)(heatmapcanvas);
+              const heatmapBuffer = imageArrayBufferHeat;
+              const pngImageHeat = await pdfDoc.embedPng(heatmapBuffer); //오리지날 이미지
+              // console.log("pngImageHeat",pngImageHeat)
+              const {
+                width: pw
+                // , height: ph 
+              } = pngImageHeat;
+              // console.log("@사진",pw,ph);
+              // console.log("@PDF",cw,ch);
+
+              const pngDimsHeat = pngImageHeat.scale(cw / pw); //스케일된 이미지
+              pages[i].drawImage(pngImageHeat, {
+                // x: newpage.getWidth() / 2 - pngDims.width / 2,
+                // y: newpage.getHeight() / 2 - pngDims.height / 2,
+                // x: newpage.getWidth()- pngDims.width ,
+                x: 0,
+                y: height - pngDimsHeat.height,
+                width: pngDimsHeat.width,
+                height: pngDimsHeat.height
+              });
+            }
             tempIndexRef.current.needClear = true;
             resaveConfig();
             // console.log("했어");
-            _context3.next = 58;
-            break;
-          case 58:
-            //페이지마다 시선데이터 기록.
-            prevx = null;
-            prevy = null;
-            osx = offsetX * 1;
-            osy = offsetY * 1;
-            gazeData = data.gazeData;
-            size = chartOption.RPOG_size * 2 / 100;
-            r = cw * 0.01 * size; //draw rawData
-            for (_i5 = 0; chartOption.RPOG && _i5 < gazeData.length; _i5++) {
-              d = gazeData[_i5];
-              if (d.pdfx && d.pdfy) {
-                if (r) {
-                  if (prevx && prevy) {
-                    pages[d.pageNum - 1].drawLine({
-                      start: {
-                        x: (prevx + osx) * cw,
-                        y: height - (prevy + osy) * ch
-                      },
-                      end: {
-                        x: (d.pdfx + osx) * cw,
-                        y: height - (d.pdfy + osy) * ch
-                      },
-                      color: (0, _pdfLib.rgb)(1, 0, 0),
-                      opacity: 0.3,
-                      borderOpacity: 0.3,
-                      thickness: 1
-                    });
-                  } //선먼저 그린후 그리기
-
-                  pages[d.pageNum - 1].drawCircle({
-                    x: (d.pdfx + osx) * cw,
-                    y: height - (d.pdfy + osy) * ch,
-                    size: r,
-                    borderWidth: 1,
-                    // borderDashArray: [1],
-                    // borderDashPhase: 25,
-                    borderColor: (0, _pdfLib.rgb)(1, 0, 0),
-                    borderOpacity: 0.3,
-                    // fill:rgb(1,0,0)
-                    color: (0, _pdfLib.rgb)(1, 0, 0),
-                    opacity: 0.3
-                    // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                    // borderLineCap: LineCapStyle.Round,
-                  });
-                }
-
-                prevx = d.pdfx;
-                prevy = d.pdfy;
-              }
-            }
-
-            //draw Fixation
-            fr = cw * chartOption.FPOG_size * 1.5 / 10000;
-            prevx = null;
-            prevy = null;
-            for (_i6 = 0; chartOption.FPOG && _i6 < fixationData.length; _i6++) {
-              f = fixationData[_i6];
-              fixationColor = chartOption.rainBow ? (0, _pdfLib.rgb)(fixationData[_i6].color.r / 255, fixationData[_i6].color.g / 255, fixationData[_i6].color.b / 255) : (0, _pdfLib.rgb)(0, 1, 0);
-              if (fr) {
-                if (f.count >= minFixationCount) {
-                  //선그리기...
-                  if (prevx && prevy) {
-                    pages[f.pageNum_s - 1].drawLine({
-                      start: {
-                        x: (prevx + osx) * cw,
-                        y: height - (prevy + osy) * ch
-                      },
-                      end: {
-                        x: (f.x + osx) * cw,
-                        y: height - (f.y + osy) * ch
-                      },
-                      color: fixationColor,
-                      opacity: chartOption.FPOG_opacity * 1,
-                      borderOpacity: chartOption.FPOG_opacity * 1,
-                      thickness: 1
-                    });
-                  }
-
-                  //원그리기 fixation
-                  fsize = fr * Math.sqrt(f.count);
-                  pages[f.pageNum_s - 1].drawCircle({
-                    x: (f.x + osx) * cw,
-                    y: height - (f.y + osy) * ch,
-                    size: fsize,
-                    borderWidth: 1,
-                    // borderDashArray: [1],
-                    // borderDashPhase: 25,
-                    borderColor: fixationColor,
-                    borderOpacity: chartOption.FPOG_opacity * 1,
-                    // fill:rgb(1,0,0)
-                    // color: rgb(0, 1, 0),
-                    color: fixationColor,
-                    opacity: chartOption.FPOG_opacity * 1
-                    // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
-                    // borderLineCap: LineCapStyle.Round,
-                  });
-
-                  prevx = f.x;
-                  prevy = f.y;
-                }
-              }
-
-              // }
-            }
-            //draw pencil
-            _i7 = 0;
-          case 71:
-            if (!(chartOption.penPermit && _i7 < gazeData.length)) {
-              _context3.next = 81;
-              break;
-            }
-            _d2 = gazeData[_i7];
-            pageNum = _d2.pageNum;
-            draw = gazeData[_i7].draw;
-            if (draw) {
-              _context3.next = 77;
-              break;
-            }
-            return _context3.abrupt("continue", 78);
-          case 77:
-            // console.log("t",t);
-
-            if (_d2.relTime * 1 <= nowTime * 1) {
-              // console.log("그려")
-
-              // rctx.lineWidth = 0.5;
-              // rctx.strokeStyle = 'red';
-              // rctx.fillStyle = 'red';
-              if (draw.type === 'startDrawing') {
-                startdrawX = draw.x;
-                startdrawY = draw.y;
-                // rctx.beginPath();
-                // rctx.moveTo(draw.x * cw, draw.y * ch);
-              } else if (draw.type === 'draw') {
-                //hexToRgb(chartOption.penColor)
-                rgbobj = (0, _util.hexToRgb)(chartOption.penColor); // console.log("rgbobj",rgbobj)
-                if (startdrawX && startdrawY) {
-                  // rctx.lineTo(draw.x * cw, draw.y * ch);
-                  // rctx.stroke();
-                  // testdata.push(draw);
-                  pages[pageNum - 1].drawLine({
-                    start: {
-                      x: startdrawX * cw,
-                      y: height - startdrawY * ch
-                    },
-                    end: {
-                      x: draw.x * cw,
-                      y: height - draw.y * ch
-                    },
-                    color: rgbobj ? (0, _pdfLib.rgb)(rgbobj.r / 255, rgbobj.g / 255, rgbobj.b / 255) : '#0000FF',
-                    // 여기 rgb 로
-                    opacity: 1,
-                    borderOpacity: 0.3,
-                    thickness: (chartOption.penWeight / 2).toFixed(0) * 1 || 1
-                  });
-                  startdrawX = draw.x;
-                  startdrawY = draw.y;
-                } else {
-                  // startdrawX = draw.x * cw;
-                  // startdrawY = draw.y * ch;
-                  // rctx.beginPath();
-                  // rctx.moveTo(draw.x * cw, draw.y * ch);
-
-                  startdrawX = draw.x;
-                  startdrawY = draw.y;
-                }
-              } else if (draw.type === 'stopDrawing') {
-                // rctx.closePath();
-                startdrawX = null;
-                startdrawY = null;
-              }
-            }
-          case 78:
-            _i7++;
-            _context3.next = 71;
-            break;
-          case 81:
-            //PDF 맨앞 표지 만들기
-            //////새로운패이지 생성
-            newPage = pdfDoc.insertPage(0, [width, height]);
-            fontSize = 15;
-            title = "자유글 읽기 진단 결과";
-            titleFontSize = 25;
-            _context3.next = 87;
-            return pdfDoc.embedFont(fontBytes);
-          case 87:
-            customFont = _context3.sent;
-            textWidth = customFont.widthOfTextAtSize(title, titleFontSize);
-            newPage.drawText(title, {
-              x: width / 2 - textWidth / 2,
-              y: height * 3 / 5 - 1 * titleFontSize,
-              size: titleFontSize,
-              font: customFont,
-              color: (0, _pdfLib.rgb)(0, 0, 0)
-            });
-            topMargin = 15;
-            textMarginTop = 5;
-            textMarginLeft = 15;
-            keycount = 1; // const textWidth = customFont.widthOfTextAtSize(text, textSize)
-            // const textHeight = customFont.heightAtSize(textSize)
-            for (key in printPDFData) {
-              newPage.drawText("".concat(key, " : ") + printPDFData[key], {
-                x: textMarginLeft,
-                y: -topMargin - textMarginTop * keycount + height - keycount * fontSize,
-                size: fontSize,
-                font: customFont,
-                color: (0, _pdfLib.rgb)(0, 0, 0)
-              });
-              keycount++;
-            }
-            agencyNametextWidth = customFont.widthOfTextAtSize(agencyName, 25); // console.log("printPDFData['agencyName']",printPDFData['agencyName'])
-            newPage.drawText(agencyName, {
-              x: width / 2 - agencyNametextWidth / 2,
-              y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount + 3) * fontSize,
-              size: 25,
-              font: customFont,
-              color: (0, _pdfLib.rgb)(0, 0, 0)
-            });
-            newPage.drawImage(pngLogoImage, {
-              x: width / 2 - pngDims.width / 2,
-              y: -textMarginTop * (keycount + 3) + height * 3 / 8 - keycount * fontSize,
-              width: pngDims.width,
-              height: pngDims.height
-            });
-            /////////////PDF 맨앞페이지 생성끝////////
-
-            /////////////저장 다운로드/////////////
-            _context3.next = 100;
-            return pdfDoc.save({
-              updateFieldAppearances: false
-            });
-          case 100:
-            pdfBytes = _context3.sent;
-            blob = new Blob([pdfBytes], {
-              type: 'application/pdf'
-            });
-            blobURL = URL.createObjectURL(blob);
-            link = document.createElement('a');
-            link.href = blobURL;
-            link.download = downloadFileName;
-            document.body.append(link);
-            link.click();
-            set_loading(false);
-            link.remove();
-            setTimeout(function () {
-              return URL.revokeObjectURL(link.href);
-            }, 7000);
-            _context3.next = 116;
-            break;
-          case 113:
-            _context3.prev = 113;
-            _context3.t0 = _context3["catch"](18);
-            // console.log("에러",err)
-            alert(_context3.t0);
-          case 116:
-          case "end":
-            return _context3.stop();
+          } else {
+            // console.log("없어")
+          }
         }
-      }, _callee3, null, [[18, 113]]);
-    }));
-    return function handleTryPrint() {
-      return _ref4.apply(this, arguments);
-    };
-  }();
-  var handlePDFonloadCallback = function handlePDFonloadCallback(pageNum) {
+      }
+
+      //페이지마다 시선데이터 기록.
+      let prevx = null;
+      let prevy = null;
+      let osx = offsetX * 1;
+      let osy = offsetY * 1;
+      const gazeData = data.gazeData;
+      let size = chartOption.RPOG_size * 2 / 100;
+      let r = cw * 0.01 * size;
+      //draw rawData
+      for (let i = 0; chartOption.RPOG && i < gazeData.length; i++) {
+        let d = gazeData[i];
+        if (d.pdfx && d.pdfy) {
+          if (r) {
+            if (prevx && prevy) {
+              pages[d.pageNum - 1].drawLine({
+                start: {
+                  x: (prevx + osx) * cw,
+                  y: height - (prevy + osy) * ch
+                },
+                end: {
+                  x: (d.pdfx + osx) * cw,
+                  y: height - (d.pdfy + osy) * ch
+                },
+                color: (0, _pdfLib.rgb)(1, 0, 0),
+                opacity: 0.3,
+                borderOpacity: 0.3,
+                thickness: 1
+              });
+            } //선먼저 그린후 그리기
+
+            pages[d.pageNum - 1].drawCircle({
+              x: (d.pdfx + osx) * cw,
+              y: height - (d.pdfy + osy) * ch,
+              size: r,
+              borderWidth: 1,
+              // borderDashArray: [1],
+              // borderDashPhase: 25,
+              borderColor: (0, _pdfLib.rgb)(1, 0, 0),
+              borderOpacity: 0.3,
+              // fill:rgb(1,0,0)
+              color: (0, _pdfLib.rgb)(1, 0, 0),
+              opacity: 0.3
+              // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+              // borderLineCap: LineCapStyle.Round,
+            });
+          }
+
+          prevx = d.pdfx;
+          prevy = d.pdfy;
+        }
+      }
+
+      //draw Fixation
+      let fr = cw * chartOption.FPOG_size * 1.5 / 10000;
+      prevx = null;
+      prevy = null;
+      for (let i = 0; chartOption.FPOG && i < fixationData.length; i++) {
+        const f = fixationData[i];
+        const fixationColor = chartOption.rainBow ? (0, _pdfLib.rgb)(fixationData[i].color.r / 255, fixationData[i].color.g / 255, fixationData[i].color.b / 255) : (0, _pdfLib.rgb)(0, 1, 0);
+        if (fr) {
+          if (f.count >= minFixationCount) {
+            //선그리기...
+            if (prevx && prevy) {
+              pages[f.pageNum_s - 1].drawLine({
+                start: {
+                  x: (prevx + osx) * cw,
+                  y: height - (prevy + osy) * ch
+                },
+                end: {
+                  x: (f.x + osx) * cw,
+                  y: height - (f.y + osy) * ch
+                },
+                color: fixationColor,
+                opacity: chartOption.FPOG_opacity * 1,
+                borderOpacity: chartOption.FPOG_opacity * 1,
+                thickness: 1
+              });
+            }
+
+            //원그리기 fixation
+            let fsize = fr * Math.sqrt(f.count);
+            pages[f.pageNum_s - 1].drawCircle({
+              x: (f.x + osx) * cw,
+              y: height - (f.y + osy) * ch,
+              size: fsize,
+              borderWidth: 1,
+              // borderDashArray: [1],
+              // borderDashPhase: 25,
+              borderColor: fixationColor,
+              borderOpacity: chartOption.FPOG_opacity * 1,
+              // fill:rgb(1,0,0)
+              // color: rgb(0, 1, 0),
+              color: fixationColor,
+              opacity: chartOption.FPOG_opacity * 1
+              // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
+              // borderLineCap: LineCapStyle.Round,
+            });
+
+            prevx = f.x;
+            prevy = f.y;
+          }
+        }
+
+        // }
+      }
+      //draw pencil
+      let startdrawX, startdrawY;
+      for (let i = 0; chartOption.penPermit && i < gazeData.length; i++) {
+        let d = gazeData[i];
+        const {
+          pageNum
+        } = d;
+        const draw = gazeData[i].draw;
+        if (!draw) {
+          continue;
+        }
+        // console.log("t",t);
+
+        if (d.relTime * 1 <= nowTime * 1) {
+          // console.log("그려")
+
+          // rctx.lineWidth = 0.5;
+          // rctx.strokeStyle = 'red';
+          // rctx.fillStyle = 'red';
+          if (draw.type === 'startDrawing') {
+            startdrawX = draw.x;
+            startdrawY = draw.y;
+            // rctx.beginPath();
+            // rctx.moveTo(draw.x * cw, draw.y * ch);
+          } else if (draw.type === 'draw') {
+            //hexToRgb(chartOption.penColor)
+            let rgbobj = (0, _util.hexToRgb)(chartOption.penColor);
+            // console.log("rgbobj",rgbobj)
+            if (startdrawX && startdrawY) {
+              // rctx.lineTo(draw.x * cw, draw.y * ch);
+              // rctx.stroke();
+              // testdata.push(draw);
+              pages[pageNum - 1].drawLine({
+                start: {
+                  x: startdrawX * cw,
+                  y: height - startdrawY * ch
+                },
+                end: {
+                  x: draw.x * cw,
+                  y: height - draw.y * ch
+                },
+                color: rgbobj ? (0, _pdfLib.rgb)(rgbobj.r / 255, rgbobj.g / 255, rgbobj.b / 255) : '#0000FF',
+                // 여기 rgb 로
+                opacity: 1,
+                borderOpacity: 0.3,
+                thickness: (chartOption.penWeight / 2).toFixed(0) * 1 || 1
+              });
+              startdrawX = draw.x;
+              startdrawY = draw.y;
+            } else {
+              // startdrawX = draw.x * cw;
+              // startdrawY = draw.y * ch;
+              // rctx.beginPath();
+              // rctx.moveTo(draw.x * cw, draw.y * ch);
+
+              startdrawX = draw.x;
+              startdrawY = draw.y;
+            }
+          } else if (draw.type === 'stopDrawing') {
+            // rctx.closePath();
+            startdrawX = null;
+            startdrawY = null;
+          }
+        }
+      }
+
+      //PDF 맨앞 표지 만들기
+      //////새로운패이지 생성
+      const newPage = pdfDoc.insertPage(0, [width, height]);
+      const fontSize = 15;
+      const title = "자유글 읽기 진단 결과";
+      const titleFontSize = 25;
+      const customFont = await pdfDoc.embedFont(fontBytes);
+      const textWidth = customFont.widthOfTextAtSize(title, titleFontSize);
+      newPage.drawText(title, {
+        x: width / 2 - textWidth / 2,
+        y: height * 3 / 5 - 1 * titleFontSize,
+        size: titleFontSize,
+        font: customFont,
+        color: (0, _pdfLib.rgb)(0, 0, 0)
+      });
+      const topMargin = 15;
+      const textMarginTop = 5;
+      const textMarginLeft = 15;
+      let keycount = 1;
+      // const textWidth = customFont.widthOfTextAtSize(text, textSize)
+      // const textHeight = customFont.heightAtSize(textSize)
+      for (let key in printPDFData) {
+        newPage.drawText("".concat(key, " : ") + printPDFData[key], {
+          x: textMarginLeft,
+          y: -topMargin - textMarginTop * keycount + height - keycount * fontSize,
+          size: fontSize,
+          font: customFont,
+          color: (0, _pdfLib.rgb)(0, 0, 0)
+        });
+        keycount++;
+      }
+      const agencyNametextWidth = customFont.widthOfTextAtSize(agencyName, 25);
+
+      // console.log("printPDFData['agencyName']",printPDFData['agencyName'])
+      newPage.drawText(agencyName, {
+        x: width / 2 - agencyNametextWidth / 2,
+        y: -textMarginTop * (keycount + 3) + height * 3 / 8 - (keycount + 3) * fontSize,
+        size: 25,
+        font: customFont,
+        color: (0, _pdfLib.rgb)(0, 0, 0)
+      });
+      newPage.drawImage(pngLogoImage, {
+        x: width / 2 - pngDims.width / 2,
+        y: -textMarginTop * (keycount + 3) + height * 3 / 8 - keycount * fontSize,
+        width: pngDims.width,
+        height: pngDims.height
+      });
+      /////////////PDF 맨앞페이지 생성끝////////
+
+      /////////////저장 다운로드/////////////
+      const pdfBytes = await pdfDoc.save({
+        updateFieldAppearances: false
+      });
+      const blob = new Blob([pdfBytes], {
+        type: 'application/pdf'
+      });
+      const blobURL = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobURL;
+      link.download = downloadFileName;
+      document.body.append(link);
+      link.click();
+      set_loading(false);
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(link.href), 7000);
+    } catch (err) {
+      // console.log("에러",err)
+      alert(err);
+    }
+  };
+  const handlePDFonloadCallback = pageNum => {
     // console.log("@PDFonloadCallback", pageNum)
     if (PDFonloadCallback) {
       PDFonloadCallback(pageNum);
     }
     set_pdfrenderDone(true);
   };
-  var handlePageCallback = function handlePageCallback(p) {
+  const handlePageCallback = p => {
     // console.log("@pageCallback", p);
     // if(nowPage!==p){
     //     set_nowPage(p);
@@ -1777,7 +1645,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   };
 
   //PDF 사이즈 바뀔때마다 콜백옴
-  var handlePDFsizeCallback = function handlePDFsizeCallback(d) {
+  const handlePDFsizeCallback = d => {
     // console.log("d",d)
     //랜더가 끝났기때문에 pdf 사이즈를 알수 있음
     set_nowPDFviewInform(_objectSpread(_objectSpread({}, d.PDF), {}, {
@@ -1787,7 +1655,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   };
 
   //뷰 퍼센트가 바뀔때마다 콜백이옴
-  var handleViewPercentCallback = function handleViewPercentCallback(newViewPercent) {
+  const handleViewPercentCallback = newViewPercent => {
     if (!tempIndexRef.current) return;
     if (!tempIndexRef.current.prevViewPercent) {
       tempIndexRef.current.prevViewPercent = newViewPercent;
@@ -1798,15 +1666,9 @@ var PDFresultModal = function PDFresultModal(_ref) {
       }
     }
   };
-  var _useState47 = (0, _react.useState)(isPathwayPlus ? 2 : 0),
-    _useState48 = _slicedToArray(_useState47, 2),
-    toggleIndex = _useState48[0],
-    set_toggleIndex = _useState48[1];
-  var _useState49 = (0, _react.useState)(false),
-    _useState50 = _slicedToArray(_useState49, 2),
-    pdfRenderDone = _useState50[0],
-    set_pdfrenderDone = _useState50[1];
-  var isPossiblePDFDownload = (0, _react.useMemo)(function () {
+  const [toggleIndex, set_toggleIndex] = (0, _react.useState)(isPathwayPlus ? 2 : 0);
+  const [pdfRenderDone, set_pdfrenderDone] = (0, _react.useState)(false);
+  const isPossiblePDFDownload = (0, _react.useMemo)(() => {
     if (!jejuFontArrayBuffer || !pdfArrayBuffer || !readersEyeLogoArrayBuffer || !pdfRenderDone || !chartOption) {
       // console.log("확인@@@");
       // console.log(jejuFontArrayBuffer);
@@ -1820,7 +1682,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, [jejuFontArrayBuffer, pdfArrayBuffer, readersEyeLogoArrayBuffer, pdfRenderDone, chartOption]);
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "PDFresultModal",
-    onClick: function onClick() {
+    onClick: () => {
       set_showConfig(false);
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
@@ -1881,7 +1743,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
     value: nowTime,
     max: endTime,
     min: "0",
-    onChange: function onChange(e) {
+    onChange: e => {
       e.stopPropagation();
       set_nowTime(e.target.value * 1);
     }
@@ -1910,7 +1772,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
     selBtnIndex: toggleIndex,
     btnArr: [{
       Label: '응시',
-      onClick: function onClick() {
+      onClick: () => {
         set_toggleIndex(0);
         chartOption.RPOG = false;
         chartOption.heatMap = false;
@@ -1920,7 +1782,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
       }
     }, {
       Label: '순서',
-      onClick: function onClick() {
+      onClick: () => {
         if (isPathwayPlus) {
           set_toggleIndex(1);
           chartOption.RPOG = false;
@@ -1934,7 +1796,7 @@ var PDFresultModal = function PDFresultModal(_ref) {
       }
     }, {
       Label: '히트맵',
-      onClick: function onClick() {
+      onClick: () => {
         if (isPathwayPlus) {
           set_toggleIndex(2);
           chartOption.RPOG = false;
@@ -1949,10 +1811,8 @@ var PDFresultModal = function PDFresultModal(_ref) {
   })), /*#__PURE__*/_react.default.createElement("button", {
     className: "showControllerBtn ".concat(!hideController && 'selected'),
     "data-tip": "\uC81C\uC5B4\uD310 \uBCF4\uAE30",
-    onClick: function onClick() {
-      set_hideController(function (h) {
-        return !h;
-      });
+    onClick: () => {
+      set_hideController(h => !h);
     }
   }, /*#__PURE__*/_react.default.createElement(_svg.RemoconSVG, null)), /*#__PURE__*/_react.default.createElement("div", {
     style: {
@@ -1961,11 +1821,9 @@ var PDFresultModal = function PDFresultModal(_ref) {
   }, /*#__PURE__*/_react.default.createElement("button", {
     className: "configBtn ".concat(showConfig && 'selected'),
     "data-tip": "\uC124\uC815",
-    onClick: function onClick(e) {
+    onClick: e => {
       e.stopPropagation();
-      set_showConfig(function (c) {
-        return !c;
-      });
+      set_showConfig(c => !c);
     }
   }, /*#__PURE__*/_react.default.createElement("svg", {
     className: showConfig ? "configArea config selected" : "configArea config",
@@ -2044,5 +1902,4 @@ var PDFresultModal = function PDFresultModal(_ref) {
     border: true
   }));
 };
-var _default = PDFresultModal;
-exports.default = _default;
+var _default = exports.default = PDFresultModal;

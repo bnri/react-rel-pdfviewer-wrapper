@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-var RemoconSVG = function RemoconSVG() {
+const RemoconSVG = () => {
   return /*#__PURE__*/_react.default.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     xmlnsXlink: "http://www.w3.org/1999/xlink",
@@ -66,5 +66,4 @@ var RemoconSVG = function RemoconSVG() {
     transform: " matrix(1 0 0 1 0 0) "
   })));
 };
-var _default = RemoconSVG;
-exports.default = _default;
+var _default = exports.default = RemoconSVG;
