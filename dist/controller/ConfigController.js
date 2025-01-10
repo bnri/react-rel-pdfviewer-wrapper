@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _react = _interopRequireWildcard(require("react"));
 var _svg = require("../svg");
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure " + obj); }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function _objectDestructuringEmpty(t) { if (null == t) throw new TypeError("Cannot destructure " + t); }
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 const ConfigController = _ref => {
   let props = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
   const {
@@ -18,7 +18,6 @@ const ConfigController = _ref => {
     ChartOption,
     followEvent,
     set_followEvent,
-    isPathwayPlus,
     autoReplay,
     set_autoReplay
   } = props;
@@ -74,12 +73,8 @@ const ConfigController = _ref => {
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
     onClick: () => {
-      if (isPathwayPlus) {
-        ChartOption.heatMap = !ChartOption.heatMap;
-        resaveConfig();
-      } else {
-        alert("권한이 없습니다");
-      }
+      ChartOption.heatMap = !ChartOption.heatMap;
+      resaveConfig();
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "c_label"
@@ -241,12 +236,8 @@ const ConfigController = _ref => {
   }), /*#__PURE__*/_react.default.createElement("label", null)))), /*#__PURE__*/_react.default.createElement("div", {
     className: "oneConfig",
     onClick: () => {
-      if (isPathwayPlus) {
-        ChartOption.rainBow = !ChartOption.rainBow;
-        resaveConfig();
-      } else {
-        alert("권한이 없습니다");
-      }
+      ChartOption.rainBow = !ChartOption.rainBow;
+      resaveConfig();
     },
     "data-tip": "\uD398\uC774\uC9C0\uBCC4 \uC751\uC2DC\uC758 \uC21C\uC11C\uC5D0 \uB530\uB77C \uC751\uC2DC\uC758 \uC0C9\uC744 \uBB34\uC9C0\uAC1C\uC21C\uC11C\uB85C \uD45C\uD604"
   }, /*#__PURE__*/_react.default.createElement("div", {

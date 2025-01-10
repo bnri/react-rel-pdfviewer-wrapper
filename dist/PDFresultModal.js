@@ -18,16 +18,16 @@ var _controller = require("./controller");
 var _svg = require("./svg");
 var h337 = _interopRequireWildcard(require("heatmap.js"));
 var _MultipleToggle = _interopRequireDefault(require("./component/multipletoggle/MultipleToggle"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure " + obj); }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); } // import readerseyelogo from "./img/readereyelogo.png";
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _objectDestructuringEmpty(t) { if (null == t) throw new TypeError("Cannot destructure " + t); }
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); } // import readerseyelogo from "./img/readereyelogo.png";
 // import { ReactComponent as RemoconSVG } from "./img/remotecontroller.svg";
 const PDFresultModal = _ref => {
   let props = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
@@ -47,7 +47,6 @@ const PDFresultModal = _ref => {
     pencolor,
     penpermit,
     hideRemocon,
-    isPathwayPlus,
     agencyLogoArrayBuffer,
     agencyName
   } = props;
@@ -78,9 +77,9 @@ const PDFresultModal = _ref => {
   //차트 옵션. 톱니바퀴
   const [showConfig, set_showConfig] = (0, _react.useState)(false);
   const [chartOption, set_chartOption] = (0, _react.useState)(null);
-  const resaveConfig = () => {
+  const resaveConfig = (0, _react.useCallback)(() => {
     set_chartOption(JSON.parse(JSON.stringify(chartOption)));
-  };
+  }, [chartOption]);
 
   //문서내의 temp offset
   const [offsetX, set_offsetX] = (0, _react.useState)("0.00");
@@ -192,7 +191,6 @@ const PDFresultModal = _ref => {
           };
           // console.log("새로운fixation생성?",rawGaze.length,i);
         }
-
         if (i + 1 === rawGaze.length) {
           //맨마지막이라면 또 넣어주자
           // console.log("맨마지막???????")
@@ -360,62 +358,34 @@ const PDFresultModal = _ref => {
     let a = (0, _util.getMedian)(saccadeArr);
     let newval = (a / cw).toFixed(6) * 1;
     // console.log("------------------------SAF차트옵션셋팅딱한번")
-    if (isPathwayPlus) {
-      set_chartOption({
-        heatMap: true,
-        heatMapMax: 20,
-        heatMapRadius: 40,
-        heatMapMaxOpacity: 0.7,
-        RPOG: false,
-        RPOG_size: 10,
-        RPOG_line: true,
-        FPOG: false,
-        FPOG_size: (20 * newval * 33.3333).toFixed(0),
-        FPOG_line: true,
-        FPOG_opacity: 0.3,
-        FPOG_number: false,
-        FPOG_number_size: 1.7,
-        rainBow: true,
-        GazePastRange: 0,
-        //0인경우 전체
-        ChartPastRange: 20,
-        //0인경우 전체
 
-        playSpeed: 1,
-        drawFPS: 30,
-        penPermit: penpermit ? penpermit * 1 : 1,
-        penColor: pencolor ? pencolor : '#FF0000',
-        penWeight: penweight ? penweight : 1 //유저가 PDF에 펜으로 글씨 쓴것.
-      });
-    } else {
-      set_chartOption({
-        heatMap: false,
-        heatMapMax: 20,
-        heatMapRadius: 40,
-        heatMapMaxOpacity: 0.7,
-        RPOG: false,
-        RPOG_size: 10,
-        RPOG_line: true,
-        FPOG: true,
-        FPOG_size: (20 * newval * 33.3333).toFixed(0),
-        FPOG_line: true,
-        FPOG_opacity: 0.3,
-        FPOG_number: false,
-        FPOG_number_size: 1.7,
-        rainBow: false,
-        GazePastRange: 0,
-        //0인경우 전체
-        ChartPastRange: 20,
-        //0인경우 전체
+    set_chartOption({
+      heatMap: false,
+      heatMapMax: 20,
+      heatMapRadius: 40,
+      heatMapMaxOpacity: 0.7,
+      RPOG: false,
+      RPOG_size: 10,
+      RPOG_line: true,
+      FPOG: true,
+      FPOG_size: (20 * newval * 33.3333).toFixed(0),
+      FPOG_line: true,
+      FPOG_opacity: 0.3,
+      FPOG_number: false,
+      FPOG_number_size: 1.7,
+      rainBow: true,
+      GazePastRange: 0,
+      //0인경우 전체
+      ChartPastRange: 20,
+      //0인경우 전체
 
-        playSpeed: 1,
-        drawFPS: 30,
-        penPermit: penpermit ? penpermit * 1 : 1,
-        penColor: pencolor ? pencolor : '#FF0000',
-        penWeight: penweight ? penweight : 1 //유저가 PDF에 펜으로 글씨 쓴것.
-      });
-    }
-  }, [fixationData, nowPDFviewInform, penpermit, pencolor, penweight, isPathwayPlus]);
+      playSpeed: 1,
+      drawFPS: 30,
+      penPermit: penpermit ? penpermit * 1 : 1,
+      penColor: pencolor ? pencolor : '#FF0000',
+      penWeight: penweight ? penweight : 1 //유저가 PDF에 펜으로 글씨 쓴것.
+    });
+  }, [fixationData, nowPDFviewInform, penpermit, pencolor, penweight]);
   const fd_inform = (0, _react.useMemo)(() => {
     if (!fixationData) return;
     let sumfd = 0;
@@ -1150,6 +1120,14 @@ const PDFresultModal = _ref => {
     }
   }, [originViewPercent, tempViewPercent]);
   const handleTogglePlay = () => {
+    if (chartOption.heatMap) {
+      set_toggleIndex(1);
+      chartOption.RPOG = false;
+      chartOption.heatMap = false;
+      chartOption.FPOG = true;
+      chartOption.rainBow = true;
+      resaveConfig();
+    }
     if (!isPlaying && followEvent && tempViewPercent * 1 !== originViewPercent * 1) {
       // console.log("tempViewPercent",tempViewPercent);
       // console.log("originViewPercent",originViewPercent)
@@ -1433,7 +1411,6 @@ const PDFresultModal = _ref => {
               // borderLineCap: LineCapStyle.Round,
             });
           }
-
           prevx = d.pdfx;
           prevy = d.pdfy;
         }
@@ -1484,7 +1461,6 @@ const PDFresultModal = _ref => {
               // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
               // borderLineCap: LineCapStyle.Round,
             });
-
             prevx = f.x;
             prevy = f.y;
           }
@@ -1666,20 +1642,33 @@ const PDFresultModal = _ref => {
       }
     }
   };
-  const [toggleIndex, set_toggleIndex] = (0, _react.useState)(isPathwayPlus ? 2 : 0);
+  const [toggleIndex, set_toggleIndex] = (0, _react.useState)(1);
   const [pdfRenderDone, set_pdfrenderDone] = (0, _react.useState)(false);
   const isPossiblePDFDownload = (0, _react.useMemo)(() => {
-    if (!jejuFontArrayBuffer || !pdfArrayBuffer || !readersEyeLogoArrayBuffer || !pdfRenderDone || !chartOption) {
+    if (isPlaying || !jejuFontArrayBuffer || !pdfArrayBuffer || !readersEyeLogoArrayBuffer || !pdfRenderDone || !chartOption) {
       // console.log("확인@@@");
       // console.log(jejuFontArrayBuffer);
       // console.log(pdfArrayBuffer);
       // console.log(readersEyeLogoArrayBuffer);
-      //#@!
+
       return false;
     } else {
       return true;
     }
-  }, [jejuFontArrayBuffer, pdfArrayBuffer, readersEyeLogoArrayBuffer, pdfRenderDone, chartOption]);
+  }, [jejuFontArrayBuffer, pdfArrayBuffer, readersEyeLogoArrayBuffer, pdfRenderDone, chartOption, isPlaying]);
+  (0, _react.useEffect)(() => {
+    if (isPlaying) {
+      if (chartOption.heatMap) {
+        set_isPlaying(false);
+        set_toggleIndex(2);
+        chartOption.RPOG = false;
+        chartOption.heatMap = true;
+        chartOption.FPOG = false;
+        chartOption.rainBow = false;
+        resaveConfig();
+      }
+    }
+  }, [isPlaying, chartOption, resaveConfig]);
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "PDFresultModal",
     onClick: () => {
@@ -1783,29 +1772,21 @@ const PDFresultModal = _ref => {
     }, {
       Label: '순서',
       onClick: () => {
-        if (isPathwayPlus) {
-          set_toggleIndex(1);
-          chartOption.RPOG = false;
-          chartOption.heatMap = false;
-          chartOption.FPOG = true;
-          chartOption.rainBow = true;
-          resaveConfig();
-        } else {
-          alert("권한이 없습니다");
-        }
+        set_toggleIndex(1);
+        chartOption.RPOG = false;
+        chartOption.heatMap = false;
+        chartOption.FPOG = true;
+        chartOption.rainBow = true;
+        resaveConfig();
       }
     }, {
       Label: '히트맵',
       onClick: () => {
-        if (isPathwayPlus) {
-          set_toggleIndex(2);
-          chartOption.RPOG = false;
-          chartOption.heatMap = true;
-          chartOption.FPOG = false;
-          resaveConfig();
-        } else {
-          alert("권한이 없습니다");
-        }
+        set_toggleIndex(2);
+        chartOption.RPOG = false;
+        chartOption.heatMap = true;
+        chartOption.FPOG = false;
+        resaveConfig();
       }
     }]
   })), /*#__PURE__*/_react.default.createElement("button", {
@@ -1839,7 +1820,6 @@ const PDFresultModal = _ref => {
   }, /*#__PURE__*/_react.default.createElement("g", null), /*#__PURE__*/_react.default.createElement("g", null, /*#__PURE__*/_react.default.createElement("path", {
     d: "M22.2,14.4L21,13.7c-1.3-0.8-1.3-2.7,0-3.5l1.2-0.7c1-0.6,1.3-1.8,0.7-2.7l-1-1.7c-0.6-1-1.8-1.3-2.7-0.7   L18,5.1c-1.3,0.8-3-0.2-3-1.7V2c0-1.1-0.9-2-2-2h-2C9.9,0,9,0.9,9,2v1.3c0,1.5-1.7,2.5-3,1.7L4.8,4.4c-1-0.6-2.2-0.2-2.7,0.7   l-1,1.7C0.6,7.8,0.9,9,1.8,9.6L3,10.3C4.3,11,4.3,13,3,13.7l-1.2,0.7c-1,0.6-1.3,1.8-0.7,2.7l1,1.7c0.6,1,1.8,1.3,2.7,0.7L6,18.9   c1.3-0.8,3,0.2,3,1.7V22c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2v-1.3c0-1.5,1.7-2.5,3-1.7l1.2,0.7c1,0.6,2.2,0.2,2.7-0.7l1-1.7   C23.4,16.2,23.1,15,22.2,14.4z M12,16c-2.2,0-4-1.8-4-4c0-2.2,1.8-4,4-4s4,1.8,4,4C16,14.2,14.2,16,12,16z"
   })))), chartOption && /*#__PURE__*/_react.default.createElement(_controller.ConfigController, {
-    isPathwayPlus: isPathwayPlus,
     resaveConfig: resaveConfig,
     showConfig: showConfig,
     ChartOption: chartOption,

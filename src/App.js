@@ -118,7 +118,7 @@ function App() {
           penpermit={1}
           hideRemocon={false}
           // agencyLogoArrayBuffer={}
-          isPathwayPlus={true}
+          // isPathwayPlus={true} //이제안씀
         />
 
       }

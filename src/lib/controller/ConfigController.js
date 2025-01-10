@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { CheckSVG, ChevronLeftSVG, ChevronRightSVG } from "../svg";
 
 const ConfigController = ({ ...props }) => {
-    const { resaveConfig, showConfig, ChartOption ,followEvent,set_followEvent ,isPathwayPlus,autoReplay
-    ,set_autoReplay} = props;
+    const { resaveConfig, showConfig, ChartOption, followEvent, set_followEvent, autoReplay
+        , set_autoReplay } = props;
     const [, forceUpdate] = useState();
     useEffect(() => {
         forceUpdate({});
@@ -76,13 +76,10 @@ const ConfigController = ({ ...props }) => {
             <div
                 className="oneConfig"
                 onClick={() => {
-                    if(isPathwayPlus){
-                        ChartOption.heatMap = !ChartOption.heatMap;
-                        resaveConfig();
-                    }
-                    else{
-                        alert("권한이 없습니다")
-                    }
+
+                    ChartOption.heatMap = !ChartOption.heatMap;
+                    resaveConfig();
+
 
                 }}
             >
@@ -131,7 +128,7 @@ const ConfigController = ({ ...props }) => {
 
 
             <div className="oneConfig">
-                <div className="c_label">시선 크기&nbsp;<span style={{fontSize:'7px'}}>{ChartOption.RPOG_size}</span></div>
+                <div className="c_label">시선 크기&nbsp;<span style={{ fontSize: '7px' }}>{ChartOption.RPOG_size}</span></div>
                 <div className="c_data">
                     <input
                         type="range"
@@ -182,7 +179,7 @@ const ConfigController = ({ ...props }) => {
             </div>
 
             <div className="oneConfig">
-                <div className="c_label">응시 크기&nbsp;<span style={{fontSize:'7px'}}>{ChartOption.FPOG_size}</span></div>
+                <div className="c_label">응시 크기&nbsp;<span style={{ fontSize: '7px' }}>{ChartOption.FPOG_size}</span></div>
                 <div className="c_data">
                     <input
                         type="range"
@@ -198,7 +195,7 @@ const ConfigController = ({ ...props }) => {
                     />
                 </div>
             </div>
-       
+
             <div
                 className="oneConfig"
                 onClick={() => {
@@ -221,17 +218,14 @@ const ConfigController = ({ ...props }) => {
             <div
                 className="oneConfig"
                 onClick={() => {
-          
-                    if(isPathwayPlus){
-                        ChartOption.rainBow = !ChartOption.rainBow;
-                        resaveConfig();
-                    }
-                    else{
-                        alert("권한이 없습니다");
-                    }
+
+
+                    ChartOption.rainBow = !ChartOption.rainBow;
+                    resaveConfig();
+
 
                 }}
-                  data-tip="페이지별 응시의 순서에 따라 응시의 색을 무지개순서로 표현"
+                data-tip="페이지별 응시의 순서에 따라 응시의 색을 무지개순서로 표현"
             >
                 <div className="c_label">응시 무지개</div>
                 <div className="c_data">
@@ -242,7 +236,7 @@ const ConfigController = ({ ...props }) => {
                 </div>
             </div>
             <div className="oneConfig">
-                <div className="c_label">응시 투명도&nbsp;<span style={{fontSize:'7px'}}>{ChartOption.FPOG_opacity}</span></div>
+                <div className="c_label">응시 투명도&nbsp;<span style={{ fontSize: '7px' }}>{ChartOption.FPOG_opacity}</span></div>
                 <div className="c_data">
                     <input
                         type="range"
@@ -293,7 +287,7 @@ const ConfigController = ({ ...props }) => {
                 </div>
             </div>
             <div className="oneConfig borderBottom">
-                <div className="c_label">응시 순서 크기&nbsp;<span style={{fontSize:'7px'}}>{ChartOption.FPOG_number_size}</span></div>
+                <div className="c_label">응시 순서 크기&nbsp;<span style={{ fontSize: '7px' }}>{ChartOption.FPOG_number_size}</span></div>
                 <div className="c_data">
                     <input
                         type="range"
@@ -368,9 +362,9 @@ const ConfigController = ({ ...props }) => {
             <div
                 className="oneConfig"
                 onClick={() => {
-                    set_followEvent(f=>!f)
+                    set_followEvent(f => !f)
                 }}
-                 data-tip="재생 시, 측정당시의 [PDF view Page , 문서배율 , 스크롤 위치]를 측정시 환경과 동일하게 재생"
+                data-tip="재생 시, 측정당시의 [PDF view Page , 문서배율 , 스크롤 위치]를 측정시 환경과 동일하게 재생"
             >
                 <div className="c_label">측정환경 모방</div>
                 <div className="c_data">
@@ -383,9 +377,9 @@ const ConfigController = ({ ...props }) => {
             <div
                 className="oneConfig"
                 onClick={() => {
-                    set_autoReplay(f=>!f)
+                    set_autoReplay(f => !f)
                 }}
-                 data-tip="반복재생"
+                data-tip="반복재생"
             >
                 <div className="c_label">반복재생</div>
                 <div className="c_data">

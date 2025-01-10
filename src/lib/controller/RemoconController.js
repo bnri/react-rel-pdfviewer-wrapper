@@ -5,11 +5,11 @@ import { KeyboardLeftArrow, PDFSVG } from "../svg";
 const RemoconController = ({ ...props }) => {
     const { hideController, handleTryPrint, fd_inform
         , offsetX, offsetY, set_offsetX, set_offsetY
-        ,originViewPercent,
+        , originViewPercent,
 
         isPossiblePDFDownload
     } = props;
-   
+
 
 
     const [visibility, set_visibility] = useState('visible');
@@ -74,15 +74,15 @@ const RemoconController = ({ ...props }) => {
                         </div>
                     </div>
 
-                    <div className="oneConfig downloadpdf" 
-                            style={{
-                                background:isPossiblePDFDownload?'transparent':'gray',
-                                cursor:isPossiblePDFDownload?'pointer':'not-allowed'
-                            }}
-                    onClick={()=>{
-                        if(isPossiblePDFDownload){
-                            handleTryPrint();
-                        }
+                    <div className="oneConfig downloadpdf"
+                        style={{
+                            background: isPossiblePDFDownload ? 'transparent' : 'gray',
+                            cursor: isPossiblePDFDownload ? 'pointer' : 'not-allowed'
+                        }}
+                        onClick={() => {
+                            if (isPossiblePDFDownload) {
+                                handleTryPrint();
+                            }
 
                         }} data-tip="시선이동이 표현된 PDF를 다운로드 합니다.">
                         <PDFSVG />&nbsp;&nbsp;PDF다운로드

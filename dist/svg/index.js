@@ -45,4 +45,4 @@ var _ChevronLeftSVG = _interopRequireDefault(require("./ChevronLeftSVG"));
 var _ChevronRightSVG = _interopRequireDefault(require("./ChevronRightSVG"));
 var _PDFSVG = _interopRequireDefault(require("./PDFSVG"));
 var _KeyboardLeftArrow = _interopRequireDefault(require("./KeyboardLeftArrow"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
