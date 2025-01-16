@@ -182,18 +182,9 @@ const PDFresultModal = ({ ...props }) => {
     const [fminx] = useState(1);
     const [fminy] = useState(1); //커질수록 fixation합처짐
     const [minFixationCount] = useState(3);
-    //fixationData는 darw시에도 사용됨.
-    const fixationData = useMemo(() => {
-        let fa = [];
-        let sumPDF_x = 0;
-        let sumPDF_y = 0;
-        // console.log("data", data);
-        const rawGaze = data.gazeData;
-        const targetKeys = ["pdfx", "pdfy"];
-        // const newKeyNames = ["smoothed_pdfx", "smoothed_pdfy"];
-        fivePointSmoothingWithKeys(rawGaze,targetKeys,targetKeys);
 
-        //#@!
+    const {stdPDFX2,stdPDFY2} = useMemo(()=>{
+        const rawGaze = data.gazeData;
         const pdfxDiffArr=[];
         const pdfyDiffArr=[];
         for (let i = 1; i < rawGaze.length; i++) {
@@ -228,6 +219,55 @@ const PDFresultModal = ({ ...props }) => {
 
         const stdPDFX2=calculateStd(pdfxDiffArr2) * 0.9;
         const stdPDFY2=calculateStd(pdfyDiffArr2) * 1;
+        return{
+            stdPDFX2,stdPDFY2
+        }
+    },[data])
+    //fixationData는 darw시에도 사용됨.
+    const fixationData = useMemo(() => {
+        let fa = [];
+        let sumPDF_x = 0;
+        let sumPDF_y = 0;
+        // console.log("data", data);
+        const rawGaze = data.gazeData;
+        // const targetKeys = ["pdfx", "pdfy"];
+        // const newKeyNames = ["smoothed_pdfx", "smoothed_pdfy"];
+        // fivePointSmoothingWithKeys(rawGaze,targetKeys,targetKeys);
+
+        // const pdfxDiffArr=[];
+        // const pdfyDiffArr=[];
+        // for (let i = 1; i < rawGaze.length; i++) {
+        //     let prevD = rawGaze[i-1];
+        //     let nowD = rawGaze[i];
+        //     if(prevD.pdfx&& nowD.pdfx){
+        //         pdfxDiffArr.push(nowD.pdfx-prevD.pdfx);
+        //         pdfyDiffArr.push(nowD.pdfy-prevD.pdfy);
+        //     }
+        // }
+        // const stdPDFX1=calculateStd(pdfxDiffArr);
+        // const stdPDFY1=calculateStd(pdfyDiffArr);
+        // // console.log("stdPDFX",stdPDFX1);
+        // // console.log("stdPDFY",stdPDFY1);
+        // const pdfxDiffArr2=[];
+        // const pdfyDiffArr2=[];
+        // for (let i = 1; i < rawGaze.length; i++) {
+        //     let prevD = rawGaze[i-1];
+        //     let nowD = rawGaze[i];
+        //     if(prevD.pdfx&& nowD.pdfx){
+        //        const diffX = nowD.pdfx-prevD.pdfx;
+        //        const diffY=nowD.pdfy-prevD.pdfy
+        //        if(diffX<=stdPDFX1*0.2){
+        //         pdfxDiffArr2.push(diffX);
+        //        }
+        //        if(diffY<=stdPDFY1*0.2){
+        //         pdfyDiffArr2.push(diffY);
+        //        }
+
+        //     }
+        // }
+
+        // const stdPDFX2=calculateStd(pdfxDiffArr2) * 0.9;
+        // const stdPDFY2=calculateStd(pdfyDiffArr2) * 1;
         // console.log("stdPDFX2",stdPDFX2);
         // console.log("stdPDFY2",stdPDFY2);
 
@@ -245,6 +285,7 @@ const PDFresultModal = ({ ...props }) => {
         const ydiff_f = fminy / 100 * heightmul;
         const fixationCreteria = 10;
 
+        
         // console.log("xdiff_f",xdiff_f)
         // console.log("ydiff_f",ydiff_f)
         //거리기준 
@@ -465,7 +506,7 @@ const PDFresultModal = ({ ...props }) => {
         }
         // console.log("fa",fa)
         return fa;
-    }, [data, fminx, fminy, minFixationCount]);
+    }, [data, fminx, fminy, minFixationCount ,stdPDFX2,stdPDFY2]);
 
 
     //딱한번만..default차트옵션을 할당...
@@ -498,6 +539,7 @@ const PDFresultModal = ({ ...props }) => {
         let a = getMedian(saccadeArr);
         let newval = (a / cw).toFixed(6) * 1;
         // console.log("------------------------SAF차트옵션셋팅딱한번")
+        //stdPDFX2,stdPDFY2
 
         set_chartOption({
             heatMap: false,
@@ -510,7 +552,7 @@ const PDFresultModal = ({ ...props }) => {
             RPOG_line: true,
 
             FPOG: true,
-            FPOG_size: (20 * newval * 33.3333).toFixed(0),
+            FPOG_size: (20 * (stdPDFX2+stdPDFY2) * 60).toFixed(0),
             FPOG_line: true,
             FPOG_opacity: 0.3,
             FPOG_number: false,
@@ -535,7 +577,7 @@ const PDFresultModal = ({ ...props }) => {
 
 
 
-    }, [fixationData, nowPDFviewInform, penpermit, pencolor, penweight])
+    }, [stdPDFX2,stdPDFY2,fixationData, nowPDFviewInform, penpermit, pencolor, penweight])
 
 
 
