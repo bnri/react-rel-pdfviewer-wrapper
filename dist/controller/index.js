@@ -17,4 +17,4 @@ Object.defineProperty(exports, "RemoconController", {
 });
 var _ConfigController = _interopRequireDefault(require("./ConfigController"));
 var _RemoconController = _interopRequireDefault(require("./RemoconController"));
-function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

@@ -21,7 +21,59 @@ import { RemoconSVG } from "./svg";
 import * as h337 from "heatmap.js";
 import MultipleToggle from "./component/multipletoggle/MultipleToggle";
 
-
+const calculateStd = (arr) => {
+    if (arr.length === 0) return 0; // 빈 배열일 경우 0 반환
+  
+    const mean = arr.reduce((acc, val) => acc + val, 0) / arr.length;
+    const variance = arr.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / arr.length;
+  
+    return Math.sqrt(variance); // 표준편차는 분산의 제곱근
+  };
+  function fivePointSmoothingWithKeys(arr, targetKeyArr, newKeyNameArr) {
+    if (targetKeyArr.length !== newKeyNameArr.length) {
+      throw new Error("targetKeyArr and newKeyNameArr must have the same length.");
+    }
+  
+    return arr.map((obj, index) => {
+      const newObj = { ...obj };
+  
+      targetKeyArr.forEach((targetKey, keyIndex) => {
+        const newKeyName = newKeyNameArr[keyIndex];
+  
+        if (index >= 4) {
+          const recentValues = Array.from({ length: 4 }, (_, i) => arr[index - i - 1][targetKey]);
+          const currentValue = obj[targetKey];
+  
+          const valueArr = [...recentValues, currentValue].sort((a, b) => a - b);
+          const nullCount = valueArr.filter((val) => val == null).length;
+  
+          if (nullCount === 0) {
+            newObj[newKeyName] = valueArr[1];
+          } else if (nullCount === 1) {
+            newObj[newKeyName] = (valueArr[2] + valueArr[3]) / 2;
+          } else if (nullCount === 2) {
+            newObj[newKeyName] = valueArr[3];
+          } else if (nullCount === 3) {
+            newObj[newKeyName] = (valueArr[3] + valueArr[4]) / 2;
+          } else if (nullCount === 4) {
+            newObj[newKeyName] = valueArr[4];
+          } else {
+            newObj[newKeyName] = currentValue;
+          }
+        } else {
+          // 첫 4개는 그대로 복사
+          newObj[newKeyName] = obj[targetKey];
+        }
+  
+        // 동일한 키 이름이 존재하면 덮어쓰기
+        if (targetKey === newKeyName) {
+          newObj[targetKey] = newObj[newKeyName];
+        }
+      });
+  
+      return newObj;
+    });
+  }
 const PDFresultModal = ({ ...props }) => {
     const {
         onClose,
@@ -128,7 +180,7 @@ const PDFresultModal = ({ ...props }) => {
 
     //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
     const [fminx] = useState(1);
-    const [fminy] = useState(1);
+    const [fminy] = useState(1); //커질수록 fixation합처짐
     const [minFixationCount] = useState(3);
     //fixationData는 darw시에도 사용됨.
     const fixationData = useMemo(() => {
@@ -137,6 +189,49 @@ const PDFresultModal = ({ ...props }) => {
         let sumPDF_y = 0;
         // console.log("data", data);
         const rawGaze = data.gazeData;
+        const targetKeys = ["pdfx", "pdfy"];
+        // const newKeyNames = ["smoothed_pdfx", "smoothed_pdfy"];
+        fivePointSmoothingWithKeys(rawGaze,targetKeys,targetKeys);
+
+        //#@!
+        const pdfxDiffArr=[];
+        const pdfyDiffArr=[];
+        for (let i = 1; i < rawGaze.length; i++) {
+            let prevD = rawGaze[i-1];
+            let nowD = rawGaze[i];
+            if(prevD.pdfx&& nowD.pdfx){
+                pdfxDiffArr.push(nowD.pdfx-prevD.pdfx);
+                pdfyDiffArr.push(nowD.pdfy-prevD.pdfy);
+            }
+        }
+        const stdPDFX1=calculateStd(pdfxDiffArr);
+        const stdPDFY1=calculateStd(pdfyDiffArr);
+        // console.log("stdPDFX",stdPDFX1);
+        // console.log("stdPDFY",stdPDFY1);
+        const pdfxDiffArr2=[];
+        const pdfyDiffArr2=[];
+        for (let i = 1; i < rawGaze.length; i++) {
+            let prevD = rawGaze[i-1];
+            let nowD = rawGaze[i];
+            if(prevD.pdfx&& nowD.pdfx){
+               const diffX = nowD.pdfx-prevD.pdfx;
+               const diffY=nowD.pdfy-prevD.pdfy
+               if(diffX<=stdPDFX1*0.2){
+                pdfxDiffArr2.push(diffX);
+               }
+               if(diffY<=stdPDFY1*0.2){
+                pdfyDiffArr2.push(diffY);
+               }
+
+            }
+        }
+
+        const stdPDFX2=calculateStd(pdfxDiffArr2) * 0.9;
+        const stdPDFY2=calculateStd(pdfyDiffArr2) * 1;
+        // console.log("stdPDFX2",stdPDFX2);
+        // console.log("stdPDFY2",stdPDFY2);
+
+
 
         let heightmul = data.pdfSize.height / data.screenSize.height;
         if (heightmul <= 1) heightmul = 1;
@@ -148,6 +243,10 @@ const PDFresultModal = ({ ...props }) => {
         let prevy = null;
         const xdiff_f = fminx / 100;
         const ydiff_f = fminy / 100 * heightmul;
+        const fixationCreteria = 10;
+
+        // console.log("xdiff_f",xdiff_f)
+        // console.log("ydiff_f",ydiff_f)
         //거리기준 
         for (let i = 0; i < rawGaze.length; i++) {
             //거리가 가까운 PDF 를 찾아야하는데..
@@ -182,7 +281,8 @@ const PDFresultModal = ({ ...props }) => {
                     //예외처리 없는
                     continue;
                 }
-                else if (xdiff * 1 <= xdiff_f * 1 && ydiff * 1 <= ydiff_f * 1) {
+                // else if (xdiff * 1 <= xdiff_f * 1 && ydiff * 1 <= ydiff_f * 1) {
+                else if(xdiff*1 <=stdPDFX2 && ydiff*1 <= stdPDFY2){
                     // console.log("ydiff_f",ydiff_f,ydiff);
                     // console.log("xdiff_f",xdiff_f,xdiff);
                     //만약 거리가 가까우면  //기존fixation 유지
@@ -198,7 +298,10 @@ const PDFresultModal = ({ ...props }) => {
                     fixationObj.x = sumPDF_x / fixationObj.count;
                     fixationObj.y = sumPDF_y / fixationObj.count;
                     fixationObj.fd = fixationObj.count / 120;
-                    fa.push(JSON.parse(JSON.stringify(fixationObj)));
+                    if(fixationObj.count>fixationCreteria){
+                        fa.push(JSON.parse(JSON.stringify(fixationObj)));
+                    }
+
 
                     //새로운 fixation;
                     fixationNumber++;
@@ -226,7 +329,9 @@ const PDFresultModal = ({ ...props }) => {
                     fixationObj.x = sumPDF_x / fixationObj.count;
                     fixationObj.y = sumPDF_y / fixationObj.count;
                     fixationObj.fd = fixationObj.count / 120;
-                    fa.push(JSON.parse(JSON.stringify(fixationObj)));
+                    if(fixationObj.count>fixationCreteria){
+                        fa.push(JSON.parse(JSON.stringify(fixationObj)));
+                    }
                 }
 
                 prevx = d.pdfx;

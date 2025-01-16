@@ -18,17 +18,66 @@ var _controller = require("./controller");
 var _svg = require("./svg");
 var h337 = _interopRequireWildcard(require("heatmap.js"));
 var _MultipleToggle = _interopRequireDefault(require("./component/multipletoggle/MultipleToggle"));
-function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
-function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _objectDestructuringEmpty(t) { if (null == t) throw new TypeError("Cannot destructure " + t); }
-function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); } // import readerseyelogo from "./img/readereyelogo.png";
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure " + obj); }
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); } // import readerseyelogo from "./img/readereyelogo.png";
 // import { ReactComponent as RemoconSVG } from "./img/remotecontroller.svg";
+const calculateStd = arr => {
+  if (arr.length === 0) return 0; // 빈 배열일 경우 0 반환
+
+  const mean = arr.reduce((acc, val) => acc + val, 0) / arr.length;
+  const variance = arr.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / arr.length;
+  return Math.sqrt(variance); // 표준편차는 분산의 제곱근
+};
+
+function fivePointSmoothingWithKeys(arr, targetKeyArr, newKeyNameArr) {
+  if (targetKeyArr.length !== newKeyNameArr.length) {
+    throw new Error("targetKeyArr and newKeyNameArr must have the same length.");
+  }
+  return arr.map((obj, index) => {
+    const newObj = _objectSpread({}, obj);
+    targetKeyArr.forEach((targetKey, keyIndex) => {
+      const newKeyName = newKeyNameArr[keyIndex];
+      if (index >= 4) {
+        const recentValues = Array.from({
+          length: 4
+        }, (_, i) => arr[index - i - 1][targetKey]);
+        const currentValue = obj[targetKey];
+        const valueArr = [...recentValues, currentValue].sort((a, b) => a - b);
+        const nullCount = valueArr.filter(val => val == null).length;
+        if (nullCount === 0) {
+          newObj[newKeyName] = valueArr[1];
+        } else if (nullCount === 1) {
+          newObj[newKeyName] = (valueArr[2] + valueArr[3]) / 2;
+        } else if (nullCount === 2) {
+          newObj[newKeyName] = valueArr[3];
+        } else if (nullCount === 3) {
+          newObj[newKeyName] = (valueArr[3] + valueArr[4]) / 2;
+        } else if (nullCount === 4) {
+          newObj[newKeyName] = valueArr[4];
+        } else {
+          newObj[newKeyName] = currentValue;
+        }
+      } else {
+        // 첫 4개는 그대로 복사
+        newObj[newKeyName] = obj[targetKey];
+      }
+
+      // 동일한 키 이름이 존재하면 덮어쓰기
+      if (targetKey === newKeyName) {
+        newObj[targetKey] = newObj[newKeyName];
+      }
+    });
+    return newObj;
+  });
+}
 const PDFresultModal = _ref => {
   let props = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
   const {
@@ -112,7 +161,7 @@ const PDFresultModal = _ref => {
 
   //fixation 값들. fixationArr 만들때 쓰임개발때 쓰임.
   const [fminx] = (0, _react.useState)(1);
-  const [fminy] = (0, _react.useState)(1);
+  const [fminy] = (0, _react.useState)(1); //커질수록 fixation합처짐
   const [minFixationCount] = (0, _react.useState)(3);
   //fixationData는 darw시에도 사용됨.
   const fixationData = (0, _react.useMemo)(() => {
@@ -121,6 +170,46 @@ const PDFresultModal = _ref => {
     let sumPDF_y = 0;
     // console.log("data", data);
     const rawGaze = data.gazeData;
+    const targetKeys = ["pdfx", "pdfy"];
+    // const newKeyNames = ["smoothed_pdfx", "smoothed_pdfy"];
+    fivePointSmoothingWithKeys(rawGaze, targetKeys, targetKeys);
+
+    //#@!
+    const pdfxDiffArr = [];
+    const pdfyDiffArr = [];
+    for (let i = 1; i < rawGaze.length; i++) {
+      let prevD = rawGaze[i - 1];
+      let nowD = rawGaze[i];
+      if (prevD.pdfx && nowD.pdfx) {
+        pdfxDiffArr.push(nowD.pdfx - prevD.pdfx);
+        pdfyDiffArr.push(nowD.pdfy - prevD.pdfy);
+      }
+    }
+    const stdPDFX1 = calculateStd(pdfxDiffArr);
+    const stdPDFY1 = calculateStd(pdfyDiffArr);
+    // console.log("stdPDFX",stdPDFX1);
+    // console.log("stdPDFY",stdPDFY1);
+    const pdfxDiffArr2 = [];
+    const pdfyDiffArr2 = [];
+    for (let i = 1; i < rawGaze.length; i++) {
+      let prevD = rawGaze[i - 1];
+      let nowD = rawGaze[i];
+      if (prevD.pdfx && nowD.pdfx) {
+        const diffX = nowD.pdfx - prevD.pdfx;
+        const diffY = nowD.pdfy - prevD.pdfy;
+        if (diffX <= stdPDFX1 * 0.2) {
+          pdfxDiffArr2.push(diffX);
+        }
+        if (diffY <= stdPDFY1 * 0.2) {
+          pdfyDiffArr2.push(diffY);
+        }
+      }
+    }
+    const stdPDFX2 = calculateStd(pdfxDiffArr2) * 0.9;
+    const stdPDFY2 = calculateStd(pdfyDiffArr2) * 1;
+    // console.log("stdPDFX2",stdPDFX2);
+    // console.log("stdPDFY2",stdPDFY2);
+
     let heightmul = data.pdfSize.height / data.screenSize.height;
     if (heightmul <= 1) heightmul = 1;
     let fixationNumber = 0;
@@ -130,6 +219,10 @@ const PDFresultModal = _ref => {
     let prevy = null;
     const xdiff_f = fminx / 100;
     const ydiff_f = fminy / 100 * heightmul;
+    const fixationCreteria = 10;
+
+    // console.log("xdiff_f",xdiff_f)
+    // console.log("ydiff_f",ydiff_f)
     //거리기준 
     for (let i = 0; i < rawGaze.length; i++) {
       //거리가 가까운 PDF 를 찾아야하는데..
@@ -160,7 +253,9 @@ const PDFresultModal = _ref => {
         if (!d.pdfx || !d.pdfy) {
           //예외처리 없는
           continue;
-        } else if (xdiff * 1 <= xdiff_f * 1 && ydiff * 1 <= ydiff_f * 1) {
+        }
+        // else if (xdiff * 1 <= xdiff_f * 1 && ydiff * 1 <= ydiff_f * 1) {
+        else if (xdiff * 1 <= stdPDFX2 && ydiff * 1 <= stdPDFY2) {
           // console.log("ydiff_f",ydiff_f,ydiff);
           // console.log("xdiff_f",xdiff_f,xdiff);
           //만약 거리가 가까우면  //기존fixation 유지
@@ -175,7 +270,9 @@ const PDFresultModal = _ref => {
           fixationObj.x = sumPDF_x / fixationObj.count;
           fixationObj.y = sumPDF_y / fixationObj.count;
           fixationObj.fd = fixationObj.count / 120;
-          fa.push(JSON.parse(JSON.stringify(fixationObj)));
+          if (fixationObj.count > fixationCreteria) {
+            fa.push(JSON.parse(JSON.stringify(fixationObj)));
+          }
 
           //새로운 fixation;
           fixationNumber++;
@@ -191,6 +288,7 @@ const PDFresultModal = _ref => {
           };
           // console.log("새로운fixation생성?",rawGaze.length,i);
         }
+
         if (i + 1 === rawGaze.length) {
           //맨마지막이라면 또 넣어주자
           // console.log("맨마지막???????")
@@ -200,7 +298,9 @@ const PDFresultModal = _ref => {
           fixationObj.x = sumPDF_x / fixationObj.count;
           fixationObj.y = sumPDF_y / fixationObj.count;
           fixationObj.fd = fixationObj.count / 120;
-          fa.push(JSON.parse(JSON.stringify(fixationObj)));
+          if (fixationObj.count > fixationCreteria) {
+            fa.push(JSON.parse(JSON.stringify(fixationObj)));
+          }
         }
         prevx = d.pdfx;
         prevy = d.pdfy;
@@ -1411,6 +1511,7 @@ const PDFresultModal = _ref => {
               // borderLineCap: LineCapStyle.Round,
             });
           }
+
           prevx = d.pdfx;
           prevy = d.pdfy;
         }
@@ -1461,6 +1562,7 @@ const PDFresultModal = _ref => {
               // borderColor: cmyk(0, 0, 0, 1), //blue red yeloow
               // borderLineCap: LineCapStyle.Round,
             });
+
             prevx = f.x;
             prevy = f.y;
           }

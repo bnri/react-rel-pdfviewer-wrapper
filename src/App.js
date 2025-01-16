@@ -34,7 +34,7 @@ function App() {
   const [data,setData] = useState(null);
 
   useEffect(()=>{
-    fetch('./704.txt')
+    fetch('./794.txt')
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

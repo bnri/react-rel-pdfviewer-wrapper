@@ -19,6 +19,7 @@ const getCanvasImageArrayBuffer = canvas => {
   for (let i = 0; i < data.length; i++) {
     uint8Array[i] = data[i]; // 이미지 데이터를 Uint8Array에 복사
   }
+
   return {
     buffer,
     width,
@@ -45,6 +46,7 @@ const getCanvasImagePngBuffer = canvas => {
   for (let i = 0; i < length; i++) {
     view[i] = binaryData.charCodeAt(i); // 디코딩된 데이터를 ArrayBuffer에 복사
   }
+
   return buffer;
 };
 exports.getCanvasImagePngBuffer = getCanvasImagePngBuffer;
@@ -61,6 +63,7 @@ const findCanvasInChildren = element => {
       }
     }
   }
+
   return null; // canvas를 찾지 못한 경우 null 반환
 };
 exports.findCanvasInChildren = findCanvasInChildren;
